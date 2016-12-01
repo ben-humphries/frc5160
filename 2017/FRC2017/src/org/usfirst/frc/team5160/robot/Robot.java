@@ -26,16 +26,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * this system. Use IterativeRobot or Command-Based instead if you're new.
  */
 public class Robot extends SampleRobot {
+	
     RobotDrive myRobot;
-    Joystick stick;
+    Joystick leftStick, rightStick;
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     SendableChooser chooser;
+    
+    //Record Autonomous variables
+    boolean recordAuto = false;
 
     public Robot() {
+    	
         myRobot = new RobotDrive(0, 1);
         myRobot.setExpiration(0.1);
-        stick = new Joystick(0);
+        
+        //port 0
+        leftStick = new Joystick(0);
+        //port 1
+        rightStick = new Joystick(1);
     }
     
     public void robotInit() {
@@ -83,7 +92,11 @@ public class Robot extends SampleRobot {
     public void operatorControl() {
         myRobot.setSafetyEnabled(true);
         while (isOperatorControl() && isEnabled()) {
-            myRobot.arcadeDrive(stick); // drive with arcade style (use right stick)
+            myRobot.tankDrive(leftStick, rightStick); // drive with tank style (use left and right sticks)
+            
+            if(recordAuto){
+            	
+            }
             Timer.delay(0.005);		// wait for a motor update time
         }
     }
