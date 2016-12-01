@@ -24,7 +24,7 @@ public class Camera {
         for (int i = 0; i < cameraNames.length; i++) {
         	try {
         		sessions[i] = NIVision.IMAQdxOpenCamera(cameraNames[i], NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-        	catch (Exception e) {
+        	}catch (Exception e) {
         		sessions[i] = -1;
         	}
         }
