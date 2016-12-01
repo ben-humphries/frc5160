@@ -24,8 +24,7 @@ public class Robot extends SampleRobot {
     Camera camera;
     Joystick leftStick, rightStick, thirdStick;
     
-    //ben was definitely here what are you talking about?
-
+    //comment #1
 	//values are read from the SmartDashboard at regular intervals It's static for convenience.
     public static HashMap<String, Double> configHash = new HashMap<String, Double>(){private static final long serialVersionUID = -694703851331954033L;{ //random unique identifier
     	put("MaxVel", 6.403);
