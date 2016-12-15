@@ -1,8 +1,8 @@
 package org.usfirst.frc.team5160.robot;
 
-import java.util.HashMap;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -10,37 +10,67 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class RecordAutonomous extends Command {
 	
-	HashMap<CANTalon, String> motors;
-	CANTalon controlMotor;
-
-    public RecordAutonomous(HashMap<CANTalon, String> motors, CANTalon controlMotor) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+	FileWriter writer;
+	
+	long startTime;
+	
+	float millisPerTick;
+	float lastTime;
+	
+    public RecordAutonomous(String fileDirectory, int ticksPerSecond) throws IOException {
     	
-    	this.motors = motors;
-    	this.controlMotor = controlMotor;
+    	writer = new FileWriter(fileDirectory);
+    	
+    	millisPerTick = 1000/ticksPerSecond;
+    	
     }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
     	
+    	startTime = System.currentTimeMillis();
+    	
     }
 
-    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	if(System.currentTimeMillis() - lastTime >= millisPerTick){
+    		lastTime = System.currentTimeMillis();
+    		
+    		float instancedStartTime = System.currentTimeMillis() - startTime;
+    		float motorValue = 5; //Get motor values
+    		
+    		try {
+    			writer.append("" + instancedStartTime);
+    			
+    			writer.append(motorValue + ",");
+    			
+    			writer.append("\n");
+    			
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    		
+    	}
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+
+
+    protected void end() {
+    	try {
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+    }
+
+
+    protected void interrupted(){
+    	end();
+    	
+    }
+    
     protected boolean isFinished() {
         return false;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
     }
 }
