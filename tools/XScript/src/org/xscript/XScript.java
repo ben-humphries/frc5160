@@ -60,7 +60,7 @@ public class XScript {
 		}
 		
 		else if (arg.indexOf('"')>=0){
-			return arg.substring(arg.indexOf('"'), arg.lastIndexOf('"'));
+			return arg.substring(arg.indexOf('"')+1, arg.lastIndexOf('"'));
 		}
 		else if (arg.equals("true")){
 			return true;
