@@ -1,7 +1,17 @@
 
 package org.usfirst.frc.team5160.robot;
 
+import java.util.ArrayList;
+
+import org.usfirst.frc.team5160.robot.activities.Activity;
+import org.usfirst.frc.team5160.robot.activities.Autonomous;
+import org.usfirst.frc.team5160.robot.activities.Camera;
+import org.usfirst.frc.team5160.robot.activities.DriveForwardAuto;
+import org.usfirst.frc.team5160.robot.activities.TrackTargetAuto;
+import org.usfirst.frc.team5160.robot.subsystems.Drive;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,64 +23,82 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
-	public enum AutoMode {DEFAULT, SHOOT}
-    final String defaultAuto = "Default";
-    final String customAuto = "My Auto";
-    String autoSelected;
-    SendableChooser chooser;
-	
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    public void robotInit() {
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", defaultAuto);
-        chooser.addObject("My Auto", customAuto);
-        SmartDashboard.putData("Auto choices", chooser);
-    }
-    
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
-	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
-	 * Dashboard, remove all of the chooser code and uncomment the getString line to get the auto name from the text box
-	 * below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional comparisons to the switch structure below with additional strings.
-	 * If using the SendableChooser make sure to add them to the chooser code above as well.
-	 */
-    public void autonomousInit() {
-    	autoSelected = (String) chooser.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
-    }
 
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-    	switch(autoSelected) {
-    	case customAuto:
-        //Put custom auto code here   
-            break;
-    	case defaultAuto:
+public class Robot extends IterativeRobot {
+	//Automode variables
+	final String driveForward = "Drive Forward";
+    final String trackTarget = "Track Target";
+    SendableChooser chooser;
+    Autonomous chosenAuto; 
+    
+    //Timer 
+    Timer timer;
+    //Robot subsystems
+    Drive drive;
+    //Activities
+    Camera camera; 
+    
+    //Input variables
+    Joystick leftStick, rightStick;
+    
+    public Robot(){
+    	//Good idea to call super()
+    	super();
+    	
+    	//Initialize input
+    	leftStick = new Joystick(0);
+    	rightStick = new Joystick(1);
+    	
+    	//Initialize subsystems
+    	drive = new Drive(leftStick, rightStick);
+    	
+    	//Initialize activities
+    	camera = new Camera();
+    	
+    }
+    @Override
+    public void robotInit() {
+    	// Configure autonomous modes
+        chooser = new SendableChooser();
+        chooser.addDefault(driveForward, driveForward);
+        chooser.addObject(trackTarget, trackTarget);
+        SmartDashboard.putData("Auto choices", chooser);
+        
+        //Init timer
+        timer = new Timer(); 
+        
+        //Init subsystems
+        drive.init();
+        //Init activities
+        camera.init();
+        
+    }
+    @Override 
+    public void autonomousInit() {
+    switch((String) chooser.getSelected()) {
+    	case driveForward:
+    		chosenAuto = new DriveForwardAuto();
+    		break;
+    	case trackTarget:
+    		chosenAuto = new TrackTargetAuto();
+    		break;
     	default:
-    	//Put default auto code here
+    		chosenAuto = new DriveForwardAuto();
             break;
     	}
+    chosenAuto.init();
+    	
     }
-
-    /**
-     * This function is called periodically during operator control
-     */
+    @Override
+    public void autonomousPeriodic() {
+    	chosenAuto.loopAutonomous(timer.get());
+    	timer.reset();
+    }
+    @Override
     public void teleopPeriodic() {
         
     }
-    
-    /**
-     * This function is called periodically during test mode
-     */
+    @Override
     public void testPeriodic() {
     
     }

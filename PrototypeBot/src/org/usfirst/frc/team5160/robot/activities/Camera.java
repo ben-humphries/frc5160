@@ -1,7 +1,5 @@
 package org.usfirst.frc.team5160.robot.activities;
 
-import org.usfirst.frc.team5160.robot.Robot.AutoMode;
-
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
 
@@ -13,8 +11,8 @@ public class Camera extends Activity{
 	private final String[] cameraNames = new String[] {"cam1", "cam0", "cam2"};
 	private int[] sessions = new int[cameraNames.length];
     private int currentSession = 0;
-    mode = AUTO_TELE;
-	@Override
+	
+    @Override
 	public void init() {
 		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 		camera.setQuality(25);
@@ -43,7 +41,7 @@ public class Camera extends Activity{
 		NIVision.IMAQdxStopAcquisition(session);
 	}
 
-	public void loop(double deltaTime) {
+	private void loop(double deltaTime) {
 		if (currentSession != -1) {
 			NIVision.IMAQdxGrab(currentSession, frame, 1);
 	        camera.setImage(frame);
@@ -58,13 +56,11 @@ public class Camera extends Activity{
 	
 	@Override
 	public void loopTele(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+		loop(deltaTime);
 	}
 	@Override
-	public void loopAuto(double deltaTime, AutoMode mode) {
-		// TODO Auto-generated method stub
-		
+	public void loopAuto(double deltaTime) {
+		loop(deltaTime);
 	}
 
 }
