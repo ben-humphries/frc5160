@@ -27,33 +27,15 @@ import org.opencv.videoio.VideoCapture;
 
 public class VizGui extends JPanel{
 	
-	
+	VisionProcessor vision = new VisionProcessor();
 	 public void paintComponent(Graphics g){
 		 if(this.isVisible() == false){
 			 return;
 		 }
-		 Mat image = new Mat();
-	     camera.read(image);
-	     Core.multiply(image, new Scalar(0,1,0), image);
-	     Imgproc.resize(image, image, new Size(32,32));
-	     Imgproc.blur(image, image,new Size(2,2));
-	     Imgproc.resize(image, image, new Size(320,320));
-	      g.drawImage(toBufferedImage(image),0,0, this);
-	      image.release();
+		 g.drawImage(ImageOps.toBufferedImage(vision.process()),0,0,400,400,this);
 	 }
-	 public static Image toBufferedImage(Mat m){
-	        int type = BufferedImage.TYPE_BYTE_GRAY;
-	        if ( m.channels() > 1 ) {
-	            type = BufferedImage.TYPE_3BYTE_BGR;
-	        }
-	        int bufferSize = m.channels()*m.cols()*m.rows();
-	        byte [] b = new byte[bufferSize];
-	        m.get(0,0,b); // get all the pixels
-	        BufferedImage image = new BufferedImage(m.cols(),m.rows(), type);
-	        final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-	        System.arraycopy(b, 0, targetPixels, 0, b.length);  
-	        return image;
-
-	    }
+	
+	 
+	 
 	 
 }
