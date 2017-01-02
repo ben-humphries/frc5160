@@ -8,5 +8,15 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources"/>
+	<classpathentry kind="lib" path="deps/kryonet-2.21.jar"/>
+	<classpathentry kind="lib" path="deps/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="deps/kryo-2.20.jar"/>
+	<classpathentry kind="lib" path="deps/minlog-none-1.2.jar"/>
+	<classpathentry kind="lib" path="deps/asm-4.0.jar"/>
+	<classpathentry kind="lib" path="deps/jsonbeans-0.5.jar"/>
+	<classpathentry kind="lib" path="deps/kryo-debug-2.20.jar"/>
+	<classpathentry kind="lib" path="deps/minlog-1.2.jar"/>
+	<classpathentry kind="lib" path="deps/objenesis-1.2.jar"/>
+	<classpathentry kind="lib" path="deps/reflectasm-1.07.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
