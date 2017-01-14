@@ -3,7 +3,11 @@ package org.usfirst.frc.team5160.robot;
 
 
 import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.RobotDrive;
+
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,11 +31,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends SampleRobot {
 	
+	
+	
     RobotDrive myRobot;
     Joystick leftStick, rightStick;
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     SendableChooser chooser;
+    Talon talon = new Talon(0);
     
     //Record Autonomous variables
     boolean recordAuto = false;
@@ -90,13 +97,25 @@ public class Robot extends SampleRobot {
      * Runs the motors with arcade steering.
      */
     public void operatorControl() {
+    	
+    	try {
+			SmartDashboard.putData("Record Autonomous", new RecordAutonomous("test", 30));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	
+    	
+    	try {
+			SmartDashboard.putData("Play Autonomous", new RecordAutonomous("", 30));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    
         myRobot.setSafetyEnabled(true);
         while (isOperatorControl() && isEnabled()) {
             myRobot.tankDrive(leftStick, rightStick); // drive with tank style (use left and right sticks)
             
-            if(recordAuto){
-            	
-            }
             Timer.delay(0.005);		// wait for a motor update time
         }
     }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -16,6 +17,8 @@ public class PlayAutonomous extends Command {
 	long startTime;
 	
 	boolean nextLine = false;
+	
+	Talon testTalon = new Talon(0);
 
     public PlayAutonomous(String fileDirectory) throws FileNotFoundException{
         
@@ -40,6 +43,9 @@ public class PlayAutonomous extends Command {
     			//set motor values
     			//Example:
     			//robot.frontLeftMotor.set(scanner.nextFloat());
+    			
+    			testTalon.setPosition(scanner.nextDouble());
+    			
     			nextLine = true;
     		}else{
     			nextLine = false;
@@ -54,6 +60,7 @@ public class PlayAutonomous extends Command {
     }
     
     protected void interrupted() {
+    	scanner.close();
     }
 
 	protected boolean isFinished() {

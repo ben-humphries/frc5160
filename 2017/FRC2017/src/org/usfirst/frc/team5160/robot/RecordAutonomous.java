@@ -3,6 +3,7 @@ package org.usfirst.frc.team5160.robot;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -17,11 +18,14 @@ public class RecordAutonomous extends Command {
 	float millisPerTick;
 	float lastTime;
 	
+	Talon testTalon = new Talon(0);
+	
     public RecordAutonomous(String fileDirectory, int ticksPerSecond) throws IOException {
     	
     	writer = new FileWriter(fileDirectory);
     	
     	millisPerTick = 1000/ticksPerSecond;
+    	
     	
     }
 
@@ -36,7 +40,9 @@ public class RecordAutonomous extends Command {
     		lastTime = System.currentTimeMillis();
     		
     		float instancedStartTime = System.currentTimeMillis() - startTime;
-    		float motorValue = 5; //Get motor values
+    		double motorValue = testTalon.getPosition(); //Get motor values
+    		
+    		
     		
     		try {
     			writer.append("" + instancedStartTime);
