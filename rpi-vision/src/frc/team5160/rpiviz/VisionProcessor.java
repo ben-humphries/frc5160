@@ -45,8 +45,8 @@ public class VisionProcessor {
 		Core.extractChannel(resized, greenOnly, 1);
 		Core.extractChannel(resized, blueOnly, 2);
 		Mat sum = new Mat();
-		Core.addWeighted(greenOnly, 1, blueOnly, -0.2, 1, sum);
-		Core.addWeighted(sum, 1, redOnly, -0.4, 1, sum);
+		Core.addWeighted(greenOnly, 1, blueOnly, -0.1, 1, sum);
+		Core.addWeighted(sum, 1, redOnly, -0.9, 1, sum);
 		Imgproc.threshold(sum, greenChannelThreshold, 0, 255, Imgproc.THRESH_OTSU);
 		Mat contouredGreen = greenChannelThreshold.clone();
 		ArrayList<MatOfPoint> contours = new ArrayList<>();
@@ -67,9 +67,9 @@ public class VisionProcessor {
 			double aspectRatio = ((double)w)/h;
 			double hullExtent = ar/ah; 
 			double solidity = ac/ah;
-			if(!(w > 30 && h > 30 
+			if(!(w > 20 && h > 10 
 					//&& (hullExtent < 2 && hullExtent > 0.7)
-					&& solidity < 0.7
+					//&& solidity < 0.3
 					)){
 				contours.remove(i);	
 			}
