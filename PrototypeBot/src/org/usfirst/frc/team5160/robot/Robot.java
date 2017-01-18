@@ -8,6 +8,7 @@ import org.usfirst.frc.team5160.robot.activities.Autonomous;
 import org.usfirst.frc.team5160.robot.activities.Camera;
 import org.usfirst.frc.team5160.robot.activities.DriveForwardAuto;
 import org.usfirst.frc.team5160.robot.activities.TrackTargetAuto;
+import org.usfirst.frc.team5160.robot.subsystems.CheapDriving;
 import org.usfirst.frc.team5160.robot.subsystems.Drive;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -34,7 +35,7 @@ public class Robot extends IterativeRobot {
     //Timer 
     Timer timer;
     //Robot subsystems
-    Drive drive;
+    CheapDriving drive;
     //Activities
     Camera camera; 
     
@@ -50,7 +51,7 @@ public class Robot extends IterativeRobot {
     	rightStick = new Joystick(1);
     	
     	//Initialize subsystems
-    	drive = new Drive(leftStick, rightStick);
+    	drive = new CheapDriving(leftStick, rightStick);
     	
     	//Initialize activities
     	camera = new Camera();
@@ -96,7 +97,7 @@ public class Robot extends IterativeRobot {
     }
     @Override
     public void teleopPeriodic() {
-        
+        drive.loopTele(1.0/60);
     }
     @Override
     public void testPeriodic() {
