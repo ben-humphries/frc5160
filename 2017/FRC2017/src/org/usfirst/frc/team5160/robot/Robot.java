@@ -5,6 +5,7 @@ package org.usfirst.frc.team5160.robot;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import java.io.IOException;
 
@@ -33,11 +34,14 @@ public class Robot extends SampleRobot {
 	
 	
 	
-    RobotDrive myRobot;
-    Joystick leftStick, rightStick;
+    RobotDrive robot;
+    Joystick joystick;
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     SendableChooser chooser;
+    
+    ADXRS450_Gyro gyro;
+    
     Talon talon = new Talon(0);
     
     //Record Autonomous variables
@@ -45,13 +49,15 @@ public class Robot extends SampleRobot {
 
     public Robot() {
     	
-        myRobot = new RobotDrive(0, 1);
-        myRobot.setExpiration(0.1);
+        robot = new RobotDrive(1, 3, 2, 4); //four wheel drive, using ports 1,2,
+        																  //3,4
+        robot.setExpiration(0.1);
         
         //port 0
-        leftStick = new Joystick(0);
-        //port 1
-        rightStick = new Joystick(1);
+        joystick = new Joystick(0);
+        
+        gyro = new ADXRS450_Gyro(/*port*/);
+        
     }
     
     public void robotInit() {
@@ -78,17 +84,17 @@ public class Robot extends SampleRobot {
     	
     	switch(autoSelected) {
     	case customAuto:
-            myRobot.setSafetyEnabled(false);
-            myRobot.drive(-0.5, 1.0);	// spin at half speed
+            robot.setSafetyEnabled(false);
+            robot.drive(-0.5, 1.0);	// spin at half speed
             Timer.delay(2.0);		//    for 2 seconds
-            myRobot.drive(0.0, 0.0);	// stop robot
+            robot.drive(0.0, 0.0);	// stop robot
             break;
     	case defaultAuto:
     	default:
-            myRobot.setSafetyEnabled(false);
-            myRobot.drive(-0.5, 0.0);	// drive forwards half speed
+            robot.setSafetyEnabled(false);
+            robot.drive(-0.5, 0.0);	// drive forwards half speed
             Timer.delay(2.0);		//    for 2 seconds
-            myRobot.drive(0.0, 0.0);	// stop robot
+            robot.drive(0.0, 0.0);	// stop robot
             break;
     	}
     }
@@ -112,12 +118,30 @@ public class Robot extends SampleRobot {
 			e.printStackTrace();
 		}
     
-        myRobot.setSafetyEnabled(true);
+        robot.setSafetyEnabled(true);
         while (isOperatorControl() && isEnabled()) {
-            myRobot.tankDrive(leftStick, rightStick); // drive with tank style (use left and right sticks)
+            robot.mecanumDrive_Polar(joystick.getMagnitude(), joystick.getDirectionDegrees(), joystick.getTwist()); // mecanum drive
             
             Timer.delay(0.005);		// wait for a motor update time
         }
+    }
+    public void rotateDegrees(double degrees, double rotationMag){
+    	boolean angleReached = false;
+    	double currentAngle = 0;
+    	
+    	while(isEnabled() && !angleReached){
+    		
+    		double startAngle = gyro.getAngle();
+    		
+    		robot.mecanumDrive_Polar(0, 0, rotationMag);
+    		
+    		Timer.delay(0.005);
+    		currentAngle += (gyro.getAngle() - startAngle);
+    		
+    		if(Math.abs(currentAngle) > Math.abs(degrees)){
+    			angleReached = true;
+    		}
+    	}
     }
 
     /**
