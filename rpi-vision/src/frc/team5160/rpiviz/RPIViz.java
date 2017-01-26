@@ -24,7 +24,7 @@ public class RPIViz {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(gui,BorderLayout.CENTER);
-		frame.setSize(810, 400);
+		frame.setSize(1600, 800);
 		frame.setVisible(true);
 		NetworkTable.setClientMode();
 		NetworkTable.setIPAddress("localhost");
