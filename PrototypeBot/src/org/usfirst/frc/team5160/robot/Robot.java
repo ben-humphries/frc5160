@@ -8,15 +8,14 @@ import org.usfirst.frc.team5160.robot.activities.Autonomous;
 import org.usfirst.frc.team5160.robot.activities.Camera;
 import org.usfirst.frc.team5160.robot.activities.DriveForwardAuto;
 import org.usfirst.frc.team5160.robot.activities.TrackTargetAuto;
+import org.usfirst.frc.team5160.robot.subsystems.CheapDriving;
 import org.usfirst.frc.team5160.robot.subsystems.Drive;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.TalonSRX;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,29 +35,23 @@ public class Robot extends IterativeRobot {
     //Timer 
     Timer timer;
     //Robot subsystems
-    //Drive drive;
+    CheapDriving drive;
     //Activities
     Camera camera; 
     
     //Input variables
-    Joystick driveStick;
-    
-    RobotDrive drive;
-    
-    public static TalonSRX frontLeft;
-	public static TalonSRX frontRight;
-	public static TalonSRX backLeft;
-	public static TalonSRX backRight;
+    Joystick leftStick, rightStick;
     
     public Robot(){
     	//Good idea to call super()
     	super();
     	
     	//Initialize input
-    	driveStick = new Joystick(0);
-    	
+    	leftStick = new Joystick(0);
+    	rightStick = new Joystick(1);
+    	    	
     	//Initialize subsystems
-    	//drive = new Drive(leftStick, rightStick);
+    	drive = new CheapDriving(leftStick, rightStick);
     	
     	//Initialize activities
     	camera = new Camera();
@@ -76,16 +69,10 @@ public class Robot extends IterativeRobot {
         timer = new Timer(); 
         
         //Init subsystems
-        //drive.init();
+        drive.init();
         //Init activities
         camera.init();
         
-        frontLeft = new TalonSRX(1);
-        backLeft = new TalonSRX(2);
-        frontRight = new TalonSRX(3);
-        backRight = new TalonSRX(4);
-        
-        drive = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
         
     }
     @Override 
@@ -111,7 +98,7 @@ public class Robot extends IterativeRobot {
     }
     @Override
     public void teleopPeriodic() {
-        drive.mecanumDrive_Polar(driveStick.getMagnitude(), driveStick.getDirectionDegrees(), driveStick.getTwist());
+        drive.loopTele(1.0/60);
     }
     @Override
     public void testPeriodic() {
