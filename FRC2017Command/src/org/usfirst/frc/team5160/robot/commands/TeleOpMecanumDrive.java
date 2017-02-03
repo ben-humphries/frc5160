@@ -14,9 +14,7 @@ public class TeleOpMecanumDrive extends Command {
     public TeleOpMecanumDrive() {
     	requires(Robot.BASE);
     }
-    protected void initialize() {
-    }
-
+    
     protected void execute() {
     	Robot.BASE.mecanumDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), Robot.oi.getJoystickRotation());
     }
@@ -25,9 +23,4 @@ public class TeleOpMecanumDrive extends Command {
         return false; //never finishes
     }
 
-    protected void end() {
-    }
-
-    protected void interrupted() {
-    }
 }

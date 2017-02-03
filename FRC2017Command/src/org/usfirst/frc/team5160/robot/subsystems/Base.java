@@ -16,6 +16,8 @@ public class Base extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
+	//TODO: Install libraries for CANTalon
+	
 	//Declare motors
 	private CANTalon frontLeft;
 	private CANTalon backLeft;
@@ -53,6 +55,9 @@ public class Base extends Subsystem {
     	
     	//Cartesian mecanum drive
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+    }
+    public ADXRS450_Gyro getGyro(){
+    	return gyro;
     }
 }
 
