@@ -1,10 +1,10 @@
 package org.usfirst.frc.team5160.robot.subsystems;
 
 import org.usfirst.frc.team5160.robot.RobotMap;
+import com.ctre.CANTalon;
 import org.usfirst.frc.team5160.robot.commands.TeleOpMecanumDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 

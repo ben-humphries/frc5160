@@ -7,7 +7,7 @@ import org.usfirst.frc.team5160.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ *Default Base command, moves robot during Teleop based on joystick input.
  */
 public class TeleOpMecanumDrive extends Command {
 

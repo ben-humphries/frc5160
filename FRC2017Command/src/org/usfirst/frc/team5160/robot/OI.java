@@ -2,7 +2,13 @@ package org.usfirst.frc.team5160.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
+import org.usfirst.frc.team5160.robot.commands.Climb;
 import org.usfirst.frc.team5160.robot.commands.ExampleCommand;
+import org.usfirst.frc.team5160.robot.commands.Intake;
+import org.usfirst.frc.team5160.robot.commands.PushGear;
+import org.usfirst.frc.team5160.robot.commands.Shoot;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,6 +43,20 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 	
 	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
+	
+	Button shootButton = new JoystickButton(joystick, 0),
+		   intakeButton = new JoystickButton(joystick, 1),
+		   gearButton = new JoystickButton(joystick, 2),
+		   climberButton = new JoystickButton(joystick, 3);
+	
+	public OI(){
+		
+		shootButton.whileHeld(new Shoot(1.0));
+		intakeButton.whileHeld(new Intake(1.0));
+		gearButton.whileHeld(new PushGear(0.5));
+		climberButton.whileHeld(new Climb(1.0));
+		
+	}
 	
 	//test
 	

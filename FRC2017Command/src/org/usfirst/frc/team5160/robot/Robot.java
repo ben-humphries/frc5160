@@ -10,7 +10,7 @@ import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
-import org.usfirst.frc.team5160.robot.subsystems.Intake;
+import org.usfirst.frc.team5160.robot.subsystems.IntakeMechanism;
 import org.usfirst.frc.team5160.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,7 +30,7 @@ public class Robot extends IterativeRobot {
 	public static final Base BASE = new Base();
 	public static final Climber CLIMBER = new Climber();
 	public static final GearMechanism GEAR_MECHANISM = new GearMechanism();
-	public static final Intake INTAKE = new Intake();
+	public static final IntakeMechanism INTAKE_MECHANISM = new IntakeMechanism();
 	public static final Shooter SHOOTER = new Shooter();
 	
 	public static OI oi;
