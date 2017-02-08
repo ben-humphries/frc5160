@@ -16,8 +16,8 @@ public class IntakeMechanism extends Subsystem {
     
     public IntakeMechanism(){
     	
-    	motor1 = new CANTalon(RobotMap.INTAKE_CIM_1);
-    	motor2 = new CANTalon(RobotMap.INTAKE_CIM_2);
+    	motor1 = new CANTalon(RobotMap.INTAKE_BAG_1);
+    	motor2 = new CANTalon(RobotMap.INTAKE_BAG_2);
     }
     
     public void intake(double speed){

@@ -15,11 +15,11 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
-public class VisionProcessorBoiler extends SimpleVisionProcessor{
+public class VisionProcessorGear extends SimpleVisionProcessor{
 	
 	Mat drawnContours; 
 	
-	public VisionProcessorBoiler(int cameraId) {
+	public VisionProcessorGear(int cameraId) {
 		super(cameraId);
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
@@ -43,7 +43,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		
 		Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
 		if(top[0]!=null && top[1]!=null){
-			computeDistanceBoiler(top[0], top[1]);
+			computeDistanceGear(top[0], top[1]);
 			
 		}
 		
@@ -54,7 +54,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		
 		return drawnContours;
 	}
-	public void computeDistanceBoiler(MatOfPoint topContour, MatOfPoint bottomContour){
+	public void computeDistanceGear(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
 		Rect topBound = Imgproc.boundingRect(topContour);
 		

@@ -16,8 +16,8 @@ public class Shooter extends Subsystem {
     
     public Shooter(){
     	
-    	motor1 = new CANTalon(RobotMap.SHOOTER_CIM_1);
-    	motor2 = new CANTalon(RobotMap.SHOOTER_CIM_2);
+    	motor1 = new CANTalon(RobotMap.SHOOTER_775_1);
+    	motor2 = new CANTalon(RobotMap.SHOOTER_775_2);
     	
     }
 

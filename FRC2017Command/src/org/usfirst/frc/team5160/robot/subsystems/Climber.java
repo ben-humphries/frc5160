@@ -21,8 +21,8 @@ public class Climber extends Subsystem {
     
     public Climber(){
     	
-    	motor1 = new CANTalon(RobotMap.CLIMBER_CIM_1);
-    	motor2 = new CANTalon(RobotMap.CLIMBER_CIM_2);
+    	motor1 = new CANTalon(RobotMap.CLIMBER_775_1);
+    	motor2 = new CANTalon(RobotMap.CLIMBER_775_2);
     	
     	limitSwitch = new DigitalInput(RobotMap.CLIMBER_SWITCH);
     }

@@ -20,7 +20,7 @@ public class Base extends Subsystem {
 	
 	//Declare motors
 	private CANTalon frontLeft;
-	private CANTalon backLeft;
+	private CANTalon backLeft; 
 	private CANTalon frontRight;
 	private CANTalon backRight;
 	

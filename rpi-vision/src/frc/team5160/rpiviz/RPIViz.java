@@ -15,8 +15,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  */
 public class RPIViz {
 	public static void main(String[] args){
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		System.loadLibrary("opencv_ffmpeg300_64");
+		
 		VizGui gui =  new VizGui();
 		gui.prepareInputs();
 		JFrame frame = new JFrame("RPIViz");
@@ -26,8 +25,7 @@ public class RPIViz {
 		frame.add(gui,BorderLayout.CENTER);
 		frame.setSize(1600, 800);
 		frame.setVisible(true);
-		NetworkTable.setClientMode();
-		NetworkTable.setIPAddress("localhost");
+		
 		//MJPGServer m = new MJPGServer();
 		while(true){
 			gui.repaint();

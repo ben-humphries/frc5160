@@ -1,5 +1,4 @@
 package frc.team5160.rpiviz;
-
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -34,17 +33,17 @@ import org.opencv.videoio.VideoCapture;
 
 public class VizGui extends JPanel implements KeyListener{
 	
-	VisionProcessor vision = new VisionProcessor();
+	VisionManager vision = VisionManager.GetInstance();
 	ArrayList<Mat> images = new ArrayList<Mat>();
 	int index = 0;
 	 public void paintComponent(Graphics g){
 		 if(this.isVisible() == false){
 			 return;
 		 }
-		 g.drawImage(ImageOps.toBufferedImage(vision.process()),0,0,400,400,this);
+		 g.drawImage(ImageOps.toBufferedImage(vision.gearProcessor.process()),0,0,400,400,this);
 	//	 g.drawImage(ImageOps.toBufferedImage(vision.process(images.get(index))),0,0,400,400,this);
-		 g.drawImage(ImageOps.toBufferedImage(vision.sum),0,400,400,400,this);
-		 g.drawImage(ImageOps.toBufferedImage(vision.image),400,0,400,400,this);
+		 g.drawImage(ImageOps.toBufferedImage(vision.gearProcessor.sum),0,400,400,400,this);
+		 g.drawImage(ImageOps.toBufferedImage(vision.gearProcessor.image),400,0,400,400,this);
 	 }
 	
 	 public void prepareInputs(){

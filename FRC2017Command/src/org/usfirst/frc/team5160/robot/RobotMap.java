@@ -17,21 +17,23 @@ public class RobotMap {
     // public static int rangefinderModule = 1;
 	
 	//Declare motor port numbers
+	
+	//TODO fix the motor ports
 	public static int FRONT_LEFT_CIM = 1;
 	public static int BACK_LEFT_CIM = 2;
 	public static int FRONT_RIGHT_CIM = 3;
 	public static int BACK_RIGHT_CIM = 4;
 	
-	public static int SHOOTER_CIM_1 = 5;
-	public static int SHOOTER_CIM_2 = 6;
+	public static int SHOOTER_775_1 = 5;
+	public static int SHOOTER_775_2 = 6;
 	
-	public static int INTAKE_CIM_1 = 7;
-	public static int INTAKE_CIM_2 = 8;
+	public static int INTAKE_BAG_1 = 7;
+	public static int INTAKE_BAG_2 = 8;
 	
 	public static int GEAR_CIM = 9;
 	
-	public static int CLIMBER_CIM_1 = 10;
-	public static int CLIMBER_CIM_2 = 11;
+	public static int CLIMBER_775_1 = 10;
+	public static int CLIMBER_775_2 = 11;
 	public static int CLIMBER_SWITCH = 12;
 	
 	//Declare joystick port number

@@ -32,4 +32,9 @@ public class PushGear extends Command {
     protected void interrupted() {
     	end();
     }
+
+	@Override
+	protected void initialize() {
+		
+	}
 }

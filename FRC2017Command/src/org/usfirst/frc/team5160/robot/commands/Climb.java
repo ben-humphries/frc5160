@@ -35,4 +35,9 @@ public class Climb extends Command {
     protected void interrupted() {
     	end();
     }
+
+	@Override
+	protected void initialize() {
+		
+	}
 }
