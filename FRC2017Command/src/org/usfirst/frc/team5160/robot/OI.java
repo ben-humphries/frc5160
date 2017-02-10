@@ -63,19 +63,19 @@ public class OI {
 	//getter methods for the squared movement
 	public double getJoystickX(){
 		if(Math.abs(joystick.getX()) > 0.05){
-			return joystick.getX()*joystick.getX();
+			return joystick.getX()*joystick.getX() * Math.signum(joystick.getX());
 		}
 		return 0;
 	}
 	public double getJoystickY(){
 		if(Math.abs(joystick.getY()) > 0.05){
-			return joystick.getY()*joystick.getY();
+			return joystick.getY()*joystick.getY() * Math.signum(joystick.getY());
 		}
 		return 0;
 	}
 	public double getJoystickRotation(){
 		if(Math.abs(joystick.getTwist()) > 0.05){
-			return joystick.getTwist()*joystick.getTwist();
+			return joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist());
 		}
 		return 0;
 	}
