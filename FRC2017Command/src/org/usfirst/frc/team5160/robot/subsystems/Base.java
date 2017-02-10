@@ -38,6 +38,9 @@ public class Base extends Subsystem {
 		frontRight = new CANTalon(RobotMap.FRONT_RIGHT_CIM);
 		backRight = new CANTalon(RobotMap.BACK_RIGHT_CIM);
 		
+		frontRight.setInverted(true);
+		backRight.setInverted(true);
+		
 		//Sets ramp rate for each motor. Gradually changes speed resulting in less jerkiness.
 		frontLeft.setVoltageRampRate(24.0);
 		backLeft.setVoltageRampRate(24.0);
