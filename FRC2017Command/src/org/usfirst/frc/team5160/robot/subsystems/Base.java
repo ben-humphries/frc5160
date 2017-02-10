@@ -2,7 +2,7 @@ package org.usfirst.frc.team5160.robot.subsystems;
 
 import org.usfirst.frc.team5160.robot.RobotMap;
 import com.ctre.CANTalon;
-import org.usfirst.frc.team5160.robot.commands.TeleOpMecanumDrive;
+import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -38,6 +38,12 @@ public class Base extends Subsystem {
 		frontRight = new CANTalon(RobotMap.FRONT_RIGHT_CIM);
 		backRight = new CANTalon(RobotMap.BACK_RIGHT_CIM);
 		
+		//Sets ramp rate for each motor. Gradually changes speed resulting in less jerkiness.
+		frontLeft.setVoltageRampRate(24.0);
+		backLeft.setVoltageRampRate(24.0);
+		frontRight.setVoltageRampRate(24.0);
+		backRight.setVoltageRampRate(24.0);
+		
 		//Init base
 		driveBase = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 		
@@ -48,7 +54,7 @@ public class Base extends Subsystem {
 
     public void initDefaultCommand() {
     	//set default command as TeleOp Drive
-    	setDefaultCommand(new TeleOpMecanumDrive());
+    	setDefaultCommand(new CMDTeleOpMecanumDrive());
     	
     }
     public void mecanumDrive(double x, double y, double rotation){

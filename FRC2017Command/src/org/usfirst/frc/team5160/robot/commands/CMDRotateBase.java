@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *Rotates robot based on a certain number of degrees entered and a magnitude of rotation.
  */
-public class RotateBase extends Command {
+public class CMDRotateBase extends Command {
 	
 	double degrees;
 	boolean angleReached;
@@ -19,7 +19,7 @@ public class RotateBase extends Command {
 	
 	ADXRS450_Gyro gyro;
 
-    public RotateBase(double degrees, double rotationMag) {
+    public CMDRotateBase(double degrees, double rotationMag) {
 
     	requires(Robot.BASE);
     	
@@ -57,6 +57,12 @@ public class RotateBase extends Command {
         	return true;
         }
         return false;
+    }
+    protected void end(){
+    	
+    }
+    protected void interrupted(){
+    	end();
     }
 
 }

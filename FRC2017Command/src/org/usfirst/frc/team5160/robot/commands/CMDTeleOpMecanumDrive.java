@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *Default Base command, moves robot during Teleop based on joystick input.
  */
-public class TeleOpMecanumDrive extends Command {
+public class CMDTeleOpMecanumDrive extends Command {
 
-    public TeleOpMecanumDrive() {
+    public CMDTeleOpMecanumDrive() {
     	requires(Robot.BASE);
     }
     

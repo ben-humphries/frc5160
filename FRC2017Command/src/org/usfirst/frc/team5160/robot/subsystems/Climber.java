@@ -3,6 +3,7 @@ package org.usfirst.frc.team5160.robot.subsystems;
 import java.io.DataInput;
 
 import org.usfirst.frc.team5160.robot.RobotMap;
+import org.usfirst.frc.team5160.robot.commands.CMDClimbStop;
 
 import com.ctre.CANTalon;
 
@@ -41,6 +42,7 @@ public class Climber extends Subsystem {
     }
     public void initDefaultCommand() {
         
+    	setDefaultCommand(new CMDClimbStop());
 
     }
 }

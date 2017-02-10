@@ -5,31 +5,30 @@ import org.usfirst.frc.team5160.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *Intakes balls while button is held.
+ *Shoot while button is held.
  */
-public class Intake extends Command {
+public class CMDShoot extends Command {
 	
 	double speed;
 
-    public Intake(double speed) {
-        requires(Robot.INTAKE_MECHANISM);
+    public CMDShoot(double speed) {
+        requires(Robot.SHOOTER);
         
         this.speed = speed;
     }
 
     protected void execute() {
-    	Robot.INTAKE_MECHANISM.intake(speed);
+    	Robot.SHOOTER.shoot(speed);
     }
 
     protected boolean isFinished() {
         return false;
     }
-
-    protected void end() {
-    	Robot.INTAKE_MECHANISM.stopMotors();
+    protected void end(){
+    	Robot.SHOOTER.stopMotors();
     }
-
-    protected void interrupted() {
+    protected void interrupted(){
     	end();
     }
+
 }

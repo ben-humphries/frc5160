@@ -24,6 +24,9 @@ public class GearMechanism extends Subsystem {
 	public void pushGear(double speed){
 		gearMotor.set(speed);
 	}
+	public void pullGear(double speed){
+		gearMotor.set(-1*speed);
+	}
 	public void stopMotor(){
 		gearMotor.set(0);
 	}

@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import org.usfirst.frc.team5160.robot.commands.Climb;
+import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.ExampleCommand;
-import org.usfirst.frc.team5160.robot.commands.Intake;
-import org.usfirst.frc.team5160.robot.commands.PushGear;
-import org.usfirst.frc.team5160.robot.commands.Shoot;
+import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
+import org.usfirst.frc.team5160.robot.commands.CMDPushGear;
+import org.usfirst.frc.team5160.robot.commands.CMDShoot;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -51,10 +51,10 @@ public class OI {
 	
 	public OI(){
 		
-		shootButton.whileHeld(new Shoot(1.0));
-		intakeButton.whileHeld(new Intake(1.0));
-		gearButton.whileHeld(new PushGear(0.5));
-		climberButton.whileHeld(new Climb(1.0));
+		shootButton.whileHeld(new CMDShoot(1.0));
+		intakeButton.whileHeld(new CMDIntakeIn(1.0));
+		gearButton.whileHeld(new CMDPushGear(0.5));
+		climberButton.whileHeld(new CMDClimb(1.0));
 		
 	}
 	
@@ -62,13 +62,22 @@ public class OI {
 	
 	//getter methods for the squared movement
 	public double getJoystickX(){
-		return joystick.getX()*joystick.getX();
+		if(Math.abs(joystick.getX()) > 0.05){
+			return joystick.getX()*joystick.getX();
+		}
+		return 0;
 	}
 	public double getJoystickY(){
-		return joystick.getY()*joystick.getY();
+		if(Math.abs(joystick.getY()) > 0.05){
+			return joystick.getY()*joystick.getY();
+		}
+		return 0;
 	}
 	public double getJoystickRotation(){
-		return joystick.getTwist()*joystick.getTwist();
+		if(Math.abs(joystick.getTwist()) > 0.05){
+			return joystick.getTwist()*joystick.getTwist();
+		}
+		return 0;
 	}
 	
 	

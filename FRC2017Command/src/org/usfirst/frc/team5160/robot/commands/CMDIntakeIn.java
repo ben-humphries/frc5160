@@ -5,20 +5,20 @@ import org.usfirst.frc.team5160.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *Pushes gear forward until button is released
+ *Intakes balls while button is held.
  */
-public class PushGear extends Command {
+public class CMDIntakeIn extends Command {
 	
 	double speed;
 
-    public PushGear(double speed) {
-        requires(Robot.GEAR_MECHANISM);
+    public CMDIntakeIn(double speed) {
+        requires(Robot.INTAKE_MECHANISM);
         
         this.speed = speed;
     }
 
     protected void execute() {
-    	Robot.GEAR_MECHANISM.pushGear(speed);
+    	Robot.INTAKE_MECHANISM.intake(speed);
     }
 
     protected boolean isFinished() {
@@ -26,15 +26,10 @@ public class PushGear extends Command {
     }
 
     protected void end() {
-    	Robot.GEAR_MECHANISM.stopMotor();
+    	Robot.INTAKE_MECHANISM.stopMotors();
     }
 
     protected void interrupted() {
     	end();
     }
-
-	@Override
-	protected void initialize() {
-		
-	}
 }

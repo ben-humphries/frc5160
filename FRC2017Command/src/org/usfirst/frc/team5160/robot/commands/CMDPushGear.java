@@ -5,31 +5,28 @@ import org.usfirst.frc.team5160.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *Climbs until limit switch is activated or button is released.
+ *Pushes gear forward until button is released
  */
-public class Climb extends Command {
+public class CMDPushGear extends Command {
 	
 	double speed;
 
-    public Climb(double speed) {
-        requires(Robot.CLIMBER);
+    public CMDPushGear(double speed) {
+        requires(Robot.GEAR_MECHANISM);
         
         this.speed = speed;
     }
 
     protected void execute() {
-    	Robot.CLIMBER.climb(speed);
+    	Robot.GEAR_MECHANISM.pushGear(speed);
     }
 
     protected boolean isFinished() {
-    	if(Robot.CLIMBER.getSwitch()){
-    		return false;
-    	}
-        return true;
+        return false;
     }
 
     protected void end() {
-    	Robot.CLIMBER.stopMotors();
+    	Robot.GEAR_MECHANISM.stopMotor();
     }
 
     protected void interrupted() {
