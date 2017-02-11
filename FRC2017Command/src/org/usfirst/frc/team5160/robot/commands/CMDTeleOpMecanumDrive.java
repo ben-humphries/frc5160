@@ -13,6 +13,7 @@ public class CMDTeleOpMecanumDrive extends Command {
 
     public CMDTeleOpMecanumDrive() {
     	requires(Robot.BASE);
+    	Robot.currentTeleOpDriveMode = true;
     }
     
     protected void execute() {

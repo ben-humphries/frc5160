@@ -11,6 +11,7 @@ public class CMDTeleOpTankDrive extends Command {
 
     public CMDTeleOpTankDrive() {
         requires(Robot.BASE);
+        Robot.currentTeleOpDriveMode = false;
     }
 
     protected void execute() {

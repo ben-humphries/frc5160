@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
+import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
@@ -32,6 +34,8 @@ public class Robot extends IterativeRobot {
 	
 	public static OI oi;
 	
+	public static boolean currentTeleOpDriveMode = true;
+	
 
     Command autonomousCommand;
     SendableChooser chooser;
@@ -47,7 +51,8 @@ public class Robot extends IterativeRobot {
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
         
-        SmartDashboard.putString("Current Drive Mode: ", oi.currentTeleOpDriveMode ? "Mecanum" : "Tank");
+        SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
+        
     }
 	
 	/**
@@ -110,6 +115,9 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        
+        SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
+
     }
     
     /**

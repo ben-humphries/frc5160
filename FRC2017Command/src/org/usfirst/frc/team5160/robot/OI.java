@@ -52,8 +52,7 @@ public class OI {
 	Button shootButton = new JoystickButton(joystick, 0),
 		   intakeButton = new JoystickButton(joystick, 1),
 		   gearButton = new JoystickButton(joystick, 2),
-		   climberButton = new JoystickButton(joystick, 3),
-		   toggleDriveModeButton = new JoystickButton(tankJoystick, 0);
+		   climberButton = new JoystickButton(joystick, 3);
 	
 	public OI(){
 		
@@ -61,9 +60,7 @@ public class OI {
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		gearButton.whileHeld(new CMDPushGear(0.5));
 		climberButton.whileHeld(new CMDClimb(1.0));
-		
-		//If current drive mode is mecanum, switch to tank and vice versa.
-		toggleDriveModeButton.whenPressed( currentTeleOpDriveMode ? (new CMDTeleOpMecanumDrive()) : (new CMDTeleOpMecanumDrive()));
+
 		
 	}
 	

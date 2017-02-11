@@ -67,6 +67,9 @@ public class Base extends Subsystem {
     }
     public void tankDrive(double leftValue, double rightValue){
     	
+		frontRight.setInverted(false);
+		backRight.setInverted(false);
+    	
     	//Tank drive
     	driveBase.tankDrive(leftValue, rightValue);
     }
