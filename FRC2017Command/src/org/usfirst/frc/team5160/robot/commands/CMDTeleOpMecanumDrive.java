@@ -22,5 +22,11 @@ public class CMDTeleOpMecanumDrive extends Command {
     protected boolean isFinished() {
         return false; //never finishes
     }
+    protected void end(){
+    	Robot.BASE.stopMotors();
+    }
+    protected void interrupted(){
+    	end();
+    }
 
 }

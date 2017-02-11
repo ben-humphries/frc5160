@@ -62,8 +62,19 @@ public class Base extends Subsystem {
     }
     public void mecanumDrive(double x, double y, double rotation){
     	
-    	//Cartesian mecanum drive
+    	//Cartesian mecanum drive, with respect to the gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+    }
+    public void tankDrive(double leftValue, double rightValue){
+    	
+    	//Tank drive
+    	driveBase.tankDrive(leftValue, rightValue);
+    }
+    public void stopMotors(){
+    	frontLeft.set(0);
+    	frontRight.set(0);
+    	backLeft.set(0);
+    	backRight.set(0);
     }
     public ADXRS450_Gyro getGyro(){
     	return gyro;

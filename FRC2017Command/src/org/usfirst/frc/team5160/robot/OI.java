@@ -1,14 +1,15 @@
 package org.usfirst.frc.team5160.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
-import org.usfirst.frc.team5160.robot.commands.ExampleCommand;
 import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
 import org.usfirst.frc.team5160.robot.commands.CMDPushGear;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
+import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -42,12 +43,17 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
+	//current drive mode: true is mecanum, false is tank
+	boolean currentTeleOpDriveMode = true;
+	
 	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
+	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	Button shootButton = new JoystickButton(joystick, 0),
 		   intakeButton = new JoystickButton(joystick, 1),
 		   gearButton = new JoystickButton(joystick, 2),
-		   climberButton = new JoystickButton(joystick, 3);
+		   climberButton = new JoystickButton(joystick, 3),
+		   toggleDriveModeButton = new JoystickButton(tankJoystick, 0);
 	
 	public OI(){
 		
@@ -55,6 +61,9 @@ public class OI {
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		gearButton.whileHeld(new CMDPushGear(0.5));
 		climberButton.whileHeld(new CMDClimb(1.0));
+		
+		//If current drive mode is mecanum, switch to tank and vice versa.
+		toggleDriveModeButton.whenPressed( currentTeleOpDriveMode ? (new CMDTeleOpMecanumDrive()) : (new CMDTeleOpMecanumDrive()));
 		
 	}
 	
@@ -79,6 +88,11 @@ public class OI {
 		}
 		return 0;
 	}
+	
+	public double getTankJoystickY(){
+		return tankJoystick.getY()*tankJoystick.getY() * Math.signum(tankJoystick.getY());
+	}
+
 	
 	
 	

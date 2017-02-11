@@ -5,10 +5,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc.team5160.robot.commands.ExampleCommand;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
-import org.usfirst.frc.team5160.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5160.robot.subsystems.IntakeMechanism;
 import org.usfirst.frc.team5160.robot.subsystems.Shooter;
@@ -25,7 +23,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	
 	public static final Base BASE = new Base();
 	public static final Climber CLIMBER = new Climber();
@@ -46,7 +43,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new ExampleCommand());
+        //chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
     }
