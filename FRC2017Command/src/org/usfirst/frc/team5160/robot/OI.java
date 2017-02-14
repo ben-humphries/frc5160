@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
+import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
 import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
 import org.usfirst.frc.team5160.robot.commands.CMDPushGear;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
@@ -49,17 +50,28 @@ public class OI {
 	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
+	//Drive joystick
 	Button shootButton = new JoystickButton(joystick, 0),
 		   intakeButton = new JoystickButton(joystick, 1),
-		   gearButton = new JoystickButton(joystick, 2),
-		   climberButton = new JoystickButton(joystick, 3);
+		   gearButton = new JoystickButton(joystick, 2);
+		   
+	
+	//Tank joystick
+	Button climbUpButton = new JoystickButton(tankJoystick, 3),
+		   climbDownButton = new JoystickButton(tankJoystick, 2),
+		   climbForwardButton = new JoystickButton(tankJoystick, 4),
+		   climbBackwardButton = new JoystickButton(tankJoystick, 5);
 	
 	public OI(){
 		
 		shootButton.whileHeld(new CMDShoot(1.0));
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		gearButton.whileHeld(new CMDPushGear(0.5));
-		climberButton.whileHeld(new CMDClimb(1.0));
+		
+		climbUpButton.whileHeld(new CMDClimb(1.0));
+		climbDownButton.whileHeld(new CMDClimb(-1.0));
+		climbForwardButton.whileHeld(new CMDClimbTilt(1.0));
+		climbBackwardButton.whileHeld(new CMDClimbTilt(-1.0));
 
 		
 	}
@@ -81,7 +93,7 @@ public class OI {
 	}
 	public double getJoystickRotation(){
 		if(Math.abs(joystick.getTwist()) > 0.05){
-			return joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist());
+			return joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist()) / 2;
 		}
 		return 0;
 	}

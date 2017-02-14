@@ -62,6 +62,9 @@ public class Base extends Subsystem {
     }
     public void mecanumDrive(double x, double y, double rotation){
     	
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
+    	
     	//Cartesian mecanum drive, with respect to the gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
@@ -69,6 +72,9 @@ public class Base extends Subsystem {
     	
 		frontRight.setInverted(false);
 		backRight.setInverted(false);
+		
+		frontLeft.setInverted(true);
+		backLeft.setInverted(true);
     	
     	//Tank drive
     	driveBase.tankDrive(leftValue, rightValue);

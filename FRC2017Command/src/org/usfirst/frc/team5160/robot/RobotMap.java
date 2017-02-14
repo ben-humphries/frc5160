@@ -24,17 +24,18 @@ public class RobotMap {
 	public static int FRONT_RIGHT_CIM = 3;
 	public static int BACK_RIGHT_CIM = 1;
 	
-	public static int SHOOTER_775_1 = 5;
-	public static int SHOOTER_775_2 = 6;
+	public static int SHOOTER_775_1 = 10;
+	public static int SHOOTER_775_2 = 11;
 	
-	public static int INTAKE_BAG_1 = 7;
+	public static int INTAKE_BAG_1 = 12;
 	public static int INTAKE_BAG_2 = 8;
 	
 	public static int GEAR_CIM = 9;
 	
-	public static int CLIMBER_775_1 = 10;
-	public static int CLIMBER_775_2 = 11;
-	public static int CLIMBER_SWITCH = 12;
+	public static int CLIMBER_775_1 = 5;
+	public static int CLIMBER_775_2 = 6;
+	public static int CLIMBER_CIM = 7;
+	public static int CLIMBER_SWITCH = 13;
 	
 	//Declare joystick port number
 	public static int JOYSTICK = 0;
