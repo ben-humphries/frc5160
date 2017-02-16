@@ -25,7 +25,7 @@ public class CMDClimb extends Command {
     	if(Robot.CLIMBER.getSwitch()){
     		return false;
     	}
-        return true;
+        return false; //change to true if limit switch is added
     }
 
     protected void end() {

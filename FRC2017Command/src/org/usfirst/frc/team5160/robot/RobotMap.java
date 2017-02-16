@@ -37,6 +37,8 @@ public class RobotMap {
 	public static int CLIMBER_CIM = 7;
 	public static int CLIMBER_SWITCH = 13;
 	
+	public static int CAMERA_CLIMB = 1;
+	
 	//Declare joystick port number
 	public static int JOYSTICK = 0;
 	
