@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team5160.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -55,7 +56,13 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
         
-        CameraServer.getInstance().startAutomaticCapture("cam1", 1);
+        UsbCamera camera1 = new UsbCamera("cam1", 1);
+        UsbCamera camera2 = new UsbCamera("cam2", 2);
+        
+        
+        CameraServer.getInstance().startAutomaticCapture(camera1);
+        CameraServer.getInstance().startAutomaticCapture(camera2);
+        
         
     }
 	
