@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team5160.robot;
 
+import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -54,7 +55,7 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
         
-        CameraServer.getInstance().startAutomaticCapture("Climber Camera", RobotMap.CAMERA_CLIMB);
+        CameraServer.getInstance().startAutomaticCapture("cam1", 1);
         
     }
 	
