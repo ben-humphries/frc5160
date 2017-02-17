@@ -27,8 +27,8 @@ public class RobotMap {
 	public static int SHOOTER_775_1 = 10;
 	public static int SHOOTER_775_2 = 11;
 	
-	public static int INTAKE_BAG_1 = 1;
-	public static int INTAKE_BAG_2 = 2;
+	public static int INTAKE_BAG_1 = 0;
+	public static int INTAKE_BAG_2 = 1;
 	
 	public static int GEAR_CIM = 9;
 	
