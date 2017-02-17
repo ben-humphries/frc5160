@@ -42,9 +42,11 @@ public class Robot extends IterativeRobot {
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
 	
+	UsbCamera camera0;
 	UsbCamera camera1;
 	UsbCamera camera2;
-	UsbCamera camera3;
+	
+	UsbCamera[] cameras;
 	
 
     Command autonomousCommand;
@@ -63,12 +65,14 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
         
-        camera1 = new UsbCamera("cam0", 0);
-        camera2 = new UsbCamera("cam1", 1);
-        camera3 = new UsbCamera("cam2", 2);
+        camera0 = new UsbCamera("cam0", 0);
+        camera1 = new UsbCamera("cam1", 1);
+        camera2 = new UsbCamera("cam2", 2);
+        
+        cameras = new UsbCamera[]{camera0, camera1, camera2};
        
         //
-        //CameraServer.getInstance().startAutomaticCapture(camera2);
+        CameraServer.getInstance().startAutomaticCapture(camera0);
         
         
         
@@ -139,8 +143,8 @@ public class Robot extends IterativeRobot {
         
         
         if(switchCamera){
-        	CameraServer.getInstance().removeCamera("cam" + (currentCamera-1));
-        	CameraServer.getInstance().startAutomaticCapture("cam" + currentCamera, currentCamera);
+        	
+        	CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
         	
         	switchCamera = false;
         }
