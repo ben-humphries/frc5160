@@ -22,9 +22,9 @@ public class VisionManager {
 		//System.loadLibrary("opencv_ffmpeg300_64");
 		
 		//Initialize Network Tables
-		NetworkTable.setClientMode();
-		NetworkTable.setIPAddress("localhost");
-		piTable = NetworkTable.getTable("rpi");
+//		NetworkTable.setClientMode();
+//		NetworkTable.setIPAddress("localhost");
+//		piTable = NetworkTable.getTable("rpi");
 		
 		//Initialize Vision processing
 		boilerProcessor = new VisionProcessorBoiler(boilerCamId);

@@ -47,6 +47,15 @@ public class Base extends Subsystem {
 		frontRight.setVoltageRampRate(24.0);
 		backRight.setVoltageRampRate(24.0);
 		
+		//Initialize for autonomous
+		frontLeft.configNominalOutputVoltage(-0f, 0f);
+		frontRight.configNominalOutputVoltage(-0f, 0f);
+		backLeft.configNominalOutputVoltage(-0f, 0f);
+		backRight.configNominalOutputVoltage(-0f, 0f);
+		frontLeft.configPeakOutputVoltage(-12, 12);
+		frontRight.configPeakOutputVoltage(-12, 12);
+		backLeft.configPeakOutputVoltage(-12, 12);
+		backRight.configPeakOutputVoltage(-12, 12);
 		//Init base
 		driveBase = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 		

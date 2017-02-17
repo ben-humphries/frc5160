@@ -44,7 +44,6 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
 		if(top[0]!=null && top[1]!=null){
 			computeDistanceGear(top[0], top[1]);
-			
 		}
 		
 		for (MatOfPoint p : contours){
@@ -54,7 +53,8 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		
 		return drawnContours;
 	}
-	public void computeDistanceGear(MatOfPoint topContour, MatOfPoint bottomContour){
+	
+	public double computeDistanceGear(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
 		Rect topBound = Imgproc.boundingRect(topContour);
 		
@@ -64,6 +64,6 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		double deltaDegTargets = deltaPxTargets*cameraFOVAngle/resizeY;
 		
 		
-		System.out.println(deltaDegTargets+",   "+deltaPxTargets+",   "+4.0/Math.tan(Math.toRadians(deltaDegTargets/2)));
+		return 4.0/Math.tan(Math.toRadians(deltaDegTargets/2));
 	}
 }

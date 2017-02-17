@@ -44,7 +44,6 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
 		if(top[0]!=null && top[1]!=null){
 			computeDistanceBoiler(top[0], top[1]);
-			
 		}
 		
 		for (MatOfPoint p : contours){

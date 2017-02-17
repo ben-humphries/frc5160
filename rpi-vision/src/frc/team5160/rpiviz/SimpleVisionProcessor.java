@@ -20,17 +20,17 @@ public class SimpleVisionProcessor {
 	
 	protected VideoCapture camera;
 	
-	protected Mat image = new Mat(), medianBlur = new Mat(), resized = new Mat(), 
+	protected Mat image = new Mat(), resized = new Mat(), 
 			greenOnly = new Mat(), redOnly = new Mat(), blueOnly = new Mat(),	
 			greenChannelThreshold = new Mat(),  sum = new Mat(); 
 	
 	public SimpleVisionProcessor(int cameraId){
-		camera = new VideoCapture(1);
+		camera = new VideoCapture(cameraId);
 		camera.set(Videoio.CAP_PROP_EXPOSURE, -10);		
 	}
 	
 	public void resize(){
-		Imgproc.resize(medianBlur, resized, new Size(resizeX,resizeY));
+		Imgproc.resize(image, resized, new Size(resizeX,resizeY));
 	}
 	public void extractChannels(){
 		Core.extractChannel(resized, redOnly, 2);
