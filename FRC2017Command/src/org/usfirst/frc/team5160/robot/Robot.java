@@ -38,6 +38,12 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	
 	public static boolean currentTeleOpDriveMode = true;
+	public static int currentCamera = 0;
+	public static boolean switchCamera = false;
+	
+	UsbCamera camera1;
+	UsbCamera camera2;
+	UsbCamera camera3;
 	
 
     Command autonomousCommand;
@@ -56,8 +62,9 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
         
-        //UsbCamera camera1 = new UsbCamera("cam1", 0);
-        //UsbCamera camera2 = new UsbCamera("cam2", 1);
+        camera1 = new UsbCamera("cam1", 0);
+        camera2 = new UsbCamera("cam2", 1);
+        camera3 = new UsbCamera("cam3", 2);
         
         
         //CameraServer.getInstance().startAutomaticCapture(camera1);
@@ -129,12 +136,13 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
         
-        UsbCamera camera1 = new UsbCamera("cam1", 0);
-        //UsbCamera camera2 = new UsbCamera("cam2", 1);
         
-        
-        CameraServer.getInstance().startAutomaticCapture(camera1);
-        //CameraServer.getInstance().startAutomaticCapture(camera2);
+        if(switchCamera){
+        	CameraServer.getInstance().removeCamera("cam" + currentCamera);
+        	CameraServer.getInstance().startAutomaticCapture("cam" + currentCamera+1, currentCamera);
+        	
+        	switchCamera = false;
+        }
 
     }
     

@@ -11,6 +11,7 @@ import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
 import org.usfirst.frc.team5160.robot.commands.CMDPushGear;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
+import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -53,7 +54,9 @@ public class OI {
 	//Drive joystick
 	Button shootButton = new JoystickButton(joystick, 0),
 		   intakeButton = new JoystickButton(joystick, 1),
-		   gearButton = new JoystickButton(joystick, 2);
+		   gearButton = new JoystickButton(joystick, 2),
+		   cameraButton = new JoystickButton(joystick, 3);
+	
 		   
 	
 	//Tank joystick
@@ -72,6 +75,8 @@ public class OI {
 		climbDownButton.whileHeld(new CMDClimb(-1 * getTankJoystickZ()));
 		climbForwardButton.whileHeld(new CMDClimbTilt(getTankJoystickZ()));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-1 * getTankJoystickZ()));
+		
+		cameraButton.whenPressed(new CMDToggleCamera());
 
 		
 	}
