@@ -115,7 +115,7 @@ public class Base extends Subsystem {
     	System.out.println("Ensured position");
     	ensureMotorMode(frontLeft, TalonControlMode.Position);
     	ensureMotorMode(frontRight, TalonControlMode.Position);
-    	ensureMotorMode(backLeft, TalonControlMode.Follower);
+    	ensureMotorMode(backLeft, TalonControlMode.Follower); 
     	ensureMotorMode(backRight, TalonControlMode.Follower);
     	backLeft.set(frontLeft.getDeviceID());
     	backRight.set(frontRight.getDeviceID());
