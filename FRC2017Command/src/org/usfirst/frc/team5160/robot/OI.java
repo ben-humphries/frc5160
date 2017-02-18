@@ -52,7 +52,7 @@ public class OI {
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
-	Button shootButton = new JoystickButton(joystick, 0),
+	Button shootButton = new JoystickButton(joystick, 10),
 		   intakeButton = new JoystickButton(joystick, 1),
 		   gearButton = new JoystickButton(joystick, 2),
 		   cameraButton = new JoystickButton(joystick, 3);
@@ -61,7 +61,7 @@ public class OI {
 	
 	//Tank joystick
 	Button climbUpButton = new JoystickButton(tankJoystick, 3),
-		   climbDownButton = new JoystickButton(tankJoystick, 2),
+		   //climbDownButton = new JoystickButton(tankJoystick, 2),
 		   climbForwardButton = new JoystickButton(tankJoystick, 4),
 		   climbBackwardButton = new JoystickButton(tankJoystick, 5);
 	
@@ -72,7 +72,7 @@ public class OI {
 		gearButton.whileHeld(new CMDPushGear(0.5));
 		
 		climbUpButton.whileHeld(new CMDClimb(getTankJoystickZ()));
-		climbDownButton.whileHeld(new CMDClimb(-1 * getTankJoystickZ()));
+		//climbDownButton.whileHeld(new CMDClimb(-1 * getTankJoystickZ()));
 		climbForwardButton.whileHeld(new CMDClimbTilt(getTankJoystickZ()));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-1 * getTankJoystickZ()));
 		

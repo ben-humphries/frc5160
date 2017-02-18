@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
         cameras = new UsbCamera[]{camera0, camera1, camera2};
        
         //
-        CameraServer.getInstance().startAutomaticCapture(camera0);
+        //CameraServer.getInstance().startAutomaticCapture(camera0);
         
         
         
@@ -145,7 +145,7 @@ public class Robot extends IterativeRobot {
         
         if(switchCamera){
         	
-        	CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
+        	//CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
         	
         	switchCamera = false;
         }
