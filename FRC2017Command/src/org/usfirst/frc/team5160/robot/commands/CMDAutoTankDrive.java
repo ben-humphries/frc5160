@@ -18,6 +18,10 @@ public class CMDAutoTankDrive extends Command{
 	protected void initialize(){
 		Robot.BASE.positionTankDriveExecute();
 	}
+	@Override 
+	protected void execute(){
+		Robot.BASE.positionTankDriveExecute();
+	}
 	@Override
 	protected boolean isFinished() {
 		return Robot.BASE.positionTankDriveReached();

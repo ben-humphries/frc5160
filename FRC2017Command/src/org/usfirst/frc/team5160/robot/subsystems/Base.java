@@ -111,6 +111,7 @@ public class Base extends Subsystem {
 		}
     }
     private void ensurePositionTank(){
+    	System.out.println("Ensured position");
     	ensureMotorMode(frontLeft, TalonControlMode.Position);
     	ensureMotorMode(frontRight, TalonControlMode.Position);
     	ensureMotorMode(backLeft, TalonControlMode.Follower);
