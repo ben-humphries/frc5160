@@ -52,7 +52,7 @@ public class OI {
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
-	Button shootButton = new JoystickButton(joystick, 0),
+	Button shootButton = new JoystickButton(joystick, 10),
 		   intakeButton = new JoystickButton(joystick, 1),
 		   gearButton = new JoystickButton(joystick, 2),
 		   cameraButton = new JoystickButton(joystick, 3);
