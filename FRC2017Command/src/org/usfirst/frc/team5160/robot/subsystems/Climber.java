@@ -35,7 +35,7 @@ public class Climber extends Subsystem {
     }
     
     public void climb(double speed){
-    	motor1.set(speed);
+    	motor1.set(-speed);
     	motor2.set(speed);
     }
     public void stopMotors(){
