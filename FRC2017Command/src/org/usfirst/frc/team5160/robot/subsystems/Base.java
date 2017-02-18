@@ -118,7 +118,12 @@ public class Base extends Subsystem {
     	backLeft.set(frontLeft.getDeviceID());
     	backRight.set(frontRight.getDeviceID());
     }
-    
+    private void ensureMechanumTeleOp(){
+    	ensureMotorMode(frontLeft, TalonControlMode.PercentVbus);
+    	ensureMotorMode(frontRight, TalonControlMode.PercentVbus);
+    	ensureMotorMode(backLeft, TalonControlMode.PercentVbus);
+    	ensureMotorMode(backRight, TalonControlMode.PercentVbus);
+    }
     
     public void positionTankDriveSet(double dLeft, double dRight){
     	ensurePositionTank();
