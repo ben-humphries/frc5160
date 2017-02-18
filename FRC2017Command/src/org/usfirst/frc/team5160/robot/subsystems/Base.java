@@ -77,6 +77,14 @@ public class Base extends Subsystem {
     	//Cartesian mecanum drive, with respect to the gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, 0);
     }
+    public void mecanumDriveField(double x, double y, double rotation){
+    	ensureMechanumTeleOp();
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
+    	
+    	//Cartesian mecanum drive, with respect to the gyro angle
+    	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+    }
     public void tankDrive(double leftValue, double rightValue){
     	
 		frontRight.setInverted(false);
@@ -117,8 +125,8 @@ public class Base extends Subsystem {
     	ensureMotorMode(frontRight, TalonControlMode.Position);
     	ensureMotorMode(backLeft, TalonControlMode.Follower); 
     	ensureMotorMode(backRight, TalonControlMode.Follower);
-    	backLeft.set(frontLeft.getDeviceID());
-    	backRight.set(frontRight.getDeviceID());
+    	backLeft.set(RobotMap.FRONT_LEFT_CIM);
+    	backRight.set(RobotMap.FRONT_RIGHT_CIM);
     }
     private void ensureMechanumTeleOp(){
     	ensureMotorMode(frontLeft, TalonControlMode.PercentVbus);
@@ -135,6 +143,7 @@ public class Base extends Subsystem {
     	zeroRightPos = frontRight.getPosition();
     }
     public void positionTankDriveExecute(){
+    	System.out.println(frontLeft.getPosition()+", "+frontRight.getPosition());
     	if(!positionTankDriveReached()){
     		frontLeft.set(targetLeftPos+zeroLeftPos);
     		frontRight.set(targetRightPos+zeroRightPos);
@@ -146,6 +155,12 @@ public class Base extends Subsystem {
     		return true;
     	}
     	return false;
+    }
+    public static double inchToEncoderTick(double inches){
+    	return 0.1*inches;
+    }
+    public static double feetToEncoderTick(double feet){
+    	return inchToEncoderTick(12*feet);
     }
 }
 

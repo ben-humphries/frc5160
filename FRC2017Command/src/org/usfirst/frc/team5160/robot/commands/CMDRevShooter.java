@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *Shoot while button is held.
  */
-public class CMDShoot extends Command {
+public class CMDRevShooter extends Command {
 	
 	double speed;
 
-    public CMDShoot(double speed) {
+    public CMDRevShooter(double speed) {
         requires(Robot.SHOOTER);
-        requires(Robot.INTAKE_MECHANISM);
+        
         this.speed = speed;
     }
     @Override
