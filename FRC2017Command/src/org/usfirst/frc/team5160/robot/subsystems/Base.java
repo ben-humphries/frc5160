@@ -70,7 +70,7 @@ public class Base extends Subsystem {
     	
     }
     public void mecanumDrive(double x, double y, double rotation){
-    	
+    	ensureMechanumTeleOp();
     	frontLeft.setInverted(false);
     	backLeft.setInverted(false);
     	
@@ -104,6 +104,7 @@ public class Base extends Subsystem {
     	motor.configPeakOutputVoltage(-12, 12);
     	ensureMotorMode(motor, TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+    	motor.setPID(6, 10, 20);
     }
     private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
     	if (motor.getControlMode() != neededMode) {
