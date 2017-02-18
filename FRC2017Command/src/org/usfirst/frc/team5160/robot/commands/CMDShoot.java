@@ -16,17 +16,19 @@ public class CMDShoot extends Command {
         
         this.speed = speed;
     }
-
+    @Override
     protected void execute() {
     	Robot.SHOOTER.shoot(speed);
     }
-
+    @Override
     protected boolean isFinished() {
         return false;
     }
+    @Override
     protected void end(){
     	Robot.SHOOTER.stopMotors();
     }
+    @Override
     protected void interrupted(){
     	end();
     }

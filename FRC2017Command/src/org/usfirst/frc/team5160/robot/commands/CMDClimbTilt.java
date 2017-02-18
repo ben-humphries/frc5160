@@ -16,22 +16,22 @@ public class CMDClimbTilt extends Command {
         
         this.speed = speed;
     }
-
+    @Override
     protected void initialize() {
     }
-
+    @Override
     protected void execute() {
     	Robot.CLIMBER.tilt(speed);
     }
-
+    @Override
     protected boolean isFinished() {
         return false;
     }
-
+    @Override
     protected void end() {
     	Robot.CLIMBER.stopMotors();
     }
-    
+    @Override
     protected void interrupted() {
     	end();
     }

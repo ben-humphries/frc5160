@@ -16,15 +16,15 @@ public class CMDIntakeIn extends Command {
         
         this.speed = speed;
     }
-
+    @Override
     protected void execute() {
     	Robot.INTAKE_MECHANISM.intake(speed);
     }
-
+    @Override
     protected boolean isFinished() {
         return false;
     }
-
+    @Override
     protected void end() {
     	Robot.INTAKE_MECHANISM.stopMotors();
     }

@@ -2,10 +2,14 @@ package org.usfirst.frc.team5160.robot.subsystems;
 
 import org.usfirst.frc.team5160.robot.RobotMap;
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
+
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -30,6 +34,12 @@ public class Base extends Subsystem {
 	//Declare gyro
 	private ADXRS450_Gyro gyro;
 	
+	//Positions for auto drive
+	private double targetLeftPos; 
+	private double targetRightPos; 
+	private double zeroLeftPos;
+	private double zeroRightPos;
+	
 	public Base(){
 		
 		//Init motors
@@ -41,21 +51,11 @@ public class Base extends Subsystem {
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
 		
-		//Sets ramp rate for each motor. Gradually changes speed resulting in less jerkiness.
-		frontLeft.setVoltageRampRate(24.0);
-		backLeft.setVoltageRampRate(24.0);
-		frontRight.setVoltageRampRate(24.0);
-		backRight.setVoltageRampRate(24.0);
-		
-		//Initialize for autonomous
-		frontLeft.configNominalOutputVoltage(-0f, 0f);
-		frontRight.configNominalOutputVoltage(-0f, 0f);
-		backLeft.configNominalOutputVoltage(-0f, 0f);
-		backRight.configNominalOutputVoltage(-0f, 0f);
-		frontLeft.configPeakOutputVoltage(-12, 12);
-		frontRight.configPeakOutputVoltage(-12, 12);
-		backLeft.configPeakOutputVoltage(-12, 12);
-		backRight.configPeakOutputVoltage(-12, 12);
+		//Call init on all motors
+		initMotor(backLeft);
+		initMotor(backRight);
+		initMotor(frontLeft);
+		initMotor(frontRight);
 		//Init base
 		driveBase = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 		
@@ -75,7 +75,7 @@ public class Base extends Subsystem {
     	backLeft.setInverted(false);
     	
     	//Cartesian mecanum drive, with respect to the gyro angle
-    	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+    	driveBase.mecanumDrive_Cartesian(x, y, rotation, 0);
     }
     public void tankDrive(double leftValue, double rightValue){
     	
@@ -96,6 +96,49 @@ public class Base extends Subsystem {
     }
     public ADXRS450_Gyro getGyro(){
     	return gyro;
+    }
+    //Code for initializing the motors at init
+    private void initMotor(CANTalon motor){
+    	motor.setVoltageRampRate(24.0);
+    	motor.configNominalOutputVoltage(-0f, 0f);
+    	motor.configPeakOutputVoltage(-12, 12);
+    	ensureMotorMode(motor, TalonControlMode.PercentVbus);
+    	motor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+    }
+    private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
+    	if (motor.getControlMode() != neededMode) {
+			motor.changeControlMode(neededMode);
+		}
+    }
+    private void ensurePositionTank(){
+    	ensureMotorMode(frontLeft, TalonControlMode.Position);
+    	ensureMotorMode(frontRight, TalonControlMode.Position);
+    	ensureMotorMode(backLeft, TalonControlMode.Follower);
+    	ensureMotorMode(backRight, TalonControlMode.Follower);
+    	backLeft.set(frontLeft.getDeviceID());
+    	backRight.set(frontRight.getDeviceID());
+    }
+    
+    
+    public void positionTankDriveSet(double dLeft, double dRight){
+    	ensurePositionTank();
+    	targetLeftPos = dLeft;
+    	targetRightPos = dRight;
+    	zeroLeftPos = frontLeft.getPosition();
+    	zeroRightPos = frontRight.getPosition();
+    }
+    public void positionTankDriveExecute(){
+    	if(!positionTankDriveReached()){
+    		frontLeft.set(targetLeftPos+zeroLeftPos);
+    		frontRight.set(targetRightPos+zeroRightPos);
+    	}
+
+    }
+    public boolean positionTankDriveReached(){
+    	if((frontLeft.getPosition() - targetLeftPos) >= 0 && (frontRight.getPosition() - targetRightPos) >= 0 ){
+    		return true;
+    	}
+    	return false;
     }
 }
 

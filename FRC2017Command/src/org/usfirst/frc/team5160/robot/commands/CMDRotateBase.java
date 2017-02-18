@@ -31,7 +31,7 @@ public class CMDRotateBase extends Command {
     	
     	this.gyro = Robot.BASE.getGyro();
     }
-
+    @Override
     protected void execute() {
     		
 		double startAngle = gyro.getAngle();
@@ -51,6 +51,7 @@ public class CMDRotateBase extends Command {
     		
     	
     }
+    @Override
     protected boolean isFinished() {
     	
         if(angleReached){
@@ -58,9 +59,11 @@ public class CMDRotateBase extends Command {
         }
         return false;
     }
+    @Override
     protected void end(){
     	
     }
+    @Override
     protected void interrupted(){
     	end();
     }
