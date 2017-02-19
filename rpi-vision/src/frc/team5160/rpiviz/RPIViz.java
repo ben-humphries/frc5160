@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  */
 public class RPIViz {
 	public static void main(String[] args){
-		
+		guize();
 	}
 	public static void guize(){
 		VizGui gui =  new VizGui();

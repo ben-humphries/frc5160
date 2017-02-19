@@ -40,7 +40,9 @@ public class VizGui extends JPanel implements KeyListener{
 		 if(this.isVisible() == false){
 			 return;
 		 }
-		 g.drawImage(ImageOps.toBufferedImage(vision.gearProcessor.process()),0,0,400,400,this);
+		 vision.gearProcessor.draw = true;
+		 vision.gearProcessor.process();
+		 g.drawImage(ImageOps.toBufferedImage(vision.gearProcessor.drawnContours),0,0,400,400,this);
 	//	 g.drawImage(ImageOps.toBufferedImage(vision.process(images.get(index))),0,0,400,400,this);
 		 g.drawImage(ImageOps.toBufferedImage(vision.gearProcessor.sum),0,400,400,400,this);
 		 g.drawImage(ImageOps.toBufferedImage(vision.gearProcessor.image),400,0,400,400,this);

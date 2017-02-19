@@ -1,4 +1,4 @@
-package frc.team5160.rpiviz;
+package org.usfirst.frc.team5160.robot.vision;
 
 import java.awt.image.ImageProducer;
 import java.util.ArrayList;
@@ -64,6 +64,7 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		double top = topBound.tl().x;
 		double bottom = bottomBound.tl().x;
 		double av = (top+bottom)/2.0;
+		System.out.println(top);
 		return (av-resizeX/2.0)*pxToDeg;
 	}
 	public double computeDistanceGear(MatOfPoint topContour, MatOfPoint bottomContour){
@@ -75,7 +76,7 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		double deltaPxTargets = bottom-top;
 		double deltaDegTargets = deltaPxTargets*pxToDeg;
 		
-		
+		System.out.println(top);
 		return 12/Math.tan(Math.toRadians(deltaDegTargets/2));
 	}
 }

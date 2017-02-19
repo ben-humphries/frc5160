@@ -19,6 +19,7 @@ import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5160.robot.subsystems.IntakeMechanism;
 import org.usfirst.frc.team5160.robot.subsystems.Shooter;
+import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -63,6 +64,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		visionTable = NetworkTable.getTable("vision");
         chooser = new SendableChooser();
+        VisionManager.GetInstance();
         chooser.addDefault("Default Auto", new BoilerSideAuto());
         chooser.addObject("My Auto", new MiddleAuto());
         SmartDashboard.putData("Auto mode", chooser);
@@ -72,7 +74,6 @@ public class Robot extends IterativeRobot {
         camera0 = new UsbCamera("cam0", 0);
         camera1 = new UsbCamera("cam1", 1);
         camera2 = new UsbCamera("cam2", 2);
-        
         cameras = new UsbCamera[]{camera0, camera1, camera2};
        
         //
@@ -141,6 +142,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	VisionManager.GetInstance().gearProcessor.process();
         Scheduler.getInstance().run();
         
         SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");

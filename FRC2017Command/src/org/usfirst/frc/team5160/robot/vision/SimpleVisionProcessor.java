@@ -1,4 +1,4 @@
-package frc.team5160.rpiviz;
+package org.usfirst.frc.team5160.robot.vision;
 
 import java.util.ArrayList;
 
@@ -13,8 +13,8 @@ import org.opencv.videoio.Videoio;
 public class SimpleVisionProcessor {
 	
 	
-	protected final int	resizeX = 400, 
-			resizeY = 300,
+	protected final int	resizeX = 160, 
+			resizeY = 120,
 			cameraFOVAngle = 40,
 			cameraPitchAngle = 0;
 	protected final double pxToDeg = (double)cameraFOVAngle/(double)resizeX;

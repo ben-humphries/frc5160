@@ -1,4 +1,4 @@
-package frc.team5160.rpiviz;
+package org.usfirst.frc.team5160.robot.vision;
 
 import java.awt.image.ImageProducer;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
-public class VisionProcessorGear extends SimpleVisionProcessor{
+public class VisionProcessorBoiler extends SimpleVisionProcessor{
 	
-	Mat drawnContours; 
-	boolean draw = false;
-	public VisionProcessorGear(int cameraId) {
+	public Mat drawnContours; 
+	public boolean draw = false;
+	public VisionProcessorBoiler(int cameraId) {
 		super(cameraId);
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
@@ -45,11 +45,7 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		
 		
 		if(top[0]!=null && top[1]!=null){
-			computeDistanceGear(top[0], top[1]);
-			computeDeltaAngle(top[0], top[1]);
-		}
-		else{
-			
+			computeDistanceBoiler(top[0], top[1]);
 		}
 		
 		for (MatOfPoint p : contours){
@@ -58,24 +54,16 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		contours.clear();
 		
 	}
-	public double computeDeltaAngle(MatOfPoint topContour, MatOfPoint bottomContour){
-		Rect bottomBound = Imgproc.boundingRect(bottomContour);
-		Rect topBound = Imgproc.boundingRect(topContour);
-		double top = topBound.tl().x;
-		double bottom = bottomBound.tl().x;
-		double av = (top+bottom)/2.0;
-		return (av-resizeX/2.0)*pxToDeg;
-	}
-	public double computeDistanceGear(MatOfPoint topContour, MatOfPoint bottomContour){
+	public void computeDistanceBoiler(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
 		Rect topBound = Imgproc.boundingRect(topContour);
 		
-		double top = topBound.tl().x;
-		double bottom = bottomBound.tl().x;
+		double top = topBound.tl().y;
+		double bottom = bottomBound.tl().y;
 		double deltaPxTargets = bottom-top;
-		double deltaDegTargets = deltaPxTargets*pxToDeg;
+		double deltaDegTargets = deltaPxTargets*cameraFOVAngle/resizeY;
 		
 		
-		return 12/Math.tan(Math.toRadians(deltaDegTargets/2));
+		System.out.println(deltaDegTargets+",   "+deltaPxTargets+",   "+4.0/Math.tan(Math.toRadians(deltaDegTargets/2)));
 	}
 }
