@@ -26,9 +26,10 @@ public class Shooter extends Subsystem {
     }
     
     public void shoot(double speed){
-    	motor1.set(speed);
-    	motor2.set(speed);
+    	motor1.set(-speed);
+    	motor2.set(-speed);
     }
+    //Dont use
     public void shoot(double mag1, double mag2){
     	motor1.set(mag1);
     	motor2.set(mag2);
