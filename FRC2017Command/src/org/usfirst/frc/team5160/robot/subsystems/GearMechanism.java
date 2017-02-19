@@ -18,7 +18,7 @@ public class GearMechanism extends Subsystem {
 	
 	public GearMechanism(){
 		
-		gearMotor = new CANTalon(RobotMap.GEAR_CIM);
+		//gearMotor = new CANTalon(RobotMap.GEAR_CIM);
 	}
 	
 	public void pushGear(double speed){
