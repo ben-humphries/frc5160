@@ -18,7 +18,7 @@ public class CMDAutoTankDrive extends Command{
 	}
 	@Override 
 	protected void execute(){
-		Robot.BASE.positionTankDriveExecute();
+		Robot.BASE.printEncoders();
 	}
 	@Override
 	protected boolean isFinished() {

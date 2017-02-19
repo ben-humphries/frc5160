@@ -66,7 +66,7 @@ public class Robot extends IterativeRobot {
         chooser = new SendableChooser();
         VisionManager.GetInstance();
         chooser.addDefault("Default Auto", new BoilerSideAuto());
-        chooser.addObject("My Auto", new MiddleAuto());
+        chooser.addObject("My Auto", new BoilerSideAuto());
         SmartDashboard.putData("Auto mode", chooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
@@ -111,7 +111,7 @@ public class Robot extends IterativeRobot {
 		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
-			autonomousCommand = new MiddleAuto();
+			autonomousCommand = new BoilerSideAuto();
 			break;
 		case "Default Auto":
 		default:

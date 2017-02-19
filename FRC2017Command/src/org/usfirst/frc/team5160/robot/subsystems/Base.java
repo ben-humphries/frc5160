@@ -111,7 +111,7 @@ public class Base extends Subsystem {
     	motor.configNominalOutputVoltage(-0f, 0f);
     	motor.configPeakOutputVoltage(-12, 12);
     	ensureMotorMode(motor, TalonControlMode.PercentVbus);
-    	motor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+    	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	motor.setPID(6, 10, 20);
     }
     private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
@@ -157,10 +157,14 @@ public class Base extends Subsystem {
     	return false;
     }
     public static double inchToEncoderTick(double inches){
-    	return 0.1*inches;
+    	return 1*inches;
     }
     public static double feetToEncoderTick(double feet){
     	return inchToEncoderTick(12*feet);
     }
+
+	public void printEncoders() {
+		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition());
+	}
 }
 
