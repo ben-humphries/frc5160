@@ -41,6 +41,6 @@ public class RobotMap {
 	
 	//Declare joystick port number
 	public static int JOYSTICK = 0;
-	
-	public static int TANK_JOYSTICK = 2;
+	public static int TANK_JOYSTICK = 1;
+	public static int OPERATOR_JOYSTICK = 2;
 }

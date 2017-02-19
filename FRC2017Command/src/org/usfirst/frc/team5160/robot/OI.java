@@ -49,6 +49,7 @@ public class OI {
 	boolean currentTeleOpDriveMode = true;
 	
 	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
+	Joystick operatorJoystick = new Joystick(RobotMap.OPERATORJOYSTICK);
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
@@ -57,13 +58,14 @@ public class OI {
 		   gearButton = new JoystickButton(joystick, 2),
 		   cameraButton = new JoystickButton(joystick, 3);
 	
-		   
-	
 	//Tank joystick
-	Button climbUpButton = new JoystickButton(tankJoystick, 3),
-		   //climbDownButton = new JoystickButton(tankJoystick, 2),
-		   climbForwardButton = new JoystickButton(tankJoystick, 4),
-		   climbBackwardButton = new JoystickButton(tankJoystick, 5);
+	//--
+	
+	//Operator joystick
+	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
+			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
+			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
+			   climbBackwardButton = new JoystickButton(operatorJoystick, 5);
 	
 	public OI(){
 		
@@ -72,7 +74,7 @@ public class OI {
 		gearButton.whileHeld(new CMDPushGear(0.5));
 		
 		climbUpButton.whileHeld(new CMDClimb(getTankJoystickZ()));
-		//climbDownButton.whileHeld(new CMDClimb(-1 * getTankJoystickZ()));
+		//climbDownButton.whileHeld(new CMDClimb(-1 * getTankJoystickZ()));  // PLZ DON'T UNCOMMENT ME EVER :)
 		climbForwardButton.whileHeld(new CMDClimbTilt(getTankJoystickZ()));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-1 * getTankJoystickZ()));
 		
@@ -80,8 +82,6 @@ public class OI {
 
 		
 	}
-	
-	//test
 	
 	//getter methods for the squared movement
 	public double getJoystickX(){
@@ -109,9 +109,4 @@ public class OI {
 	public double getTankJoystickZ(){
 		return tankJoystick.getZ();
 	}
-
-	
-	
-	
 }
-
