@@ -10,4 +10,9 @@ public class RMath {
 		}
 		return -1;
 	}
+	public static double clamp(double min, double max, double val){
+		if(val < min) return min;
+		else if(val > max) return max;
+		return val;
+	}
 }

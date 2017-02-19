@@ -17,16 +17,23 @@ import org.opencv.videoio.Videoio;
 
 public class VisionProcessorGear extends SimpleVisionProcessor{
 	
-	Mat drawnContours; 
-	boolean draw = false;
+	public Mat drawnContours; 
+	public boolean draw = false;
+	private static final long MinElapsedMilli = 40;
+	private long lastTime = 0;
+	private double deltaAngle; 
+	private double distance;
 	public VisionProcessorGear(int cameraId) {
 		super(cameraId);
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
 	
 	public void process(){
-		camera.read(image);
-		process(image);
+		if(System.currentTimeMillis()-lastTime > MinElapsedMilli){
+			camera.read(image);
+			lastTime = MinElapsedMilli;
+			process(image);
+			}
 	}
 	public void process(Mat picture){
 		
@@ -45,8 +52,8 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		
 		
 		if(top[0]!=null && top[1]!=null){
-			computeDistanceGear(top[0], top[1]);
-			computeDeltaAngle(top[0], top[1]);
+			distance = computeDistanceGear(top[0], top[1]);
+			deltaAngle = computeDeltaAngle(top[0], top[1]);
 		}
 		else{
 			
@@ -78,5 +85,9 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		
 		System.out.println(top);
 		return 12/Math.tan(Math.toRadians(deltaDegTargets/2));
+	}
+	public double getDeltaAngle() {
+		process();
+		return deltaAngle;
 	}
 }

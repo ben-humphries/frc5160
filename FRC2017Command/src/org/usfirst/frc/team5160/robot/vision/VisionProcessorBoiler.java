@@ -19,14 +19,21 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 	
 	public Mat drawnContours; 
 	public boolean draw = false;
+	private static final long MinElapsedMilli = 40;
+	private long lastTime = 0;
+	private double deltaAngle; 
+	private double distance;
 	public VisionProcessorBoiler(int cameraId) {
 		super(cameraId);
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
 	
 	public void process(){
+		if(System.currentTimeMillis()-lastTime > MinElapsedMilli){
 		camera.read(image);
+		lastTime = MinElapsedMilli;
 		process(image);
+		}
 	}
 	public void process(Mat picture){
 		
@@ -45,7 +52,8 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		
 		
 		if(top[0]!=null && top[1]!=null){
-			computeDistanceBoiler(top[0], top[1]);
+			distance = computeDistanceBoiler(top[0], top[1]);
+			deltaAngle = computeDeltaAngle(top[0], top[1]);
 		}
 		
 		for (MatOfPoint p : contours){
@@ -54,7 +62,16 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		contours.clear();
 		
 	}
-	public void computeDistanceBoiler(MatOfPoint topContour, MatOfPoint bottomContour){
+	public double computeDeltaAngle(MatOfPoint topContour, MatOfPoint bottomContour){
+		Rect bottomBound = Imgproc.boundingRect(bottomContour);
+		Rect topBound = Imgproc.boundingRect(topContour);
+		double top = topBound.tl().x;
+		double bottom = bottomBound.tl().x;
+		double av = (top+bottom)/2.0;
+		System.out.println(top);
+		return (av-resizeX/2.0)*pxToDeg;
+	}
+	public double computeDistanceBoiler(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
 		Rect topBound = Imgproc.boundingRect(topContour);
 		
@@ -65,5 +82,11 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		
 		
 		System.out.println(deltaDegTargets+",   "+deltaPxTargets+",   "+4.0/Math.tan(Math.toRadians(deltaDegTargets/2)));
+		return 4.0/Math.tan(Math.toRadians(deltaDegTargets/2));
+	}
+
+	public double getDeltaAngle() {
+		process();
+		return deltaAngle;
 	}
 }
