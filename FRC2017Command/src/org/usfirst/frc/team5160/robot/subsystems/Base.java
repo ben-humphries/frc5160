@@ -112,7 +112,7 @@ public class Base extends Subsystem {
     	motor.configPeakOutputVoltage(-12, 12);
     	ensureMotorMode(motor, TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	motor.setPID(6, 10, 20);
+    	motor.setPID(0.2, 0.2, 0.2);
     }
     private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
     	if (motor.getControlMode() != neededMode) {
