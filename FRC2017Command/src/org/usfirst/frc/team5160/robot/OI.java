@@ -49,6 +49,7 @@ public class OI {
 	boolean currentTeleOpDriveMode = true;
 	
 	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
+	Joystick operatorJoystick = new Joystick(RobotMap.OPERATOR_JOYSTICK);
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
@@ -57,13 +58,14 @@ public class OI {
 		   gearButton = new JoystickButton(joystick, 2),
 		   cameraButton = new JoystickButton(joystick, 3);
 	
-		   
-	
 	//Tank joystick
-	Button climbUpButton = new JoystickButton(tankJoystick, 3),
-		   //climbDownButton = new JoystickButton(tankJoystick, 2),
-		   climbForwardButton = new JoystickButton(tankJoystick, 4),
-		   climbBackwardButton = new JoystickButton(tankJoystick, 5);
+	//--
+	
+	//Operator joystick
+	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
+			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
+			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
+			   climbBackwardButton = new JoystickButton(operatorJoystick, 5);
 	
 	public OI(){
 		
@@ -71,17 +73,15 @@ public class OI {
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		gearButton.whileHeld(new CMDPushGear(0.5));
 		
-		climbUpButton.whileHeld(new CMDClimb(getTankJoystickZ()));
-		//climbDownButton.whileHeld(new CMDClimb(-1 * getTankJoystickZ()));
-		climbForwardButton.whileHeld(new CMDClimbTilt(getTankJoystickZ()));
-		climbBackwardButton.whileHeld(new CMDClimbTilt(-1 * getTankJoystickZ()));
+		climbUpButton.whileHeld(new CMDClimb(getOperatorJoystickZ()));
+		//climbDownButton.whileHeld(new CMDClimb(-1 * getOperatorJoystickZ()));  // PLZ DON'T UNCOMMENT ME EVER :)
+		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
+		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
 		cameraButton.whenPressed(new CMDToggleCamera());
 
 		
 	}
-	
-	//test
 	
 	//getter methods for the squared movement
 	public double getJoystickX(){
@@ -106,12 +106,7 @@ public class OI {
 	public double getTankJoystickY(){
 		return tankJoystick.getY()*tankJoystick.getY() * Math.signum(tankJoystick.getY());
 	}
-	public double getTankJoystickZ(){
-		return tankJoystick.getZ();
+	public double getOperatorJoystickZ(){
+		return operatorJoystick.getZ();
 	}
-
-	
-	
-	
 }
-
