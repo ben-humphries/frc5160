@@ -53,9 +53,9 @@ public class OI {
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
-	Button shootButton = new JoystickButton(joystick, 10),
+	Button shootButton = new JoystickButton(joystick, 2),
 		   intakeButton = new JoystickButton(joystick, 1),
-		   gearButton = new JoystickButton(joystick, 2),
+		   //gearButton = new JoystickButton(joystick, 2),
 		   cameraButton = new JoystickButton(joystick, 3);
 	
 	//Tank joystick
@@ -71,7 +71,7 @@ public class OI {
 		
 		shootButton.whileHeld(new CMDShoot(1.0));
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
-		gearButton.whileHeld(new CMDPushGear(0.5));
+		//gearButton.whileHeld(new CMDPushGear(0.5));
 		
 		climbUpButton.whileHeld(new CMDClimb(getOperatorJoystickZ()));
 		//climbDownButton.whileHeld(new CMDClimb(-1 * getOperatorJoystickZ()));  // PLZ DON'T UNCOMMENT ME EVER :)
