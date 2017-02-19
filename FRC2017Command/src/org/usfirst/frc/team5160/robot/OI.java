@@ -49,7 +49,7 @@ public class OI {
 	boolean currentTeleOpDriveMode = true;
 	
 	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
-	Joystick operatorJoystick = new Joystick(RobotMap.OPERATORJOYSTICK);
+	Joystick operatorJoystick = new Joystick(RobotMap.OPERATOR_JOYSTICK);
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
