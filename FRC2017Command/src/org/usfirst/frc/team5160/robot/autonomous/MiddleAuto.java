@@ -17,8 +17,8 @@ public class MiddleAuto extends CommandGroup{
 		addSequential(new CMDAutoTankDrive(12,12)); //0.5s
 		addSequential(new CMDAutoMecanumDrive(0.5, 0.5, 90, 0.5, true),2); //2s
 		addParallel(new CMDTrackBoiler(), 1); //1s
-		addParallel(new CMDRevShooter(500),1);
-		addSequential(new CMDShoot(500)); //2s 
+		addParallel(new CMDRevShooter(1),1);
+		addSequential(new CMDShoot(1)); //2s 
 		
 	}
 }

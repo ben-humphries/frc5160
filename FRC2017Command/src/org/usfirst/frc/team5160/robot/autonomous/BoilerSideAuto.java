@@ -22,7 +22,7 @@ public class BoilerSideAuto extends CommandGroup{
 		addSequential(new CMDWait(2)); // 2s
 		addSequential(new CMDAutoMecanumDrive(0.5,0.5,180,0.5,true), 2); //2s
 		addParallel(new CMDTrackBoiler(), 1); //1s
-		addParallel(new CMDRevShooter(500),1);
-		addSequential(new CMDShoot(500)); //6s 
+		addParallel(new CMDRevShooter(1),1);
+		addSequential(new CMDShoot(1)); //6s 
 	}
 }

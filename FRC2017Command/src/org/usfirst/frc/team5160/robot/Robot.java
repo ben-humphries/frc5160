@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
+import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
@@ -52,16 +54,17 @@ public class Robot extends IterativeRobot {
 
     Command autonomousCommand;
     SendableChooser chooser;
-
+    public static NetworkTable visionTable;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 		oi = new OI();
+		visionTable = NetworkTable.getTable("vision");
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new BoilerSideAuto());
-        chooser.addObject("My Auto", new BoilerSideAuto());
+        chooser.addObject("My Auto", new MiddleAuto());
         SmartDashboard.putData("Auto mode", chooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
@@ -107,7 +110,7 @@ public class Robot extends IterativeRobot {
 		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
-			autonomousCommand = new BoilerSideAuto();
+			autonomousCommand = new MiddleAuto();
 			break;
 		case "Default Auto":
 		default:
