@@ -19,10 +19,10 @@ public class RobotMap {
 	//Declare motor port numbers
 	
 	//TODO fix the motor ports
-	public static int FRONT_LEFT_CIM = 4;
+	public static int FRONT_LEFT_CIM = 1;
 	public static int BACK_LEFT_CIM = 2;
 	public static int FRONT_RIGHT_CIM = 3;
-	public static int BACK_RIGHT_CIM = 1;
+	public static int BACK_RIGHT_CIM = 4;
 	
 	public static int SHOOTER_775_1 = 8;
 	public static int SHOOTER_775_2 = 9;
