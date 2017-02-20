@@ -16,9 +16,9 @@ public class CMDClimb extends Command {
         
         this.speed = speed;
     }
-
+    
     protected void execute() {
-    	Robot.CLIMBER.climb(speed);
+    	Robot.CLIMBER.climb(speed * Robot.oi.getOperatorJoystickZ());
     }
 
     protected boolean isFinished() {

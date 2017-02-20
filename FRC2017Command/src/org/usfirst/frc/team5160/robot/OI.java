@@ -73,8 +73,8 @@ public class OI {
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		//gearButton.whileHeld(new CMDPushGear(0.5));
 		
-		climbUpButton.whileHeld(new CMDClimb(getOperatorJoystickZ()));
-		//climbDownButton.whileHeld(new CMDClimb(-1 * getOperatorJoystickZ()));  // PLZ DON'T UNCOMMENT ME EVER :)
+		climbUpButton.whileHeld(new CMDClimb(1.0));
+		//climbDownButton.whileHeld(new CMDClimb(-1.0));  // PLZ DON'T UNCOMMENT ME EVER :)
 		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
@@ -107,6 +107,6 @@ public class OI {
 		return tankJoystick.getY()*tankJoystick.getY() * Math.signum(tankJoystick.getY());
 	}
 	public double getOperatorJoystickZ(){
-		return operatorJoystick.getZ();
+		return ((operatorJoystick.getZ() - 1.0) / 2.0);
 	}
 }
