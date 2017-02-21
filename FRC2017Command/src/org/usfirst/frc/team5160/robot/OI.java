@@ -79,8 +79,6 @@ public class OI {
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
 		cameraButton.whenPressed(new CMDToggleCamera());
-
-		
 	}
 	
 	//getter methods for the squared movement
