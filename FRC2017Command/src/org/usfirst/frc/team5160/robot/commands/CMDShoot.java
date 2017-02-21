@@ -12,11 +12,10 @@ public class CMDShoot extends Command {
 	double targetSpeed;
 	double currentSpeed;
 	
-	const double SPEEDGAIN = (1.0 / 50.0) / 0.2;
+	 double SPEEDGAIN = (1.0 / 50.0) / 0.2;
 
     public CMDShoot(double speed) {
         requires(Robot.SHOOTER);
-        requires(Robot.INTAKE_MECHANISM);
         currentSpeed = 0;
         this.targetSpeed = speed;
     }
