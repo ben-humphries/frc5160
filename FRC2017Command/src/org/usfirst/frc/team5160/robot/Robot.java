@@ -55,6 +55,7 @@ public class Robot extends IterativeRobot {
 
     Command autonomousCommand;
     SendableChooser chooser;
+    public static double driveP = 0.2, driveI = 0.01, driveD=0.1;
     public static NetworkTable visionTable;
     /**
      * This function is run when the robot is first started up and should be
@@ -70,7 +71,9 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auto mode", chooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
-        
+        SmartDashboard.putNumber("driveP", driveP);
+        SmartDashboard.putNumber("driveI", driveI);
+        SmartDashboard.putNumber("driveD", driveD);
         camera0 = new UsbCamera("cam0", 0);
         camera1 = new UsbCamera("cam1", 1);
         camera2 = new UsbCamera("cam2", 2);
@@ -163,4 +166,9 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
+    public static void updatePID(){
+		driveP=SmartDashboard.getNumber("driveP", driveP);
+		driveI=SmartDashboard.getNumber("driveI", driveI);
+		driveD=SmartDashboard.getNumber("driveD", driveD);
+	}
 }

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5160.robot.subsystems;
 
+import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.RobotMap;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -113,10 +115,8 @@ public class Base extends Subsystem {
     	motor.configPeakOutputVoltage(-12, 12);
     	ensureMotorMode(motor, TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	double p = Preferences.getInstance().getDouble("dP", 0.2);
-    	double i = Preferences.getInstance().getDouble("dI", 0.0);
-    	double d = Preferences.getInstance().getDouble("dD", 0.0);
-    	motor.setPID(p, i, d);
+    	Robot.updatePID();
+    	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD);
     }
     private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
     	if (motor.getControlMode() != neededMode) {
@@ -169,4 +169,5 @@ public class Base extends Subsystem {
 	public void printEncoders() {
 		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition());
 	}
+	
 }
