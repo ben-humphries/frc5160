@@ -8,6 +8,7 @@ import com.ctre.CANTalon.TalonControlMode;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -112,7 +113,10 @@ public class Base extends Subsystem {
     	motor.configPeakOutputVoltage(-12, 12);
     	ensureMotorMode(motor, TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	motor.setPID(0.2, 0.0, 0.0);
+    	double p = Preferences.getInstance().getDouble("dP", 0.2);
+    	double i = Preferences.getInstance().getDouble("dI", 0.0);
+    	double d = Preferences.getInstance().getDouble("dD", 0.0);
+    	motor.setPID(p, i, d);
     }
     private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
     	if (motor.getControlMode() != neededMode) {
