@@ -112,7 +112,7 @@ public class Base extends Subsystem {
     	motor.configPeakOutputVoltage(-12, 12);
     	ensureMotorMode(motor, TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	motor.setPID(0.2, 0.2, 0.2);
+    	motor.setPID(0.2, 0.0, 0.0);
     }
     private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
     	if (motor.getControlMode() != neededMode) {
@@ -137,17 +137,16 @@ public class Base extends Subsystem {
     
     public void positionTankDriveSet(double dLeft, double dRight){
     	ensurePositionTank();
+    	frontLeft.setEncPosition(0);
+    	frontRight.setEncPosition(0);
+    	backRight.setEncPosition(0);
+    	backLeft.setEncPosition(0);
     	targetLeftPos = dLeft;
     	targetRightPos = dRight;
-    	zeroLeftPos = frontLeft.getPosition();
-    	zeroRightPos = frontRight.getPosition();
     }
     public void positionTankDriveExecute(){
-    	System.out.println(frontLeft.getPosition()+", "+frontRight.getPosition());
-    	if(!positionTankDriveReached()){
-    		frontLeft.set(targetLeftPos+zeroLeftPos);
-    		frontRight.set(targetRightPos+zeroRightPos);
-    	}
+    		frontLeft.set(targetLeftPos);
+    		frontRight.set(targetRightPos);
 
     }
     public boolean positionTankDriveReached(){

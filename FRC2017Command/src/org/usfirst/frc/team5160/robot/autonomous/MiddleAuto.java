@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class MiddleAuto extends CommandGroup{
 	public MiddleAuto(){
-		addSequential(new CMDAutoTankDrive(10,10));
+		addSequential(new CMDAutoTankDrive(10000,10000));
 		//addSequential(new CMDAutoTankDrive(57,57)); //2s
 	/*	addSequential(new CMDTrackGear(), 1); //1s
 		addSequential(new CMDAutoTankDrive(12,12)); //0.5s

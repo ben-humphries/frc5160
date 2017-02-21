@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BoilerSideAuto extends CommandGroup{
 	//Drive forward 90 in, turn 30 ish, 2ft forward, stop 2 seconds, turn, shoot. 
 	public BoilerSideAuto(){
-		addSequential(new CMDAutoTankDrive(10,10));
+		addSequential(new CMDAutoTankDrive(10000,10000));
 		//addSequential(new CMDAutoTankDrive(90,90)); //2s
 	/*	addSequential(new CMDAutoRotate(30, 0.5,false)); //1s
 		addSequential(new CMDTrackGear(), 1); //1s
