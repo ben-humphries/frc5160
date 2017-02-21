@@ -18,7 +18,7 @@ public class CMDIntakeIn extends Command {
     }
     @Override
     protected void execute() {
-    	Robot.INTAKE_MECHANISM.intake(speed, speed);
+    	Robot.INTAKE_MECHANISM.intake(speed);
     }
     @Override
     protected boolean isFinished() {

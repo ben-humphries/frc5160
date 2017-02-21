@@ -21,10 +21,10 @@ public class IntakeMechanism extends Subsystem {
     	motor2 = new Spark(RobotMap.INTAKE_BAG_2);
     }
     
-    public void intake(double speed, double speed2){
+    public void intake(double speed){
     	
     	motor1.set(speed);
-    	motor2.set(speed2);
+    	motor2.set(-1*speed);
     	
     }
     public void stopMotors(){
