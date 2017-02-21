@@ -167,4 +167,3 @@ public class Base extends Subsystem {
 		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition());
 	}
 }
-

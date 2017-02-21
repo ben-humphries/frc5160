@@ -39,4 +39,3 @@ public class Shooter extends Subsystem {
     	motor2.set(0);
     }
 }
-

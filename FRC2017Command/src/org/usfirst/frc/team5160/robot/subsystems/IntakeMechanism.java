@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class IntakeMechanism extends Subsystem {
     
-    
     private Spark motor1;
     private Spark motor2;
     
