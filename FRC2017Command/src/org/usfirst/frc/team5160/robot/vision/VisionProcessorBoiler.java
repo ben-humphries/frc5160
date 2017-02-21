@@ -23,7 +23,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 	private long lastTime = 0;
 	private double deltaAngle; 
 	private double distance;
-	public VisionProcessorBoiler(VideoCapture cameraId) {
+	public VisionProcessorBoiler(int cameraId) {
 		super(cameraId);
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}

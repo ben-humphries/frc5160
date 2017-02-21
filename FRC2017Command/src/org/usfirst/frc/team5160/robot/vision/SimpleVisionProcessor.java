@@ -24,8 +24,8 @@ public class SimpleVisionProcessor {
 			greenOnly = new Mat(), redOnly = new Mat(), blueOnly = new Mat(),	
 			greenChannelThreshold = new Mat(),  sum = new Mat(); 
 	
-	public SimpleVisionProcessor(VideoCapture camera){
-		this.camera = camera;
+	public SimpleVisionProcessor(int cameraId){
+		camera = new VideoCapture(cameraId);
 		camera.set(Videoio.CAP_PROP_EXPOSURE, -10);		
 	}
 	

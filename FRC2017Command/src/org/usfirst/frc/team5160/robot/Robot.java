@@ -49,23 +49,21 @@ public class Robot extends IterativeRobot {
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
 	
-	
-	public VideoCapture gearCam, shooterCam, intakeCam; 
-	public VideoCapture[] cameras = new VideoCapture[3];
+	public VisionManager vision;
 
     Command autonomousCommand;
     SendableChooser chooser;
     public static double driveP = 0.2, driveI = 0.01, driveD=0.1;
-    public static NetworkTable visionTable;
+    
+    
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 		oi = new OI();
-		visionTable = NetworkTable.getTable("vision");
         chooser = new SendableChooser();
-        VisionManager.GetInstance();
         chooser.addDefault("Default Auto", new BoilerSideAuto());
         chooser.addObject("My Auto", new BoilerSideAuto());
         SmartDashboard.putData("Auto mode", chooser);
@@ -75,14 +73,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("driveI", driveI);
         SmartDashboard.putNumber("driveD", driveD);
 
-        //Create cameras
-        gearCam = new VideoCapture(0);
-        shooterCam = new VideoCapture(1);
-        intakeCam = new VideoCapture(2);
-        VisionManager.CreateInstance(gearCam, shooterCam);
-        cameras[0] = gearCam;
-        cameras[1] = shooterCam;
-        cameras[2] = intakeCam;
+       
         
     }
 	
@@ -135,6 +126,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+    	vision = new VisionManager();
+    	new Thread(vision).start();
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
@@ -150,11 +143,7 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
         
-        CvSource outputStream = CameraServer.getInstance().putVideo("camera", 640, 480);
-        Mat image = new Mat();
-        gearCam.read(image);
-        outputStream.putFrame(image);
-        
+       
         if(switchCamera){
         	
         	//CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
