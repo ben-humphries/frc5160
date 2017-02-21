@@ -55,7 +55,6 @@ public class OI {
 	//Drive joystick
 	Button shootButton = new JoystickButton(joystick, 2),
 		   intakeButton = new JoystickButton(joystick, 1),
-		   //gearButton = new JoystickButton(joystick, 2),
 		   cameraButton = new JoystickButton(joystick, 3);
 	
 	//Tank joystick
@@ -65,13 +64,14 @@ public class OI {
 	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
 			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
 			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
-			   climbBackwardButton = new JoystickButton(operatorJoystick, 5);
+			   climbBackwardButton = new JoystickButton(operatorJoystick, 5),
+			   shootButtonO = new JoystickButton(joystick, 1);
 	
 	public OI(){
 		
 		shootButton.whileHeld(new CMDShoot(1.0));
+			shootButtonO.whileHeld(new CMDShoot(1.0));
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
-		//gearButton.whileHeld(new CMDPushGear(0.5));
 		
 		climbUpButton.whileHeld(new CMDClimb(1.0));
 		//climbDownButton.whileHeld(new CMDClimb(-1.0));  // PLZ DON'T UNCOMMENT ME EVER :)
