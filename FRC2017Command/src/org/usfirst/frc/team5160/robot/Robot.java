@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team5160.robot;
 
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
@@ -11,6 +12,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+import org.opencv.core.Mat;
+import org.opencv.videoio.VideoCapture;
 import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
 import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
@@ -46,12 +49,9 @@ public class Robot extends IterativeRobot {
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
 	
-	UsbCamera camera0;
-	UsbCamera camera1;
-	UsbCamera camera2;
 	
-	UsbCamera[] cameras;
-	
+	public VideoCapture gearCam, shooterCam, intakeCam; 
+	public VideoCapture[] cameras = new VideoCapture[3];
 
     Command autonomousCommand;
     SendableChooser chooser;
@@ -74,15 +74,15 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("driveP", driveP);
         SmartDashboard.putNumber("driveI", driveI);
         SmartDashboard.putNumber("driveD", driveD);
-        camera0 = new UsbCamera("cam0", 0);
-        camera1 = new UsbCamera("cam1", 1);
-        camera2 = new UsbCamera("cam2", 2);
-        cameras = new UsbCamera[]{camera0, camera1, camera2};
-       
-        //
-        //CameraServer.getInstance().startAutomaticCapture(camera0);
-        
-        
+
+        //Create cameras
+        gearCam = new VideoCapture(0);
+        shooterCam = new VideoCapture(1);
+        intakeCam = new VideoCapture(2);
+        VisionManager.CreateInstance(gearCam, shooterCam);
+        cameras[0] = gearCam;
+        cameras[1] = shooterCam;
+        cameras[2] = intakeCam;
         
     }
 	
@@ -146,11 +146,14 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	VisionManager.GetInstance().gearProcessor.process();
         Scheduler.getInstance().run();
         
         SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
         
+        CvSource outputStream = CameraServer.getInstance().putVideo("camera", 640, 480);
+        Mat image = new Mat();
+        gearCam.read(image);
+        outputStream.putFrame(image);
         
         if(switchCamera){
         	

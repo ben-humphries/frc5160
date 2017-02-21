@@ -23,7 +23,7 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 	private long lastTime = 0;
 	private double deltaAngle; 
 	private double distance;
-	public VisionProcessorGear(int cameraId) {
+	public VisionProcessorGear(VideoCapture cameraId) {
 		super(cameraId);
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
