@@ -115,8 +115,10 @@ public class Base extends Subsystem {
     	motor.configPeakOutputVoltage(-12, 12);
     	ensureMotorMode(motor, TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	
-    	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD);
+    	motor.setAllowableClosedLoopErr(100);
+    	motor.setProfile(0);
+    	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD );
+    	motor.setF(Robot.driveF);
     }
     private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
     	if (motor.getControlMode() != neededMode) {

@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
 
     Command autonomousCommand;
     SendableChooser chooser;
-    public static double driveP = 0.2, driveI = 0.01, driveD=0.1;
+    public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
     
     
     
@@ -72,7 +72,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("driveP", driveP);
         SmartDashboard.putNumber("driveI", driveI);
         SmartDashboard.putNumber("driveD", driveD);
-
+        SmartDashboard.putNumber("driveF", driveF);
        
         
     }
@@ -163,5 +163,6 @@ public class Robot extends IterativeRobot {
 		driveP=SmartDashboard.getNumber("driveP", driveP);
 		driveI=SmartDashboard.getNumber("driveI", driveI);
 		driveD=SmartDashboard.getNumber("driveD", driveD);
+		driveF=SmartDashboard.getNumber("driveF", driveF);
 	}
 }
