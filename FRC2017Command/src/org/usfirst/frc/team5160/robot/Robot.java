@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
 	
-	public VisionManager vision;
+	public static VisionManager vision;
 
     Command autonomousCommand;
     SendableChooser chooser;
