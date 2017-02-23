@@ -26,7 +26,7 @@ public class SimpleVisionProcessor {
 	
 	public SimpleVisionProcessor(int cameraId){
 		camera = new VideoCapture(cameraId);
-		camera.set(Videoio.CAP_PROP_EXPOSURE, -10);		
+		camera.set(Videoio.CAP_PROP_EXPOSURE, 0);		
 	}
 	
 	public void resize(){
