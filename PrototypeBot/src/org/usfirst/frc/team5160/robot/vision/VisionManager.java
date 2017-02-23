@@ -17,8 +17,11 @@ public class VisionManager implements Runnable{
 	public VisionProcessorBoiler boilerProcessor;
 	public VisionProcessorGear gearProcessor;
 	public VideoCapture intakeCam;
-	
+	MjpegServer streamer;
+	CvSource outputStream;
 	public VisionManager(){
+		outputStream = CameraServer.getInstance().putVideo("Yay", 160, 120);
+		  streamer = CameraServer.getInstance().addServer("Yay");	
 	//	boilerProcessor = new VisionProcessorBoiler(shooterId);
 		gearProcessor = new VisionProcessorGear(gearId);
 	//	intakeCam = new VideoCapture(intakeId);
@@ -26,8 +29,7 @@ public class VisionManager implements Runnable{
 
 	@Override
 	public void run() {
-		  CvSource outputStream = CameraServer.getInstance().putVideo("Yay", 160, 120);
-		  MjpegServer streamer = CameraServer.getInstance().addServer("Yay");	
+		  
 		  streamer.setSource(outputStream);
 		  while(!Thread.interrupted()) {
 			  gearProcessor.process();
