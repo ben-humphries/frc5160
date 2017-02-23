@@ -67,7 +67,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("driveI", driveI);
         SmartDashboard.putNumber("driveD", driveD);
         SmartDashboard.putNumber("driveF", driveF);
-       
+        vision = new VisionManager();
+    	new Thread(vision).start();
         
     }
 	
@@ -120,8 +121,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	vision = new VisionManager();
-    	new Thread(vision).start();
+    	
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
