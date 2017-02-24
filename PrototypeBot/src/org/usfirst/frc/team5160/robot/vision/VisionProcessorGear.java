@@ -19,25 +19,17 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 	
 	public Mat drawnContours; 
 	public boolean draw = false;
-	private static final long MinElapsedMilli = 40;
-	private long lastTime = 0;
 	private double deltaAngle; 
 	private double distance;
-	public VisionProcessorGear(int cameraId) {
-		super(cameraId);
+	public VisionProcessorGear() {
+		super();
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
 	
-	public void process(){
-		if(System.currentTimeMillis()-lastTime > MinElapsedMilli){
-			camera.read(image);
-			lastTime = MinElapsedMilli;
-			process(image);
-			}
-	}
+	
 	public void process(Mat picture){
 		
-		resize();
+		resize(picture);
 		extractChannels();
 		sumChannels();
 		ArrayList<MatOfPoint> contours = findContours();
@@ -87,7 +79,6 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		return 12/Math.tan(Math.toRadians(deltaDegTargets/2));
 	}
 	public double getDeltaAngle() {
-		process();
 		return deltaAngle;
 	}
 }

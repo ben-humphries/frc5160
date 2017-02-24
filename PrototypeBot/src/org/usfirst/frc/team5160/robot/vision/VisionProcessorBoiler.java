@@ -19,25 +19,17 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 	
 	public Mat drawnContours; 
 	public boolean draw = false;
-	private static final long MinElapsedMilli = 40;
-	private long lastTime = 0;
 	private double deltaAngle; 
 	private double distance;
-	public VisionProcessorBoiler(int cameraId) {
-		super(cameraId);
+	public VisionProcessorBoiler() {
+		super();
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
 	
-	public void process(){
-		if(System.currentTimeMillis()-lastTime > MinElapsedMilli){
-		camera.read(image);
-		lastTime = MinElapsedMilli;
-		process(image);
-		}
-	}
+	
 	public void process(Mat picture){
 		
-		resize();
+		resize(picture);
 		extractChannels();
 		sumChannels();
 		ArrayList<MatOfPoint> contours = findContours();
@@ -86,7 +78,6 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 	}
 
 	public double getDeltaAngle() {
-		process();
 		return deltaAngle;
 	}
 }

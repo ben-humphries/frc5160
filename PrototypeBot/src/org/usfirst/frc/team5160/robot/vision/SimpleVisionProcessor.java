@@ -18,18 +18,12 @@ public class SimpleVisionProcessor {
 			cameraFOVAngle = 40,
 			cameraPitchAngle = 0;
 	protected final double pxToDeg = (double)cameraFOVAngle/(double)resizeX;
-	protected VideoCapture camera;
 	
-	protected Mat image = new Mat(), resized = new Mat(), 
+	protected Mat resized = new Mat(), 
 			greenOnly = new Mat(), redOnly = new Mat(), blueOnly = new Mat(),	
-			greenChannelThreshold = new Mat(),  sum = new Mat(); 
+			greenChannelThreshold = new Mat(),  sum = new Mat();
 	
-	public SimpleVisionProcessor(int cameraId){
-		camera = new VideoCapture(cameraId);
-		camera.set(Videoio.CAP_PROP_EXPOSURE, 0);		
-	}
-	
-	public void resize(){
+	public void resize(Mat image){
 		Imgproc.resize(image, resized, new Size(resizeX,resizeY));
 	}
 	public void extractChannels(){
