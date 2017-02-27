@@ -16,6 +16,7 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
 import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
+import org.usfirst.frc.team5160.robot.autonomous.TestAutoVision;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
@@ -42,7 +43,6 @@ public class Robot extends IterativeRobot {
 	public static final GearMechanism GEAR_MECHANISM = new GearMechanism();
 	public static final IntakeMechanism INTAKE_MECHANISM = new IntakeMechanism();
 	public static final Shooter SHOOTER = new Shooter();
-	
 	public static OI oi;
 	
 	public static boolean currentTeleOpDriveMode = true;
@@ -55,8 +55,9 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser;
     public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
     public static double shootP = 0.2, shootI = 0.01, shootD=0.1, shootF = 0.02, shootVel = 1000;
-    
-    
+    public static double debugShooterVelocity = 0;
+    private long lastUpdate = 0;
+    private int updateDelay = 100;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -64,8 +65,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new BoilerSideAuto());
-        chooser.addObject("My Auto", new BoilerSideAuto());
+        chooser.addDefault("Default Auto", new TestAutoVision());
+        chooser.addObject("My Auto", new TestAutoVision());
         SmartDashboard.putData("Auto mode", chooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
@@ -78,6 +79,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("shootD", shootD);
         SmartDashboard.putNumber("shootF", shootF);
         SmartDashboard.putNumber("shootVel", shootVel);
+        SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     }
 	
 	/**
@@ -103,17 +105,17 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	Robot.updatePID();
+    	updateSmartDashboard();
         autonomousCommand = (Command) chooser.getSelected();
         
 		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
-			autonomousCommand = new BoilerSideAuto();
+			autonomousCommand = new TestAutoVision();
 			break;
 		case "Default Auto":
 		default:
-			autonomousCommand = new BoilerSideAuto();
+			autonomousCommand = new TestAutoVision();
 			break;
 		}
     	
@@ -129,6 +131,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+    	updateSmartDashboard();
     	vision = new VisionManager();
     	new Thread(vision).start();
 		// This makes sure that the autonomous stops running when
@@ -142,10 +145,14 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	 long time = System.currentTimeMillis();
         Scheduler.getInstance().run();
         
-        SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
         
+    	
+        if (time - lastUpdate > updateDelay) {
+    		updateSmartDashboard();
+    	}
        
         if(switchCamera){
         	
@@ -155,14 +162,18 @@ public class Robot extends IterativeRobot {
         }
 
     }
-    
+    private void updateSmartDashboard(){
+    	 SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
+    	 SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
+    	 updatePID();
+    }
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
         LiveWindow.run();
     }
-    public static void updatePID(){
+    private void updatePID(){
 		driveP=SmartDashboard.getNumber("driveP", driveP);
 		driveI=SmartDashboard.getNumber("driveI", driveI);
 		driveD=SmartDashboard.getNumber("driveD", driveD);
