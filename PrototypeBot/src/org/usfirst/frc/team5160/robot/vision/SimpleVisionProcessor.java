@@ -13,11 +13,13 @@ import org.opencv.videoio.Videoio;
 public class SimpleVisionProcessor {
 	
 	
-	protected final int	resizeX = 160, 
-			resizeY = 120,
-			cameraFOVAngle = 40,
+	protected final int	resizeX = 320, 
+			resizeY = 240,
+			cameraFOVAngleHorizontal = 60,
+			cameraFOVAngleVertical=40,
 			cameraPitchAngle = 0;
-	protected final double pxToDeg = (double)cameraFOVAngle/(double)resizeX;
+	protected final double pxToDegHorizontal = (double)cameraFOVAngleHorizontal/(double)resizeX;
+	protected final double pxToDegVertical = (double)cameraFOVAngleVertical/(double)resizeY;
 	
 	protected Mat resized = new Mat(), 
 			greenOnly = new Mat(), redOnly = new Mat(), blueOnly = new Mat(),	

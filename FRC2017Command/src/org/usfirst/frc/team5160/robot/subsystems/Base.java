@@ -143,10 +143,7 @@ public class Base extends Subsystem {
     
     public void positionTankDriveSet(double dLeft, double dRight){
     	ensurePositionTank();
-    	frontLeft.setEncPosition(0);
-    	frontRight.setEncPosition(0);
-    	backRight.setEncPosition(0);
-    	backLeft.setEncPosition(0);
+    	resetEncoders();
     	targetLeftPos = dLeft;
     	targetRightPos = dRight;
     }
@@ -170,6 +167,15 @@ public class Base extends Subsystem {
 
 	public void printEncoders() {
 		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition());
+	}
+	public void resetEncoders(){
+		frontLeft.setEncPosition(0);
+    	frontRight.setEncPosition(0);
+    	backRight.setEncPosition(0);
+    	backLeft.setEncPosition(0);
+	}
+	public double getAverageEncoder(){
+		return (frontLeft.getEncPosition()+frontRight.getEncPosition())/2d;
 	}
 	
 }

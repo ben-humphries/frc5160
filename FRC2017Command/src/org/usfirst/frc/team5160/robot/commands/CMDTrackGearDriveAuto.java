@@ -5,25 +5,30 @@ import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.command.Command;
+
 /**
- * This will rotate the robot to aline to the gear peg. 
+ * This drives the robot in a straight line, but strafing to aline to the gear. 
  */
-public class CMDTrackGear extends Command{
+public class CMDTrackGearDriveAuto extends Command{
 	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
-	public CMDTrackGear(){
+	private double distance, turnMagnitude;
+	public CMDTrackGearDriveAuto(double distance, double turnMagnitude){
 		requires(Robot.BASE);
+		this.distance = distance;
+		this.turnMagnitude = turnMagnitude;
+	}
+	@Override
+	protected void initialize() {
+		Robot.BASE.resetEncoders();
 	}
 	@Override
 	protected void execute() {
 		double delta = Robot.vision.gearProcessor.getDeltaAngle();
 		double dir = RMath.sign(delta);
-		Robot.BASE.mecanumDrive(0, 0, dir*RMath.clamp(0.2, 0.75, 1.0-1.0/Math.abs(0.1*delta) ));
+		Robot.BASE.mecanumDriveField(0.5,  dir*turnMagnitude,0);
 	}
 	@Override
 	protected boolean isFinished() {
-		return finishedRotate();
-	}
-	private boolean finishedRotate(){
-		return Math.abs(Robot.vision.gearProcessor.getDeltaAngle()) <= DEGREE_ERROR;
+		return Robot.BASE.getAverageEncoder() >= distance;
 	}
 }

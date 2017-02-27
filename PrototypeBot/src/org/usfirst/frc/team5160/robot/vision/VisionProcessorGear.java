@@ -21,6 +21,8 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 	public boolean draw = false;
 	private double deltaAngle; 
 	private double distance;
+	//values in inches
+	public static final double CenterBandToCenterBandDistance = 8.2;
 	public VisionProcessorGear() {
 		super();
 		drawnContours = new Mat(resizeX,resizeY,16);
@@ -63,22 +65,23 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		double top = topBound.tl().x;
 		double bottom = bottomBound.tl().x;
 		double av = (top+bottom)/2.0;
-		System.out.println(top);
-		return (av-resizeX/2.0)*pxToDeg;
+		return (av-resizeX/2.0)*pxToDegHorizontal;
 	}
 	public double computeDistanceGear(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
 		Rect topBound = Imgproc.boundingRect(topContour);
 		
-		double top = topBound.tl().x;
-		double bottom = bottomBound.tl().x;
+		double top = (topBound.tl().x+topBound.br().x)/2;
+		double bottom = (bottomBound.tl().x+bottomBound.br().x)/2;
 		double deltaPxTargets = bottom-top;
-		double deltaDegTargets = deltaPxTargets*pxToDeg;
+		double deltaDegTargets = deltaPxTargets*pxToDegHorizontal;
 		
-		System.out.println(top);
-		return 12/Math.tan(Math.toRadians(deltaDegTargets/2));
+		return CenterBandToCenterBandDistance/(2*Math.tan(Math.toRadians(deltaDegTargets)));
 	}
 	public double getDeltaAngle() {
 		return deltaAngle;
+	}
+	public double getDistance(){
+		return distance;
 	}
 }

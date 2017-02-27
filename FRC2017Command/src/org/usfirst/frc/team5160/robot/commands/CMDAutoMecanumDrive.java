@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * This allows for mecanum movement while rotating precisely in auto. 
+ */
+
 public class CMDAutoMecanumDrive extends Command{
 	private double x, y, desiredAngle, rotationPower, startAngle;
 	private boolean absolute;

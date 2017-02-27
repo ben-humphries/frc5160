@@ -6,7 +6,9 @@ import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-
+/**
+ * This will have the robot rotate to face the boiler
+ */
 public class CMDTrackBoiler extends Command{
 	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
 	public CMDTrackBoiler(){

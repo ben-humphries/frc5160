@@ -21,6 +21,12 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 	public boolean draw = false;
 	private double deltaAngle; 
 	private double distance;
+	//Values in inches and degrees
+	public static final double BoilerTopBandPeakHeight = 88,
+						BoilerBottomBandPeakHeight = 80,
+						CameraHeight = 18,
+						CameraCenterLineAngle = 30;
+						
 	public VisionProcessorBoiler() {
 		super();
 		drawnContours = new Mat(resizeX,resizeY,16);
@@ -61,7 +67,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		double bottom = bottomBound.tl().x;
 		double av = (top+bottom)/2.0;
 		System.out.println(top);
-		return (av-resizeX/2.0)*pxToDeg;
+		return (av-resizeX/2.0)*pxToDegHorizontal;
 	}
 	public double computeDistanceBoiler(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
@@ -69,15 +75,19 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		
 		double top = topBound.tl().y;
 		double bottom = bottomBound.tl().y;
-		double deltaPxTargets = bottom-top;
-		double deltaDegTargets = deltaPxTargets*cameraFOVAngle/resizeY;
-		
-		
-		System.out.println(deltaDegTargets+",   "+deltaPxTargets+",   "+4.0/Math.tan(Math.toRadians(deltaDegTargets/2)));
-		return 4.0/Math.tan(Math.toRadians(deltaDegTargets/2));
+		double bottomCameraAngle = CameraCenterLineAngle - cameraFOVAngleHorizontal/2d;
+		double angleToBottom = bottom*pxToDegVertical+bottomCameraAngle;
+		double angleToTop = bottom*pxToDegVertical+bottomCameraAngle;
+		double distanceByBottom = (BoilerBottomBandPeakHeight-CameraHeight)/Math.tan(Math.toDegrees(angleToBottom));
+		double distanceByTop = (BoilerTopBandPeakHeight-CameraHeight)/Math.tan(Math.toDegrees(angleToTop));
+		System.out.println("Distances, B,T,A : "+distanceByBottom+", "+distanceByTop+", "+(distanceByBottom+distanceByTop)/2d);
+		return ((distanceByBottom+distanceByTop)/2d);
 	}
 
 	public double getDeltaAngle() {
 		return deltaAngle;
+	}
+	public double getDistance(){
+		return distance;
 	}
 }
