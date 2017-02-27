@@ -37,9 +37,9 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		ArrayList<MatOfPoint> contours = findContours();
 		
 		if(draw){
-		drawnContours.release();
-		drawnContours = Mat.zeros(resized.size(), 16);
-		Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
+			drawnContours.release();
+			drawnContours = picture.clone();
+			Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
 		}
 		
 		MatOfPoint[] top = findTwoLargestContours(contours);

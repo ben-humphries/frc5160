@@ -21,37 +21,72 @@ public class VisionManager implements Runnable{
 	public VisionProcessorGear gearProcessor;
 	public MjpegServer streamer;
 	public CvSource outputStream;
-	public UsbCamera gearCam, boilderCam, intakeCam;
-	public CvSink cvSink;
+	public UsbCamera gearCam, boilerCam, intakeCam;
+	public CvSink gearSink, boilerSink, intakeSink;
 	
-	private static final long MinElapsedMilli = 40;
+	private static final long MinElapsedMilli = 20;
 	private long lastTime = 0;
 	
 	public VisionManager(){
-		outputStream = CameraServer.getInstance().putVideo("OutputStream", 160, 120);
+		outputStream = CameraServer.getInstance().putVideo("OutputStream", 240, 160);
 		streamer = CameraServer.getInstance().addServer("Streamer");	
+		
+		gearSink = new CvSink("gear");
+		boilerSink = new CvSink("boiler");
+		intakeSink = new CvSink("intake");
+		
 		gearCam = new UsbCamera("gear", gearId);
-		gearCam.setExposureManual(-5);
-		cvSink = new CvSink("sink");
-		//gearCam = new UsbCamera("gear", shooterId);
-		//boilerProcessor = new VisionProcessorBoiler(shooterId);
+		boilerCam = new UsbCamera("boiler", shooterId);
+		intakeCam = new UsbCamera("intake", intakeId);
+		
+		
+		
 		gearProcessor = new VisionProcessorGear();
-	//	intakeCam = new VideoCapture(intakeId);
+		boilerProcessor = new VisionProcessorBoiler();
+		
+		gearProcessor.draw=true;
+		boilerProcessor.draw=true;
 	}
 
 	@Override
 	public void run() {
 		  streamer.setSource(outputStream);
-		  cvSink.setSource(gearCam);
-		  Mat image = new Mat();
+		  
+		  gearSink.setSource(gearCam);
+		  boilerSink.setSource(gearCam);
+		  intakeSink.setSource(gearCam);
+		  
+		  Mat boilerImage = new Mat();
+		  Mat gearImage = new Mat();
+		  Mat intakeImage = new Mat();
+		  
+		  gearCam.setExposureManual(-5);
+		  boilerCam.setExposureManual(-5);
+		  intakeCam.setFPS(20);
 		  while(!Thread.interrupted()) {
-			  gearCam.setExposureManual(-5);
-			  cvSink.grabFrame(image);
-			  gearProcessor.process(image);
-              outputStream.putFrame(gearProcessor.sum);
-             
+			  if(enoughTimeElapsed()){
+			 
+			  gearSink.grabFrame(gearImage);
+			  gearProcessor.process(gearImage);
+			  
+			  boilerSink.grabFrame(boilerImage);
+			  boilerProcessor.process(boilerImage);
+			  
+			  intakeSink.grabFrame(intakeImage);
+			  
+              outputStream.putFrame(gearProcessor.drawnContours);
+			  }
           }
 	}
 	
+	private boolean enoughTimeElapsed(){
+		if(System.currentTimeMillis()-lastTime >= MinElapsedMilli){
+			lastTime = System.currentTimeMillis();
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	
 }

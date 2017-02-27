@@ -42,7 +42,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		
 		if(draw){
 		drawnContours.release();
-		drawnContours = Mat.zeros(resized.size(), 16);
+		drawnContours = picture.clone();
 		Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
 		}
 		

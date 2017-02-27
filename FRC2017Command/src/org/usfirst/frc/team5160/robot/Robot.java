@@ -16,6 +16,7 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
 import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
+import org.usfirst.frc.team5160.robot.autonomous.ShooterTest;
 import org.usfirst.frc.team5160.robot.autonomous.TestAutoVision;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
@@ -65,8 +66,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new TestAutoVision());
-        chooser.addObject("My Auto", new TestAutoVision());
+        chooser.addDefault("Default Auto", "TestAutoVision");
+        chooser.addObject("My Auto", "Test Shooter");
         SmartDashboard.putData("Auto mode", chooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
@@ -111,7 +112,7 @@ public class Robot extends IterativeRobot {
 		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
-			autonomousCommand = new TestAutoVision();
+			autonomousCommand = new ShooterTest();
 			break;
 		case "Default Auto":
 		default:
