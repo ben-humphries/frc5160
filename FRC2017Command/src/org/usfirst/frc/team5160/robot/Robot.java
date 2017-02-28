@@ -1,21 +1,6 @@
 
 package org.usfirst.frc.team5160.robot;
 
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.MjpegServer;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSource;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
-import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
-import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
-import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
 import org.usfirst.frc.team5160.robot.autonomous.ShooterTest;
 import org.usfirst.frc.team5160.robot.autonomous.TestAutoVision;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
@@ -26,6 +11,11 @@ import org.usfirst.frc.team5160.robot.subsystems.IntakeMechanism;
 import org.usfirst.frc.team5160.robot.subsystems.Shooter;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -36,6 +26,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+enum AllianceColor{RED,BLUE};
+
 public class Robot extends IterativeRobot {
 
 	
@@ -49,26 +41,30 @@ public class Robot extends IterativeRobot {
 	public static boolean currentTeleOpDriveMode = true;
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
-	
 	public static VisionManager vision;
-
-    Command autonomousCommand;
-    SendableChooser chooser;
+	
+    private Command autonomousCommand;
+    private SendableChooser autoModeChooser;
+    private SendableChooser autoColorChooser;
     public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
     public static double shootP = 0.2, shootI = 0.01, shootD=0.1, shootF = 0.02, shootVel = 1000;
     public static double debugShooterVelocity = 0;
     private long lastUpdate = 0;
     private int updateDelay = 100;
+    public static AllianceColor RobotColor; 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 		oi = new OI();
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", "TestAutoVision");
-        chooser.addObject("My Auto", "Test Shooter");
-        SmartDashboard.putData("Auto mode", chooser);
+        autoModeChooser = new SendableChooser<CommandGroup>();
+        autoModeChooser.addDefault("Default Auto", new TestAutoVision());
+        autoModeChooser.addObject("My Auto", new ShooterTest());
+        autoColorChooser = new SendableChooser<AllianceColor>();
+        autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED);
+        autoColorChooser.addObject("Auto Color Blue", AllianceColor.BLUE);
+        SmartDashboard.putData("Auto mode", autoModeChooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
         SmartDashboard.putNumber("driveP", driveP);
@@ -107,21 +103,9 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	updateSmartDashboard();
-        autonomousCommand = (Command) chooser.getSelected();
-        
-		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new ShooterTest();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new TestAutoVision();
-			break;
-		}
-    	
-    	// schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
+    	RobotColor = (AllianceColor) autoColorChooser.getSelected();
+        autonomousCommand = (CommandGroup) autoModeChooser.getSelected();
+        if (autonomousCommand != null && RobotColor!=null) autonomousCommand.start();
     }
 
     /**
