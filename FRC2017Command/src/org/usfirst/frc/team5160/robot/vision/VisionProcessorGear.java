@@ -19,33 +19,27 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 	
 	public Mat drawnContours; 
 	public boolean draw = false;
-	private static final long MinElapsedMilli = 40;
-	private long lastTime = 0;
 	private double deltaAngle; 
 	private double distance;
-	public VisionProcessorGear(int cameraId) {
-		super(cameraId);
+	//values in inches
+	public static final double CenterBandToCenterBandDistance = 8.2;
+	public VisionProcessorGear() {
+		super();
 		drawnContours = new Mat(resizeX,resizeY,16);
 	}
 	
-	public void process(){
-		if(System.currentTimeMillis()-lastTime > MinElapsedMilli){
-			camera.read(image);
-			lastTime = MinElapsedMilli;
-			process(image);
-			}
-	}
+	
 	public void process(Mat picture){
 		
-		resize();
+		resize(picture);
 		extractChannels();
 		sumChannels();
 		ArrayList<MatOfPoint> contours = findContours();
 		
 		if(draw){
-		drawnContours.release();
-		drawnContours = Mat.zeros(resized.size(), 16);
-		Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
+			drawnContours.release();
+			drawnContours = picture.clone();
+			Imgproc.drawContours(drawnContours,contours,-1,new Scalar(0,255,0),2);
 		}
 		
 		MatOfPoint[] top = findTwoLargestContours(contours);
@@ -71,23 +65,23 @@ public class VisionProcessorGear extends SimpleVisionProcessor{
 		double top = topBound.tl().x;
 		double bottom = bottomBound.tl().x;
 		double av = (top+bottom)/2.0;
-		System.out.println(top);
-		return (av-resizeX/2.0)*pxToDeg;
+		return (av-resizeX/2.0)*pxToDegHorizontal;
 	}
 	public double computeDistanceGear(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
 		Rect topBound = Imgproc.boundingRect(topContour);
 		
-		double top = topBound.tl().x;
-		double bottom = bottomBound.tl().x;
+		double top = (topBound.tl().x+topBound.br().x)/2;
+		double bottom = (bottomBound.tl().x+bottomBound.br().x)/2;
 		double deltaPxTargets = bottom-top;
-		double deltaDegTargets = deltaPxTargets*pxToDeg;
+		double deltaDegTargets = deltaPxTargets*pxToDegHorizontal;
 		
-		System.out.println(top);
-		return 12/Math.tan(Math.toRadians(deltaDegTargets/2));
+		return CenterBandToCenterBandDistance/(2*Math.tan(Math.toRadians(deltaDegTargets)));
 	}
 	public double getDeltaAngle() {
-		process();
 		return deltaAngle;
+	}
+	public double getDistance(){
+		return distance;
 	}
 }
