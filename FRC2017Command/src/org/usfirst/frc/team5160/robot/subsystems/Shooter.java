@@ -45,8 +45,14 @@ public class Shooter extends Subsystem {
     }
     public void shootBangBang(double speed){
     	motor1.changeControlMode(TalonControlMode.PercentVbus);
+    	motor2.changeControlMode(TalonControlMode.PercentVbus);
     	if(motor1.getSpeed() < speed){
     		motor1.set(rampVelocity());
+    		motor2.set(rampVelocity());
+    	}
+    	else{
+    		motor1.set(0);
+    		motor2.set(0);
     	}
     }
     public double rampVelocity(){
@@ -59,13 +65,20 @@ public class Shooter extends Subsystem {
     	return 1;
     }
     public void shoot(double speed){
+    	
     	motor1.changeControlMode(TalonControlMode.Speed);
+    	motor2.changeControlMode(TalonControlMode.Follower);
     	System.out.println("Shoot "+speed+" , "+motor1.getSpeed());
     	motor1.set(speed);
+    	motor2.set(motor1.getDeviceID());
+    	
     }
     
     public void stopMotors(){
     	motor1.set(0);
     	motor2.set(0);
+    }
+    public double getSpeed(){
+    	return motor1.getSpeed();
     }
 }

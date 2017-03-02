@@ -47,10 +47,10 @@ public class Robot extends IterativeRobot {
     private SendableChooser autoModeChooser;
     private SendableChooser autoColorChooser;
     public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
-    public static double shootP = 0.12, shootI = 0.01, shootD=0.5, shootF = 0.02, shootVel = 2000;
+    public static double shootP = 0.12, shootI = 0.01, shootD=0.5, shootF = 0.1, shootVel = 2000;
     public static double debugShooterVelocity = 0;
     private long lastUpdate = 0;
-    private int updateDelay = 100;
+    private int updateDelay = 500;
     public static AllianceColor RobotColor; 
     /**
      * This function is run when the robot is first started up and should be
@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
         vision = new VisionManager();
     	new Thread(vision).start();
         SmartDashboard.putData("Auto mode", autoModeChooser);
-        
+        SmartDashboard.putData("Color", autoColorChooser);
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
         SmartDashboard.putNumber("driveP", driveP);
         SmartDashboard.putNumber("driveI", driveI);
@@ -155,6 +155,7 @@ public class Robot extends IterativeRobot {
 
     }
     private void updateSmartDashboard(){
+    	System.out.println("Updating SDB");
     	 SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     	 SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
     	 updatePID();
@@ -176,4 +177,5 @@ public class Robot extends IterativeRobot {
 		shootF=SmartDashboard.getNumber("shootF", shootF);
 		shootVel=SmartDashboard.getNumber("shootVel", shootVel);
 	}
+   
 }

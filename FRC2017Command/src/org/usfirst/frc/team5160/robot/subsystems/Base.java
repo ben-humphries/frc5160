@@ -145,7 +145,8 @@ public class Base extends Subsystem {
     public void positionTankDriveExecute(){
     		frontLeft.set(targetLeftPos);
     		frontRight.set(targetRightPos);
-
+    		backLeft.set(frontLeft.getDeviceID());
+    		backRight.set(frontRight.getDeviceID());
     }
     public boolean positionTankDriveReached(){
     	if((frontLeft.getPosition() - targetLeftPos) >= 0 && (frontRight.getPosition() - targetRightPos) >= 0 ){

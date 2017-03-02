@@ -21,6 +21,7 @@ public class CMDShoot extends Command {
     }
     @Override
     protected void execute() {
+    	Robot.debugShooterVelocity = Robot.SHOOTER.getSpeed();
     //	if (currentSpeed < targetSpeed)
     //	{ currentSpeed += SPEEDGAIN; }
     //	else { currentSpeed = targetSpeed; }

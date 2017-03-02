@@ -54,8 +54,8 @@ public class VisionManager implements Runnable{
 		  streamer.setSource(outputStream);
 		  
 		  gearSink.setSource(gearCam);
-		  boilerSink.setSource(gearCam);
-		  intakeSink.setSource(gearCam);
+		  boilerSink.setSource(boilerCam);
+		  intakeSink.setSource(intakeCam);
 		  
 		  Mat boilerImage = new Mat();
 		  Mat gearImage = new Mat();

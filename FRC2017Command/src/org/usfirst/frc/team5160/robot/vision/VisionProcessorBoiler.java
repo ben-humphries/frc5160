@@ -66,7 +66,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		double top = topBound.tl().x;
 		double bottom = bottomBound.tl().x;
 		double av = (top+bottom)/2.0;
-		System.out.println(top);
+	//	System.out.println(top);
 		return (av-resizeX/2.0)*pxToDegHorizontal;
 	}
 	public double computeDistanceBoiler(MatOfPoint topContour, MatOfPoint bottomContour){
@@ -80,7 +80,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		double angleToTop = bottom*pxToDegVertical+bottomCameraAngle;
 		double distanceByBottom = (BoilerBottomBandPeakHeight-CameraHeight)/Math.tan(Math.toDegrees(angleToBottom));
 		double distanceByTop = (BoilerTopBandPeakHeight-CameraHeight)/Math.tan(Math.toDegrees(angleToTop));
-		System.out.println("Distances, B,T,A : "+distanceByBottom+", "+distanceByTop+", "+(distanceByBottom+distanceByTop)/2d);
+	//	System.out.println("Distances, B,T,A : "+distanceByBottom+", "+distanceByTop+", "+(distanceByBottom+distanceByTop)/2d);
 		return ((distanceByBottom+distanceByTop)/2d);
 	}
 
