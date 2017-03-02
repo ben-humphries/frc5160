@@ -105,9 +105,15 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	updateSmartDashboard();
-    	RobotColor = (AllianceColor) autoColorChooser.getSelected();
+   // 	RobotColor = (AllianceColor) autoColorChooser.getSelected();
+    	try{
         autonomousCommand = (CommandGroup) autoModeChooser.getSelected();
+        System.out.println("autoCommand"+autonomousCommand);
         if (autonomousCommand != null && RobotColor != null) autonomousCommand.start();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
 
     /**

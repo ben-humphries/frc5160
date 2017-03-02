@@ -45,8 +45,8 @@ public class Shooter extends Subsystem {
     }
     
     public void shoot(double speed){
+    	System.out.println("Shoot "+speed);
     	motor1.set(-speed);
-    	motor2.set(-speed);
     }
     
     public void stopMotors(){
