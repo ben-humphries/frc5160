@@ -40,6 +40,7 @@ public class Shooter extends Subsystem {
     	motor.configPeakOutputVoltage(-12, 12);
     	motor.setProfile(0);
     	motor.enableBrakeMode(false);
+    	motor.setInverted(true);
     	motor.setPID(Robot.shootP, Robot.shootI, Robot.shootD ,Robot.shootF, (int) (1023/Robot.shootP), 0, 0);
     }
     public void shootBangBang(double speed){
