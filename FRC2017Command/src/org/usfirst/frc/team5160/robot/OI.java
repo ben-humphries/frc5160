@@ -65,7 +65,10 @@ public class OI {
 			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
 			   climbBackwardButton = new JoystickButton(operatorJoystick, 5),
 			   shootButtonO = new JoystickButton(operatorJoystick, 1),
-				intakeButtonO = new JoystickButton(operatorJoystick, 2);
+				intakeButtonO = new JoystickButton(operatorJoystick, 2),
+				cameraButton0 = new JoystickButton(operatorJoystick, 7),
+				cameraButton1 = new JoystickButton(operatorJoystick, 8),
+				cameraButton2 = new JoystickButton(operatorJoystick, 9);
 	
 	public OI(){
 		
@@ -73,13 +76,14 @@ public class OI {
 		shootButtonO.whileHeld(new CMDShoot(Robot.shootVel));
 		intakeButtonO.whileHeld(new CMDIntakeIn(1.0));
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
-		
+		cameraButton0.whenPressed(new CMDToggleCamera(0));
+		cameraButton1.whenPressed(new CMDToggleCamera(1));
+		cameraButton2.whenPressed(new CMDToggleCamera(2));
 		climbUpButton.whileHeld(new CMDClimb(1.0));
 		//climbDownButton.whileHeld(new CMDClimb(-1.0));  // PLZ DON'T UNCOMMENT ME EVER :)
 		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
-		cameraButton.whenPressed(new CMDToggleCamera());
 	}
 	public boolean isShooting(){
 		return shootButton.get() || shootButtonO.get();

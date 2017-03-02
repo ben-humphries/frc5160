@@ -17,5 +17,6 @@ public class FarSideAuto extends CommandGroup{
 		addSequential(new CMDAutoRotate(multiplier*30, 0.5,false)); //1s
 		addSequential(new CMDTrackGear(), 2); //1s
 		addSequential(new CMDAutoTankDrive(12,12)); //0.5s
+		addSequential(new CMDAutoTankDrive(-4,-4));
 	}
 }

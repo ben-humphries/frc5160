@@ -22,6 +22,7 @@ public class MiddleAuto extends CommandGroup{
 		//Moves forwards/strafes to align to gear, drives 12 inches, waits for lift, moves closer to boiler, tracks boiler, shoots. 
 		addSequential(new CMDTrackGearDriveAuto(57,0.05)); //2s
 		addSequential(new CMDAutoTankDrive(12,12)); //0.5s
+		addSequential(new CMDAutoTankDrive(-4,-4));
 		addSequential(new CMDWait(2),2); //2s
 		addSequential(new CMDAutoMecanumDrive(0.5, 0.5, 90, 0.5, true),2); //2s
 		addParallel(new CMDTrackBoiler(), 1); //1s

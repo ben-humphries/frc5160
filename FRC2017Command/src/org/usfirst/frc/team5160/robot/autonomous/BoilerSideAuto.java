@@ -23,6 +23,7 @@ public class BoilerSideAuto extends CommandGroup{
 		addSequential(new CMDAutoRotate(multiplier*-30, 0.5,false)); //1s
 		addSequential(new CMDTrackGear(), 1); //1s
 		addSequential(new CMDAutoTankDrive(12,12)); //0.5s
+		addSequential(new CMDAutoTankDrive(-4,-4));
 		addSequential(new CMDWait(2),2); // 2s
 		addSequential(new CMDAutoMecanumDrive(0.5,-0.5,multiplier*180,0.5,true), 2); //2s
 		addParallel(new CMDTrackBoiler(), 1); //1s
