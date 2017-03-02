@@ -64,6 +64,8 @@ public class Robot extends IterativeRobot {
         autoColorChooser = new SendableChooser<AllianceColor>();
         autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED);
         autoColorChooser.addObject("Auto Color Blue", AllianceColor.BLUE);
+        vision = new VisionManager();
+    	new Thread(vision).start();
         SmartDashboard.putData("Auto mode", autoModeChooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
@@ -117,8 +119,7 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
     	updateSmartDashboard();
-    	vision = new VisionManager();
-    	new Thread(vision).start();
+    	
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove

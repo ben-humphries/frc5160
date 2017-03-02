@@ -50,6 +50,7 @@ public class VisionManager implements Runnable{
 
 	@Override
 	public void run() {
+		try{
 		  streamer.setSource(outputStream);
 		  
 		  gearSink.setSource(gearCam);
@@ -77,6 +78,10 @@ public class VisionManager implements Runnable{
               outputStream.putFrame(gearProcessor.drawnContours);
 			  }
           }
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean enoughTimeElapsed(){

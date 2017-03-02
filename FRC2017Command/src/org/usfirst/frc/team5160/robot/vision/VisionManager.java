@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class VisionManager implements Runnable{
 	
 	
-	public static final int gearId = 0, shooterId = 0, intakeId = 0; 
+	public static final int gearId = 0, shooterId = 1, intakeId = 2; 
 	
 	public VisionProcessorBoiler boilerProcessor;
 	public VisionProcessorGear gearProcessor;
@@ -50,6 +50,7 @@ public class VisionManager implements Runnable{
 
 	@Override
 	public void run() {
+		try{
 		  streamer.setSource(outputStream);
 		  
 		  gearSink.setSource(gearCam);
@@ -77,6 +78,10 @@ public class VisionManager implements Runnable{
               outputStream.putFrame(gearProcessor.drawnContours);
 			  }
           }
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean enoughTimeElapsed(){

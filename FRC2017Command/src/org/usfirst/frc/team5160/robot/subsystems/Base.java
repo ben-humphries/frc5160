@@ -63,7 +63,7 @@ public class Base extends Subsystem {
 		driveBase = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 		
 		//Init gyro
-		gyro = new ADXRS450_Gyro(/*port*/);
+		gyro = new ADXRS450_Gyro();
 		
 	}
 

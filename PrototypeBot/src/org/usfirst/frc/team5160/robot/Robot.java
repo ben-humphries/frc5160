@@ -95,6 +95,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+    	try{
     	Robot.updatePID();
         autonomousCommand = (Command) chooser.getSelected();
         
@@ -111,6 +112,10 @@ public class Robot extends IterativeRobot {
     	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
 
     /**

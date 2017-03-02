@@ -22,6 +22,7 @@ public class Shooter extends Subsystem {
     	motor1 = new CANTalon(RobotMap.SHOOTER_775_1);
     	motor2 = new CANTalon(RobotMap.SHOOTER_775_2);
     	motor1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+    	motor1.configEncoderCodesPerRev(1024);
     	motor1.changeControlMode(TalonControlMode.Speed);
     	motor2.changeControlMode(TalonControlMode.Follower);
     	initMotor(motor1);

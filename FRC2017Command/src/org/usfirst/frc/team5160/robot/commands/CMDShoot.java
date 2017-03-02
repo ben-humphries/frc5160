@@ -10,21 +10,21 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CMDShoot extends Command {
 	
 	double targetSpeed;
-	double currentSpeed;
+	//double currentSpeed;
 	
-	 double SPEEDGAIN = (1.0 / 50.0) / 0.2;
+	// double SPEEDGAIN = (1.0 / 50.0) / 0.2;
 
     public CMDShoot(double speed) {
         requires(Robot.SHOOTER);
-        currentSpeed = 0;
+    //    currentSpeed = 0;
         this.targetSpeed = speed;
     }
     @Override
     protected void execute() {
-    	if (currentSpeed < targetSpeed)
-    	{ currentSpeed += SPEEDGAIN; }
-    	else { currentSpeed = targetSpeed; }
-    	Robot.SHOOTER.shoot(currentSpeed);
+    //	if (currentSpeed < targetSpeed)
+    //	{ currentSpeed += SPEEDGAIN; }
+    //	else { currentSpeed = targetSpeed; }
+    	Robot.SHOOTER.shoot(targetSpeed);
     }
     @Override
     protected boolean isFinished() {
