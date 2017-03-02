@@ -16,8 +16,9 @@ public class CMDAutoTankDrive extends Command{
 		requires(Robot.BASE);
 		Robot.BASE.positionTankDriveSet(Base.inchToEncoderTick(dLeft), Base.inchToEncoderTick(dRight));
 	}
-	@Override 
+	@Override
 	protected void initialize(){
+		Robot.BASE.setInvertAuto();
 		Robot.BASE.positionTankDriveExecute();
 	}
 	@Override 

@@ -14,6 +14,10 @@ public class CMDAutoMecanumStraightStrafe extends Command{
 		this.x = x;
 		this.y = y;
 	}
+	@Override
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
+	}
 	 @Override
 	protected void execute() {
 		 Robot.BASE.mecanumDriveField(x, y, 0);

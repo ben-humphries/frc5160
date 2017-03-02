@@ -18,7 +18,8 @@ public class CMDTrackGearDriveAuto extends Command{
 		this.turnMagnitude = turnMagnitude;
 	}
 	@Override
-	protected void initialize() {
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
 		Robot.BASE.resetEncoders();
 	}
 	@Override

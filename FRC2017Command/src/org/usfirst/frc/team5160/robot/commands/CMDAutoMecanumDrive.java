@@ -26,6 +26,7 @@ public class CMDAutoMecanumDrive extends Command{
 	}
 	@Override
 	public void initialize(){
+		Robot.BASE.setInvertAuto();
 		this.startAngle = gyro.getAngle();
 	}
 	@Override

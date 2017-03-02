@@ -24,10 +24,9 @@ public class Shooter extends Subsystem {
     	motor1.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
     	motor1.configEncoderCodesPerRev(1024);
     	motor1.changeControlMode(TalonControlMode.PercentVbus);
-    	motor2.changeControlMode(TalonControlMode.Follower);
+    	motor2.changeControlMode(TalonControlMode.PercentVbus);
     	initMotor(motor1);
     	initMotor(motor2);
-    	motor2.set(RobotMap.SHOOTER_775_2);
     }
 
     public void initDefaultCommand() {
@@ -41,7 +40,6 @@ public class Shooter extends Subsystem {
     	motor.setProfile(0);
     	motor.enableBrakeMode(false);
     	motor.setInverted(true);
-    	motor.setPID(Robot.shootP, Robot.shootI, Robot.shootD ,Robot.shootF, (int) (1023/Robot.shootP), 0, 0);
     }
     public void shootBangBang(double speed){
     	motor1.changeControlMode(TalonControlMode.PercentVbus);
@@ -57,10 +55,10 @@ public class Shooter extends Subsystem {
     }
     public double rampVelocity(){
     	if(motor1.getSpeed()<500){
-    		return 0.25;
+    		return 0.5;
     	}
     	else if(motor1.getSpeed() < 1000){
-    		return 0.5;
+    		return 0.75;
     	}
     	return 1;
     }
@@ -71,7 +69,6 @@ public class Shooter extends Subsystem {
     	System.out.println("Shoot "+speed+" , "+motor1.getSpeed());
     	motor1.set(speed);
     	motor2.set(motor1.getDeviceID());
-    	
     }
     
     public void stopMotors(){

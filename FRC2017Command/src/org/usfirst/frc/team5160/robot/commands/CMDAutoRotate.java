@@ -19,7 +19,8 @@ public class CMDAutoRotate extends Command{
 		this.absolute = absoluteAngle;
 	}
 	@Override
-	public void initialize(){
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
 		this.startAngle = gyro.getAngle();
 	}
 	@Override

@@ -3,6 +3,7 @@ package org.usfirst.frc.team5160.robot.vision;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
+import org.usfirst.frc.team5160.robot.Robot;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -74,8 +75,15 @@ public class VisionManager implements Runnable{
 			  boilerProcessor.process(boilerImage);
 			  
 			  intakeSink.grabFrame(intakeImage);
-			  
+			  if(Robot.currentCamera == 0){
               outputStream.putFrame(gearProcessor.drawnContours);
+			  }
+			  else if (Robot.currentCamera==1){
+				  outputStream.putFrame(boilerProcessor.drawnContours);
+			  }
+			  else{
+				  outputStream.putFrame(intakeImage);
+			  }
 			  }
           }
 		}

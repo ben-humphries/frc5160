@@ -1,7 +1,12 @@
 
 package org.usfirst.frc.team5160.robot;
 
+import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
+import org.usfirst.frc.team5160.robot.autonomous.FarSideAuto;
+import org.usfirst.frc.team5160.robot.autonomous.HopperShooterAuto;
+import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
 import org.usfirst.frc.team5160.robot.autonomous.ShooterTest;
+import org.usfirst.frc.team5160.robot.autonomous.TestAutoEncoders;
 import org.usfirst.frc.team5160.robot.autonomous.TestAutoVision;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
@@ -30,7 +35,7 @@ enum AllianceColor{RED,BLUE};
 
 public class Robot extends IterativeRobot {
 
-	
+	//Create subsystems
 	public static final Base BASE = new Base();
 	public static final Climber CLIMBER = new Climber();
 	public static final GearMechanism GEAR_MECHANISM = new GearMechanism();
@@ -43,40 +48,44 @@ public class Robot extends IterativeRobot {
 	public static boolean switchCamera = false;
 	public static VisionManager vision;
 	
+	
+	 private SendableChooser autoModeChooser;
+	 private SendableChooser autoColorChooser;
+	 
     private Command autonomousCommand;
-    private SendableChooser autoModeChooser;
-    private SendableChooser autoColorChooser;
-    public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
-    public static double shootP = 0.12, shootI = 0.01, shootD=0.5, shootF = 0.1, shootVel = 2000;
+    public static double shootVel = 2000;
     public static double debugShooterVelocity = 0;
-    private long lastUpdate = 0;
-    private int updateDelay = 500;
     public static AllianceColor RobotColor; 
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
+    @Override
     public void robotInit() {
-		oi = new OI();
-        autoModeChooser = new SendableChooser<CommandGroup>();
-        autoModeChooser.addDefault("Vision", new TestAutoVision());
-        autoModeChooser.addObject("Shooter", new ShooterTest());
-        autoColorChooser = new SendableChooser<AllianceColor>();
+		
+    	oi = new OI();
+		
+        autoModeChooser = new SendableChooser();
+        autoModeChooser.addDefault("Vision Test", new TestAutoVision());
+        autoModeChooser.addObject("Shooter Test", new ShooterTest());
+        autoModeChooser.addObject("Encoder Test", new TestAutoEncoders());
+        autoModeChooser.addObject("Boiler Side Auto", new BoilerSideAuto());
+        autoModeChooser.addObject("Middle Auto", new MiddleAuto());
+        autoModeChooser.addObject("Far Side Auto", new FarSideAuto());
+        autoModeChooser.addObject("Hooper Shooting Auto", new HopperShooterAuto());
+        SmartDashboard.putData("Auto mode", autoModeChooser);
+        
+        autoColorChooser = new SendableChooser();
         autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED);
         autoColorChooser.addObject("Auto Color Blue", AllianceColor.BLUE);
+        SmartDashboard.putData("Alliance Selector", autoColorChooser);
+        
         vision = new VisionManager();
     	new Thread(vision).start();
-        SmartDashboard.putData("Auto mode", autoModeChooser);
-        SmartDashboard.putData("Color", autoColorChooser);
+    	
+        
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
-        SmartDashboard.putNumber("driveP", driveP);
-        SmartDashboard.putNumber("driveI", driveI);
-        SmartDashboard.putNumber("driveD", driveD);
-        SmartDashboard.putNumber("driveF", driveF);
-        SmartDashboard.putNumber("shootP", shootP);
-        SmartDashboard.putNumber("shootI", shootI);
-        SmartDashboard.putNumber("shootD", shootD);
-        SmartDashboard.putNumber("shootF", shootF);
         SmartDashboard.putNumber("shootVel", shootVel);
         SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     }
@@ -105,9 +114,10 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
     	updateSmartDashboard();
-   // 	RobotColor = (AllianceColor) autoColorChooser.getSelected();
-    	try{
+    	RobotColor = (AllianceColor) autoColorChooser.getSelected();
         autonomousCommand = (CommandGroup) autoModeChooser.getSelected();
+        System.out.println("autoCommand"+autonomousCommand);
+    	try{
         System.out.println("autoCommand"+autonomousCommand);
         if (autonomousCommand != null && RobotColor != null) autonomousCommand.start();
     	}
@@ -120,6 +130,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	updateSmartDashboard();
         Scheduler.getInstance().run();
     }
 
@@ -137,15 +148,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	 long time = System.currentTimeMillis();
         Scheduler.getInstance().run();
-        
-        
-    	
-        if (time - lastUpdate > updateDelay) {
-    		updateSmartDashboard();
-    	}
-       
+    		updateSmartDashboard();       
         if(switchCamera){
         	
         	//CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
@@ -158,7 +162,7 @@ public class Robot extends IterativeRobot {
     	System.out.println("Updating SDB");
     	 SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     	 SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
-    	 updatePID();
+    	 shootVel=SmartDashboard.getNumber("shootVel", shootVel);
     }
     /**
      * This function is called periodically during test mode
@@ -166,16 +170,12 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
-    private void updatePID(){
-		driveP=SmartDashboard.getNumber("driveP", driveP);
-		driveI=SmartDashboard.getNumber("driveI", driveI);
-		driveD=SmartDashboard.getNumber("driveD", driveD);
-		driveF=SmartDashboard.getNumber("driveF", driveF);
-		shootP=SmartDashboard.getNumber("shootP", shootP);
-		shootI=SmartDashboard.getNumber("shootI", shootI);
-		shootD=SmartDashboard.getNumber("shootD", shootD);
-		shootF=SmartDashboard.getNumber("shootF", shootF);
-		shootVel=SmartDashboard.getNumber("shootVel", shootVel);
-	}
-   
+    //Default is red
+    public static int autoColorMultiplier(){
+    	if(RobotColor == AllianceColor.BLUE){
+    		return -1;
+    	}
+    	return 1;
+    }
+
 }

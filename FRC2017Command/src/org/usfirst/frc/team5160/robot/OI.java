@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
 import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
-import org.usfirst.frc.team5160.robot.commands.CMDPushGear;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
@@ -65,14 +64,14 @@ public class OI {
 			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
 			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
 			   climbBackwardButton = new JoystickButton(operatorJoystick, 5),
-			   shootButtonO = new JoystickButton(joystick, 1);
+			   shootButtonO = new JoystickButton(operatorJoystick, 1),
+				intakeButtonO = new JoystickButton(operatorJoystick, 2);
 	
 	public OI(){
 		
 		shootButton.whileHeld(new CMDShoot(Robot.shootVel));
-		shootButton.whileHeld(new CMDIntakeIn(1.0));
-		shootButtonO.whileHeld(new CMDShoot(2000.0));
-		shootButtonO.whileHeld(new CMDIntakeIn(1.0));
+		shootButtonO.whileHeld(new CMDShoot(Robot.shootVel));
+		intakeButtonO.whileHeld(new CMDIntakeIn(1.0));
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		
 		climbUpButton.whileHeld(new CMDClimb(1.0));
@@ -81,6 +80,9 @@ public class OI {
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
 		cameraButton.whenPressed(new CMDToggleCamera());
+	}
+	public boolean isShooting(){
+		return shootButton.get() || shootButtonO.get();
 	}
 	
 	//getter methods for the squared movement
@@ -108,5 +110,8 @@ public class OI {
 	}
 	public double getOperatorJoystickZ(){
 		return ((operatorJoystick.getZ() - 1.0) / 2.0);
+	}
+	public double getOperatorJoystickY(){
+		return operatorJoystick.getY();
 	}
 }

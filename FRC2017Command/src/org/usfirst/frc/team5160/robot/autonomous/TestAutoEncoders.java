@@ -6,6 +6,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class TestAutoEncoders extends CommandGroup{
 	public TestAutoEncoders(){
-		addSequential(new CMDAutoTankDrive(90,90));
+		addSequential(new CMDAutoTankDrive(36,36));
 	}
 }

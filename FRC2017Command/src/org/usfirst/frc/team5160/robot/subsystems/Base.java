@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5160.robot.subsystems;
 
+import org.usfirst.frc.team5160.robot.RMath;
 import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.RobotMap;
 import com.ctre.CANTalon;
@@ -42,7 +43,8 @@ public class Base extends Subsystem {
 	private double targetRightPos; 
 	private double zeroLeftPos;
 	private double zeroRightPos;
-	
+	private static final double INCH_TO_TICK = 1023d/(Math.PI*6d);///1023 ticks per pi*6 inches
+	private static final double TICK_TO_INCH = 1d/INCH_TO_TICK;
 	public Base(){
 		
 		//Init motors
@@ -74,6 +76,8 @@ public class Base extends Subsystem {
     }
     public void mecanumDrive(double x, double y, double rotation){
     	ensureMechanumTeleOp();
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
     	frontLeft.setInverted(false);
     	backLeft.setInverted(false);
     	
@@ -82,6 +86,8 @@ public class Base extends Subsystem {
     }
     public void mecanumDriveField(double x, double y, double rotation){
     	ensureMechanumTeleOp();
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
     	frontLeft.setInverted(false);
     	backLeft.setInverted(false);
     	
@@ -117,23 +123,29 @@ public class Base extends Subsystem {
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	motor.setAllowableClosedLoopErr(100);
     	motor.setProfile(0);
-    	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD );
-    	motor.setF(Robot.driveF);
+//    	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD );
+//    	motor.setF(Robot.driveF);
     }
    private void ensurePositionTank(){
     	System.out.println("Ensured position");
-    	frontLeft.changeControlMode( TalonControlMode.Position);
+  /*  	frontLeft.changeControlMode( TalonControlMode.Position);
     	frontRight.changeControlMode( TalonControlMode.Position);
     	backLeft.changeControlMode( TalonControlMode.Follower); 
     	backRight.changeControlMode( TalonControlMode.Follower);
     	backLeft.set(RobotMap.FRONT_LEFT_CIM);
-    	backRight.set(RobotMap.FRONT_RIGHT_CIM);
+    	backRight.set(RobotMap.FRONT_RIGHT_CIM);*/
+    	frontLeft.changeControlMode( TalonControlMode.PercentVbus);
+    	frontRight.changeControlMode( TalonControlMode.PercentVbus);
+    	backLeft.changeControlMode( TalonControlMode.PercentVbus); 
+    	backRight.changeControlMode( TalonControlMode.PercentVbus);
+    	setInvertAuto();
     }
     private void ensureMechanumTeleOp(){
     	frontLeft.changeControlMode(TalonControlMode.PercentVbus);
     	frontRight.changeControlMode(TalonControlMode.PercentVbus);
     	backLeft.changeControlMode( TalonControlMode.PercentVbus);
     	backRight.changeControlMode( TalonControlMode.PercentVbus);
+    	setInvertTeleOp();
     }
     
     public void positionTankDriveSet(double dLeft, double dRight){
@@ -143,19 +155,47 @@ public class Base extends Subsystem {
     	targetRightPos = dRight;
     }
     public void positionTankDriveExecute(){
-    		frontLeft.set(targetLeftPos);
+    /*		frontLeft.set(targetLeftPos);
     		frontRight.set(targetRightPos);
     		backLeft.set(frontLeft.getDeviceID());
-    		backRight.set(frontRight.getDeviceID());
+    		backRight.set(frontRight.getDeviceID());*/
+    	frontLeft.set(rampingVelocity(frontLeft, targetLeftPos));
+		frontRight.set(rampingVelocity(frontRight, targetRightPos));
+		backLeft.set(rampingVelocity(frontLeft, targetLeftPos));
+		backRight.set(rampingVelocity(frontRight, targetRightPos));
+    }
+    public void setInvertTeleOp(){
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
+    }
+    public void setInvertAuto(){
+    	frontRight.setInverted(false);
+		backRight.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
+    }
+    public double rampingVelocity(CANTalon motor, double target){
+    	if(TICK_TO_INCH*Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<6){
+    		return RMath.sign(target)*0.2;
+    	}
+    	else if(TICK_TO_INCH*Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<12){
+    		return RMath.sign(target)*0.4;
+    	}
+    	else if(TICK_TO_INCH*Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<24){
+    		return RMath.sign(target)*0.6;
+    	}
+    	return 0.8;
     }
     public boolean positionTankDriveReached(){
-    	if((frontLeft.getPosition() - targetLeftPos) >= 0 && (frontRight.getPosition() - targetRightPos) >= 0 ){
+    	if((Math.abs(frontLeft.getPosition()) - Math.abs(targetLeftPos)) >= 0 && (Math.abs(frontRight.getPosition()) - Math.abs(targetRightPos)) >= 0 ){
     		return true;
     	}
     	return false;
     }
     public static double inchToEncoderTick(double inches){
-    	return 1*inches;
+    	return INCH_TO_TICK*inches;
     }
     public static double feetToEncoderTick(double feet){
     	return inchToEncoderTick(12*feet);

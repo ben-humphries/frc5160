@@ -11,9 +11,13 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 
 public class CMDTrackGearDrive extends Command{
-	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
+	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
 	public CMDTrackGearDrive(){
 		requires(Robot.BASE);
+	}
+	@Override
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
 	}
 	@Override
 	protected void execute() {

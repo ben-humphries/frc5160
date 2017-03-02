@@ -32,6 +32,10 @@ public class CMDRotateBase extends Command {
     	this.gyro = Robot.BASE.getGyro();
     }
     @Override
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
+	}
+    @Override
     protected void execute() {
     		
 		double startAngle = gyro.getAngle();

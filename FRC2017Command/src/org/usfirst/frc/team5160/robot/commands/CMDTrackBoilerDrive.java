@@ -15,6 +15,10 @@ public class CMDTrackBoilerDrive extends Command{
 		requires(Robot.BASE);
 	}
 	@Override
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
+	}
+	@Override
 	protected void execute() {
 		double delta =Robot.vision.boilerProcessor.getDeltaAngle();
 		double dir = RMath.sign(delta);

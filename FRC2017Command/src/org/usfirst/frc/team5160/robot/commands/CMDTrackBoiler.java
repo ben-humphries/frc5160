@@ -10,15 +10,19 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  * This will have the robot rotate to face the boiler
  */
 public class CMDTrackBoiler extends Command{
-	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
+	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
 	public CMDTrackBoiler(){
 		requires(Robot.BASE);
+	}
+	@Override
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
 	}
 	@Override
 	protected void execute() {
 		double delta =Robot.vision.boilerProcessor.getDeltaAngle();
 		double dir = RMath.sign(delta);
-		Robot.BASE.mecanumDrive(0, 0, dir*RMath.clamp(0.2, 0.75, 1.0-1.0/Math.abs(0.1*delta) ));
+		Robot.BASE.mecanumDrive(0, 0, dir*0.2);
 	}
 	@Override
 	protected boolean isFinished() {
