@@ -69,7 +69,7 @@ public class OI {
 	
 	public OI(){
 		
-		shootButton.whileHeld(new CMDShoot(2000.0));
+		shootButton.whileHeld(new CMDShoot(Robot.shootVel));
 		shootButton.whileHeld(new CMDIntakeIn(1.0));
 		shootButtonO.whileHeld(new CMDShoot(2000.0));
 		shootButtonO.whileHeld(new CMDIntakeIn(1.0));

@@ -113,32 +113,27 @@ public class Base extends Subsystem {
     	motor.setVoltageRampRate(24.0);
     	motor.configNominalOutputVoltage(-0f, 0f);
     	motor.configPeakOutputVoltage(-12, 12);
-    	ensureMotorMode(motor, TalonControlMode.PercentVbus);
+    	motor.changeControlMode( TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	motor.setAllowableClosedLoopErr(100);
     	motor.setProfile(0);
     	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD );
     	motor.setF(Robot.driveF);
     }
-    private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
-    	if (motor.getControlMode() != neededMode) {
-			motor.changeControlMode(neededMode);
-		}
-    }
-    private void ensurePositionTank(){
+   private void ensurePositionTank(){
     	System.out.println("Ensured position");
-    	ensureMotorMode(frontLeft, TalonControlMode.Position);
-    	ensureMotorMode(frontRight, TalonControlMode.Position);
-    	ensureMotorMode(backLeft, TalonControlMode.Follower); 
-    	ensureMotorMode(backRight, TalonControlMode.Follower);
+    	frontLeft.changeControlMode( TalonControlMode.Position);
+    	frontRight.changeControlMode( TalonControlMode.Position);
+    	backLeft.changeControlMode( TalonControlMode.Follower); 
+    	backRight.changeControlMode( TalonControlMode.Follower);
     	backLeft.set(RobotMap.FRONT_LEFT_CIM);
     	backRight.set(RobotMap.FRONT_RIGHT_CIM);
     }
     private void ensureMechanumTeleOp(){
-    	ensureMotorMode(frontLeft, TalonControlMode.PercentVbus);
-    	ensureMotorMode(frontRight, TalonControlMode.PercentVbus);
-    	ensureMotorMode(backLeft, TalonControlMode.PercentVbus);
-    	ensureMotorMode(backRight, TalonControlMode.PercentVbus);
+    	frontLeft.changeControlMode(TalonControlMode.PercentVbus);
+    	frontRight.changeControlMode(TalonControlMode.PercentVbus);
+    	backLeft.changeControlMode( TalonControlMode.PercentVbus);
+    	backRight.changeControlMode( TalonControlMode.PercentVbus);
     }
     
     public void positionTankDriveSet(double dLeft, double dRight){

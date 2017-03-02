@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
     private SendableChooser autoModeChooser;
     private SendableChooser autoColorChooser;
     public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
-    public static double shootP = 0.2, shootI = 0.01, shootD=0.1, shootF = 0.02, shootVel = 2000;
+    public static double shootP = 0.12, shootI = 0.01, shootD=0.5, shootF = 0.02, shootVel = 2000;
     public static double debugShooterVelocity = 0;
     private long lastUpdate = 0;
     private int updateDelay = 100;
