@@ -19,8 +19,8 @@ public class Shooter extends Subsystem {
     
     public Shooter(){
     	
-    	motor1 = new CANTalon(RobotMap.SHOOTER_775_1);
-    	motor2 = new CANTalon(RobotMap.SHOOTER_775_2);
+    	motor1 = new CANTalon(RobotMap.SHOOTER_775_2);
+    	motor2 = new CANTalon(RobotMap.SHOOTER_775_1);
     	motor1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	motor1.configEncoderCodesPerRev(1024);
     	motor1.changeControlMode(TalonControlMode.Speed);
@@ -45,7 +45,7 @@ public class Shooter extends Subsystem {
     }
     
     public void shoot(double speed){
-    	System.out.println("Shoot "+speed);
+    	System.out.println("Shoot "+speed+" , "+motor1.getSpeed());
     	motor1.set(-speed);
     }
     

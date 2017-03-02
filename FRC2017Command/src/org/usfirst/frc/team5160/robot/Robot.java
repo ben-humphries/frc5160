@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
     private SendableChooser autoModeChooser;
     private SendableChooser autoColorChooser;
     public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
-    public static double shootP = 0.2, shootI = 0.01, shootD=0.1, shootF = 0.02, shootVel = 1000;
+    public static double shootP = 0.2, shootI = 0.01, shootD=0.1, shootF = 0.02, shootVel = 2000;
     public static double debugShooterVelocity = 0;
     private long lastUpdate = 0;
     private int updateDelay = 100;
@@ -59,8 +59,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         autoModeChooser = new SendableChooser<CommandGroup>();
-        autoModeChooser.addDefault("Default Auto", new TestAutoVision());
-        autoModeChooser.addObject("My Auto", new ShooterTest());
+        autoModeChooser.addDefault("Vision", new TestAutoVision());
+        autoModeChooser.addObject("Shooter", new ShooterTest());
         autoColorChooser = new SendableChooser<AllianceColor>();
         autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED);
         autoColorChooser.addObject("Auto Color Blue", AllianceColor.BLUE);
