@@ -13,7 +13,7 @@ import org.opencv.videoio.Videoio;
 public class SimpleVisionProcessor {
 	
 	
-	protected final int	resizeX = 240, 
+	public static final int	resizeX = 240, 
 			resizeY = 160,
 			cameraFOVAngleHorizontal = 60,
 			cameraFOVAngleVertical=40,

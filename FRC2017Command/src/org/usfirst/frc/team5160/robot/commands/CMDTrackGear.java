@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * This will rotate the robot to aline to the gear peg. 
  */
 public class CMDTrackGear extends Command{
-	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
+	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
 	public CMDTrackGear(){
 		requires(Robot.BASE);
 	}

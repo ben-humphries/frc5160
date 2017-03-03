@@ -15,6 +15,13 @@ public class CMDAutoMecanumDrive extends Command{
 	private double x, y, desiredAngle, rotationPower, startAngle;
 	private boolean absolute;
 	private ADXRS450_Gyro gyro;
+	/**
+	 * @param x
+	 * @param y
+	 * @param desiredAngle The angle or amount of turn desired
+	 * @param rotationPower 
+	 * @param absoluteAngle True if exact gyro heading, false if relative to when the command started
+	 */
 	public CMDAutoMecanumDrive(double x, double y, double desiredAngle, double rotationPower, boolean absoluteAngle){
 		requires(Robot.BASE);
 		this.x = x;

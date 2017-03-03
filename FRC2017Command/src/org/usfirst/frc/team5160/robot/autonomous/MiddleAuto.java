@@ -3,7 +3,6 @@ package org.usfirst.frc.team5160.robot.autonomous;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoRotate;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoTankDrive;
-import org.usfirst.frc.team5160.robot.commands.CMDRevShooter;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
 import org.usfirst.frc.team5160.robot.commands.CMDTrackBoiler;
 import org.usfirst.frc.team5160.robot.commands.CMDTrackGear;
@@ -26,8 +25,8 @@ public class MiddleAuto extends CommandGroup{
 		addSequential(new CMDWait(2),2); //2s
 		addSequential(new CMDAutoMecanumDrive(0.5, 0.5, 90, 0.5, true),2); //2s
 		addParallel(new CMDTrackBoiler(), 1); //1s
-		addParallel(new CMDRevShooter(1),1); //1
-		addSequential(new CMDShoot(1), 7); //4s 
+		addParallel(new CMDShoot(2000),1); //1
+		addSequential(new CMDShoot(2000), 7); //4s 
 		
 	}
 }

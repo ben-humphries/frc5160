@@ -53,15 +53,18 @@ public class Base extends Subsystem {
 		frontRight = new CANTalon(RobotMap.FRONT_RIGHT_CIM);
 		backRight = new CANTalon(RobotMap.BACK_RIGHT_CIM);
 		
+		//Setup inversions for teleop mecanum drive
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
 		
 		//Call init on all motors
 		initMotor(backLeft);
 		initMotor(backRight);
 		initMotor(frontLeft);
 		initMotor(frontRight);
-		//Init base
+		//Init the wpi drive
 		driveBase = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 		
 		//Init gyro
@@ -75,16 +78,18 @@ public class Base extends Subsystem {
     	
     }
     public void mecanumDrive(double x, double y, double rotation){
+    	//Makesure the motors are on teleop mode
     	ensureMechanumTeleOp();
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
     	frontLeft.setInverted(false);
     	backLeft.setInverted(false);
     	
-    	//Cartesian mecanum drive, with respect to the gyro angle
+    	//Cartesian mecanum drive, no value on gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, 0);
     }
     public void mecanumDriveField(double x, double y, double rotation){
+    	//Makesure the motors are on teleop mode
     	ensureMechanumTeleOp();
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
@@ -95,7 +100,7 @@ public class Base extends Subsystem {
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
     public void tankDrive(double leftValue, double rightValue){
-    	
+    	//Tank drive is inverted
 		frontRight.setInverted(false);
 		backRight.setInverted(false);
 		
@@ -123,17 +128,11 @@ public class Base extends Subsystem {
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	motor.setAllowableClosedLoopErr(100);
     	motor.setProfile(0);
-//    	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD );
-//    	motor.setF(Robot.driveF);
+
     }
    private void ensurePositionTank(){
+	   //Ensure it is ready for position based tank drive.
     	System.out.println("Ensured position");
-  /*  	frontLeft.changeControlMode( TalonControlMode.Position);
-    	frontRight.changeControlMode( TalonControlMode.Position);
-    	backLeft.changeControlMode( TalonControlMode.Follower); 
-    	backRight.changeControlMode( TalonControlMode.Follower);
-    	backLeft.set(RobotMap.FRONT_LEFT_CIM);
-    	backRight.set(RobotMap.FRONT_RIGHT_CIM);*/
     	frontLeft.changeControlMode( TalonControlMode.PercentVbus);
     	frontRight.changeControlMode( TalonControlMode.PercentVbus);
     	backLeft.changeControlMode( TalonControlMode.PercentVbus); 
@@ -141,6 +140,7 @@ public class Base extends Subsystem {
     	setInvertAuto();
     }
     private void ensureMechanumTeleOp(){
+    	//Ensure it is ready for driver control
     	frontLeft.changeControlMode(TalonControlMode.PercentVbus);
     	frontRight.changeControlMode(TalonControlMode.PercentVbus);
     	backLeft.changeControlMode( TalonControlMode.PercentVbus);
@@ -155,10 +155,7 @@ public class Base extends Subsystem {
     	targetRightPos = dRight;
     }
     public void positionTankDriveExecute(){
-    /*		frontLeft.set(targetLeftPos);
-    		frontRight.set(targetRightPos);
-    		backLeft.set(frontLeft.getDeviceID());
-    		backRight.set(frontRight.getDeviceID());*/
+    	//Sets the motors to their sides ramping power
     	frontLeft.set(rampingVelocity(frontLeft, targetLeftPos));
 		frontRight.set(rampingVelocity(frontRight, targetRightPos));
 		backLeft.set(rampingVelocity(frontLeft, targetLeftPos));
@@ -171,12 +168,14 @@ public class Base extends Subsystem {
     	backLeft.setInverted(false);
     }
     public void setInvertAuto(){
+    	//Auto is flipped from teleop since it is driving "backwards" (gear forwards)
     	frontRight.setInverted(false);
 		backRight.setInverted(false);
     	frontLeft.setInverted(true);
     	backLeft.setInverted(true);
     }
     public double rampingVelocity(CANTalon motor, double target){
+    	//Slow down the closer it is to its target.
     	if(TICK_TO_INCH*Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<6){
     		return RMath.sign(target)*0.2;
     	}

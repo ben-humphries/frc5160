@@ -5,7 +5,7 @@ import org.usfirst.frc.team5160.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Strafe without changing angles
+ * Strafe while continuing to face the same direction in auto
  */
 public class CMDAutoMecanumStraightStrafe extends Command{
 	private double x,y;

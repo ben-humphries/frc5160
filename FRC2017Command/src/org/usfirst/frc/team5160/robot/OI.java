@@ -58,7 +58,7 @@ public class OI {
 	
 	//Tank joystick
 	//--
-	
+	Button slowDownButton = new JoystickButton(tankJoystick, 1);
 	//Operator joystick
 	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
 			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
@@ -117,5 +117,8 @@ public class OI {
 	}
 	public double getOperatorJoystickY(){
 		return operatorJoystick.getY();
+	}
+	public boolean slowDown() {
+		return slowDownButton.get();
 	}
 }

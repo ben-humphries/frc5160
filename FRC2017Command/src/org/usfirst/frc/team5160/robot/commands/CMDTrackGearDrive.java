@@ -23,7 +23,7 @@ public class CMDTrackGearDrive extends Command{
 	protected void execute() {
 		double delta = Robot.vision.gearProcessor.getDeltaAngle();
 		double dir = RMath.sign(delta);
-		Robot.BASE.mecanumDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), dir*RMath.clamp(0.2, 0.75, 1.0-1.0/Math.abs(0.1*delta) ));
+		Robot.BASE.mecanumDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), dir*0.2);
 	}
 	@Override
 	protected boolean isFinished() {

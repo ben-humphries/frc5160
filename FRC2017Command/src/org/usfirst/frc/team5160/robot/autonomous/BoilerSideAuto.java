@@ -4,8 +4,6 @@ import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoRotate;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoTankDrive;
-import org.usfirst.frc.team5160.robot.commands.CMDRevShooter;
-import org.usfirst.frc.team5160.robot.commands.CMDRotateBase;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
 import org.usfirst.frc.team5160.robot.commands.CMDTrackBoiler;
 import org.usfirst.frc.team5160.robot.commands.CMDTrackGear;

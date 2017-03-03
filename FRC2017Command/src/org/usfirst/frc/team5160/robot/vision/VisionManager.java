@@ -29,7 +29,7 @@ public class VisionManager implements Runnable{
 	private long lastTime = 0;
 	
 	public VisionManager(){
-		outputStream = CameraServer.getInstance().putVideo("OutputStream", 240, 160);
+		outputStream = CameraServer.getInstance().putVideo("OutputStream", SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
 		streamer = CameraServer.getInstance().addServer("Streamer");	
 		
 		gearSink = new CvSink("gear");

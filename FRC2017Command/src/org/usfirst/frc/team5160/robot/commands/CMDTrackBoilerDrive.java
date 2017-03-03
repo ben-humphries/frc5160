@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  * This will have the robot always face the boiler.
  */
 public class CMDTrackBoilerDrive extends Command{
-	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
+	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
 	public CMDTrackBoilerDrive(){
 		requires(Robot.BASE);
 	}
@@ -22,7 +22,7 @@ public class CMDTrackBoilerDrive extends Command{
 	protected void execute() {
 		double delta =Robot.vision.boilerProcessor.getDeltaAngle();
 		double dir = RMath.sign(delta);
-		Robot.BASE.mecanumDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), dir*RMath.clamp(0.2, 0.75, 1.0-1.0/Math.abs(0.1*delta) ));
+		Robot.BASE.mecanumDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), dir*0.2);
 	}
 	@Override
 	protected boolean isFinished() {

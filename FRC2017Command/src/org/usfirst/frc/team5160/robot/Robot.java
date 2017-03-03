@@ -42,20 +42,24 @@ public class Robot extends IterativeRobot {
 	public static final IntakeMechanism INTAKE_MECHANISM = new IntakeMechanism();
 	public static final Shooter SHOOTER = new Shooter();
 	public static OI oi;
+	public static VisionManager vision;
 	
+	//statics for conviniece, shared values, etc.
 	public static boolean currentTeleOpDriveMode = true;
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
-	public static VisionManager vision;
 	
 	
+	//Dashboard widgets
 	 private SendableChooser autoModeChooser;
+	 private Command autonomousCommand;
 	 private SendableChooser autoColorChooser;
-	 
-    private Command autonomousCommand;
+	 public static AllianceColor RobotColor; 
+    
+	 //Testing values for shooter
     public static double shootVel = 2000;
     public static double debugShooterVelocity = 0;
-    public static AllianceColor RobotColor; 
+   
     
     /**
      * This function is run when the robot is first started up and should be
@@ -66,8 +70,9 @@ public class Robot extends IterativeRobot {
 		
     	oi = new OI();
 		
+    	//Initialize auto chooser
         autoModeChooser = new SendableChooser();
-        autoModeChooser.addDefault("Vision Test", new TestAutoVision());
+        autoModeChooser.addDefault("Vision Test", new TestAutoVision()); //Nothing damaging
         autoModeChooser.addObject("Shooter Test", new ShooterTest());
         autoModeChooser.addObject("Encoder Test", new TestAutoEncoders());
         autoModeChooser.addObject("Boiler Side Auto", new BoilerSideAuto());
@@ -76,16 +81,18 @@ public class Robot extends IterativeRobot {
         autoModeChooser.addObject("Hooper Shooting Auto", new HopperShooterAuto());
         SmartDashboard.putData("Auto mode", autoModeChooser);
         
+        //Initialize color chooser
         autoColorChooser = new SendableChooser();
-        autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED);
+        autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED); //Red is what the autos are default programmed to
         autoColorChooser.addObject("Auto Color Blue", AllianceColor.BLUE);
         SmartDashboard.putData("Alliance Selector", autoColorChooser);
         
+        //Start vision
         vision = new VisionManager();
     	new Thread(vision).start();
     	
         
-        SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
+        SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive()); //Put other things into dashboard
         SmartDashboard.putNumber("shootVel", shootVel);
         SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     }
@@ -95,10 +102,11 @@ public class Robot extends IterativeRobot {
      * You can use it to reset any subsystem information you want to clear when
 	 * the robot is disabled.
      */
+    @Override
     public void disabledInit(){
 
     }
-	
+	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
@@ -113,12 +121,13 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+    	//Check dashboard values.
     	updateSmartDashboard();
     	RobotColor = (AllianceColor) autoColorChooser.getSelected();
         autonomousCommand = (CommandGroup) autoModeChooser.getSelected();
         System.out.println("autoCommand"+autonomousCommand);
     	try{
-        System.out.println("autoCommand"+autonomousCommand);
+    		//Run autonomous
         if (autonomousCommand != null && RobotColor != null) autonomousCommand.start();
     	}
     	catch(Exception e){
@@ -130,12 +139,12 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	updateSmartDashboard();
-        Scheduler.getInstance().run();
+    	updateSmartDashboard(); //Update dashboard
+        Scheduler.getInstance().run(); //Continue running
     }
 
     public void teleopInit() {
-    	updateSmartDashboard();
+    	updateSmartDashboard(); //Update dashboard
     	
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
@@ -148,14 +157,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-    		updateSmartDashboard();       
-        if(switchCamera){
-        	
-        	//CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
-        	
-        	switchCamera = false;
-        }
+    	updateSmartDashboard();     //Continue running
+        Scheduler.getInstance().run(); 
 
     }
     private void updateSmartDashboard(){
@@ -170,7 +173,7 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
-    //Default is red
+    //Default is red/1
     public static int autoColorMultiplier(){
     	if(RobotColor == AllianceColor.BLUE){
     		return -1;
