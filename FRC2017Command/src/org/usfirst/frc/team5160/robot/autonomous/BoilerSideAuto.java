@@ -26,5 +26,6 @@ public class BoilerSideAuto extends CommandGroup{
 		addSequential(new CMDAutoMecanumDrive(0.5,-0.5,multiplier*180,0.5,true), 2); //2s
 		addParallel(new CMDTrackBoiler(), 1); //1s
 		addParallel(new CMDShoot(2000),1);
+		addSequential(new UptakeAndShoot(2000));
 	}
 }

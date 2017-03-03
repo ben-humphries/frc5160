@@ -16,10 +16,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class HopperShooterAuto extends CommandGroup{
 	public HopperShooterAuto(){
 		int multiplier = Robot.autoColorMultiplier(); //Multiplier for rotation
-		addSequential(new CMDAutoTankDrive(75,75)); //1.5s
+		addSequential(new CMDAutoTankDrive(100,100)); //1.5s
 		addSequential(new CMDAutoMecanumStraightStrafe(multiplier*1, 0),1); //1s
 		addParallel(new CMDAutoMecanumStraightStrafe(multiplier*-0.2, 0), 0.4);
 		addParallel(new CMDShoot(2000), 1.5);
 		addParallel(new CMDTrackBoiler(), 1.5); //2s
+		addSequential(new UptakeAndShoot(2000));
 	}
 }
