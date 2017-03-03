@@ -49,8 +49,8 @@ public class Base extends Subsystem {
 		frontRight = new Talon(RobotMap.FRONT_RIGHT_CIM);
 		backRight = new Talon(RobotMap.BACK_RIGHT_CIM);
 		
-		frontRight.setInverted(true);
-		backRight.setInverted(true);
+	//	frontRight.setInverted(true);
+	//	backRight.setInverted(true);
 		
 		//Call init on all motors
 		initMotor(backLeft);

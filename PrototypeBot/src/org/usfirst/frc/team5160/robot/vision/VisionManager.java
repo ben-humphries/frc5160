@@ -15,14 +15,13 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class VisionManager implements Runnable{
 	
 	
-	public static final int gearId = 0, shooterId = 0, intakeId = 0; 
+	public static final int shooterId = 0; 
 	
 	public VisionProcessorBoiler boilerProcessor;
-	public VisionProcessorGear gearProcessor;
 	public MjpegServer streamer;
 	public CvSource outputStream;
-	public UsbCamera gearCam, boilerCam, intakeCam;
-	public CvSink gearSink, boilerSink, intakeSink;
+	public UsbCamera boilerCam;
+	public CvSink  boilerSink;
 	
 	private static final long MinElapsedMilli = 20;
 	private long lastTime = 0;
@@ -30,21 +29,15 @@ public class VisionManager implements Runnable{
 	public VisionManager(){
 		outputStream = CameraServer.getInstance().putVideo("OutputStream", 240, 160);
 		streamer = CameraServer.getInstance().addServer("Streamer");	
-		
-		gearSink = new CvSink("gear");
+
 		boilerSink = new CvSink("boiler");
-		intakeSink = new CvSink("intake");
 		
-		gearCam = new UsbCamera("gear", gearId);
 		boilerCam = new UsbCamera("boiler", shooterId);
-		intakeCam = new UsbCamera("intake", intakeId);
 		
 		
 		
-		gearProcessor = new VisionProcessorGear();
 		boilerProcessor = new VisionProcessorBoiler();
 		
-		gearProcessor.draw=true;
 		boilerProcessor.draw=true;
 	}
 
@@ -53,29 +46,20 @@ public class VisionManager implements Runnable{
 		try{
 		  streamer.setSource(outputStream);
 		  
-		  gearSink.setSource(gearCam);
-		  boilerSink.setSource(gearCam);
-		  intakeSink.setSource(gearCam);
+		  boilerSink.setSource(boilerCam);
 		  
 		  Mat boilerImage = new Mat();
-		  Mat gearImage = new Mat();
-		  Mat intakeImage = new Mat();
 		  
-		  gearCam.setExposureManual(-5);
 		  boilerCam.setExposureManual(-5);
-		  intakeCam.setFPS(20);
 		  while(!Thread.interrupted()) {
-			  if(enoughTimeElapsed()){
+			  if(true){
 			 
-			  gearSink.grabFrame(gearImage);
-			  gearProcessor.process(gearImage);
 			  
 			  boilerSink.grabFrame(boilerImage);
 			  boilerProcessor.process(boilerImage);
 			  
-			  intakeSink.grabFrame(intakeImage);
 			  
-              outputStream.putFrame(gearProcessor.drawnContours);
+              outputStream.putFrame(boilerProcessor.drawnContours);
 			  }
           }
 		}

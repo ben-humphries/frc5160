@@ -13,15 +13,16 @@ public class CMDTrackGear extends Command{
 	}
 	@Override
 	protected void execute() {
-		double delta = Robot.vision.gearProcessor.getDeltaAngle();
-		double dir = RMath.sign(delta);
-		Robot.BASE.mecanumDrive(0, 0, dir*RMath.clamp(0.2, 0.75, 1.0-1.0/Math.abs(0.1*delta) ));
+	//	double delta = Robot.vision.gearProcessor.getDeltaAngle();
+	//	double dir = RMath.sign(delta);
+	//	Robot.BASE.mecanumDrive(0, 0, dir/4d);
 	}
 	@Override
 	protected boolean isFinished() {
 		return finishedRotate();
 	}
 	private boolean finishedRotate(){
-		return Math.abs(Robot.vision.gearProcessor.getDeltaAngle()) <= DEGREE_ERROR;
+		return true;
+		//return Math.abs(Robot.vision.gearProcessor.getDeltaAngle()) <= DEGREE_ERROR;
 	}
 }
