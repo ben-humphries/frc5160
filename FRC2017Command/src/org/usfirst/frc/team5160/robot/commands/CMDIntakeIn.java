@@ -13,12 +13,18 @@ public class CMDIntakeIn extends Command {
 	boolean shoot;
 	public CMDIntakeIn(double speed){
 		this.speed = speed;
-		this.shoot = Robot.oi.isShooting();
+		
 	}
     public CMDIntakeIn(double speed, boolean shoot) {
         requires(Robot.INTAKE_MECHANISM);
         this.shoot = shoot;
         this.speed = speed;
+    }
+    @Override
+    protected void initialize() {
+    	if(!shoot){
+    		this.shoot = Robot.oi.isShooting();
+    	}
     }
     @Override
     protected void execute() {

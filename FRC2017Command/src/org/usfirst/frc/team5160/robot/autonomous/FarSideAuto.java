@@ -11,12 +11,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class FarSideAuto extends CommandGroup{
 	public FarSideAuto(){
+		double dm = Robot.BASE.inchToEncoderTick(1);
 		int multiplier = Robot.autoColorMultiplier(); //Multiplier for rotation
 		//Moves forwards 90 inches, rotates, tracks gear, drives a foot.
-		addSequential(new CMDAutoTankDrive(90,90)); //2s
+		addSequential(new CMDAutoTankDrive(dm*90,dm*90)); //2s
 		addSequential(new CMDAutoRotate(multiplier*30, 0.5,false)); //1s
 		addSequential(new CMDTrackGear(), 2); //1s
-		addSequential(new CMDAutoTankDrive(12,12)); //0.5s
-		addSequential(new CMDAutoTankDrive(-4,-4));
+		addSequential(new CMDAutoTankDrive(dm*12,dm*12)); //0.5s
+		addSequential(new CMDAutoTankDrive(dm*-4,dm*-4));
 	}
 }

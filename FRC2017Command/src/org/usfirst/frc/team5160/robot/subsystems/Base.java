@@ -176,13 +176,13 @@ public class Base extends Subsystem {
     }
     public double rampingVelocity(CANTalon motor, double target){
     	//Slow down the closer it is to its target.
-    	if(TICK_TO_INCH*Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<6){
+    	if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<1200){
     		return RMath.sign(target)*0.2;
     	}
-    	else if(TICK_TO_INCH*Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<12){
+    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<2400){
     		return RMath.sign(target)*0.4;
     	}
-    	else if(TICK_TO_INCH*Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<24){
+    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<3600){
     		return RMath.sign(target)*0.6;
     	}
     	return 0.8;

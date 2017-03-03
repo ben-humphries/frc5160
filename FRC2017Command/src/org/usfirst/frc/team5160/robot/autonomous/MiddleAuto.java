@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5160.robot.autonomous;
 
+import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoRotate;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoTankDrive;
@@ -18,10 +19,11 @@ public class MiddleAuto extends CommandGroup{
 	 * First uses the CMDTrackGearAuto to move forward while tracking gear, then switches to a move forward, waits, backs up, aims and shoots. 
 	 */
 	public MiddleAuto(){
+		double dm = Robot.BASE.inchToEncoderTick(1);
 		//Moves forwards/strafes to align to gear, drives 12 inches, waits for lift, moves closer to boiler, tracks boiler, shoots. 
-		addSequential(new CMDTrackGearDriveAuto(57,0.05)); //2s
-		addSequential(new CMDAutoTankDrive(12,12)); //0.5s
-		addSequential(new CMDAutoTankDrive(-4,-4));
+		addSequential(new CMDTrackGearDriveAuto(dm*57,0.05)); //2s
+		addSequential(new CMDAutoTankDrive(dm*12,dm*12)); //0.5s
+		addSequential(new CMDAutoTankDrive(dm*-4,dm*-4));
 		addSequential(new CMDWait(2),2); //2s
 		addSequential(new CMDAutoMecanumDrive(0.5, 0.5, 90, 0.5, true),2); //2s
 		addParallel(new CMDTrackBoiler(), 1); //1s

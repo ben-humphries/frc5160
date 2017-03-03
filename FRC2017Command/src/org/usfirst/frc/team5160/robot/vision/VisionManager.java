@@ -25,7 +25,7 @@ public class VisionManager implements Runnable{
 	public UsbCamera gearCam, boilerCam, intakeCam;
 	public CvSink gearSink, boilerSink, intakeSink;
 	
-	private static final long MinElapsedMilli = 20;
+	private static final long MinElapsedMilli = 40;
 	private long lastTime = 0;
 	
 	public VisionManager(){
@@ -76,7 +76,7 @@ public class VisionManager implements Runnable{
 			  
 			  intakeSink.grabFrame(intakeImage);
 			  if(Robot.currentCamera == 0){
-              outputStream.putFrame(gearProcessor.drawnContours);
+				  outputStream.putFrame(gearProcessor.drawnContours);
 			  }
 			  else if (Robot.currentCamera==1){
 				  outputStream.putFrame(boilerProcessor.drawnContours);
