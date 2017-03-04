@@ -17,7 +17,7 @@ public class HopperShooterAuto extends CommandGroup{
 	public HopperShooterAuto(){
 		double dm = Robot.BASE.inchToEncoderTick(1);
 		int multiplier = Robot.autoColorMultiplier(); //Multiplier for rotation
-		addSequential(new CMDAutoTankDrive(dm*100,dm*100)); //1.5s
+		addSequential(new CMDAutoTankDrive(-dm*100,-dm*100)); //1.5s
 		addSequential(new CMDAutoMecanumStraightStrafe(multiplier*1, 0),1); //1s
 		addParallel(new CMDAutoMecanumStraightStrafe(multiplier*-0.2, 0), 0.4);
 		addParallel(new CMDShoot(2000), 1.5);
