@@ -23,7 +23,7 @@ public class CMDShootPID extends Command {
     }
     @Override
     protected void initialize() {
-    	Robot.SHOOTER.shootPID(targetSpeed);
+    	Robot.SHOOTER.shootPID(targetSpeed+300*Robot.oi.getOperatorJoystickY());
     }
     @Override
     protected boolean isFinished() {

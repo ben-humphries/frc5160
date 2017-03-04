@@ -19,7 +19,7 @@ public class CMDShoot extends Command {
     @Override
     protected void execute() {
     	Robot.debugShooterVelocity = Robot.SHOOTER.getSpeed();
-    	Robot.SHOOTER.shoot(targetSpeed);
+    	Robot.SHOOTER.shoot(targetSpeed+0.5*Robot.oi.getOperatorJoystickY());
     }
     @Override
     protected boolean isFinished() {

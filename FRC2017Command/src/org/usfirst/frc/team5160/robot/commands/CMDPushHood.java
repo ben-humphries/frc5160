@@ -14,7 +14,8 @@ public class CMDPushHood extends Command {
             }
     @Override
     protected void execute() {
-    	Robot.GEAR_MECHANISM.pushHood(Robot.oi.getOperatorJoystickY());
+    	if(Math.abs(Robot.oi.getOperatorJoystickX())>Math.abs(Robot.oi.getOperatorJoystickY()) &&  Math.abs(Robot.oi.getOperatorJoystickX())>0.25);
+    	Robot.GEAR_MECHANISM.pushHood(Robot.oi.getOperatorJoystickX());
     }
     @Override
     protected boolean isFinished() {

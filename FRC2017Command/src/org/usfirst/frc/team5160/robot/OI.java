@@ -126,4 +126,7 @@ public class OI {
 	public boolean fieldControl(){
 		return fieldControlButton.get();
 	}
+	public double getOperatorJoystickX() {
+		return operatorJoystick.getX();
+	}
 }
