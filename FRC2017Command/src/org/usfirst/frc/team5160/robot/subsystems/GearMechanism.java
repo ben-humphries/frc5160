@@ -25,10 +25,10 @@ public class GearMechanism extends Subsystem {
 	}
 	
 	public void pushHood(double speed){
-		hoodMotor.set(speed);
+		hoodMotor.set(-speed);
 	}
 	public void pullHood(double speed){
-		hoodMotor.set(-1*speed);
+		hoodMotor.set(1*speed);
 	}
 	public void stopMotor(){
 		hoodMotor.set(0);
