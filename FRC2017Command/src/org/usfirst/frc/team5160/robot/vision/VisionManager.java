@@ -45,9 +45,7 @@ public class VisionManager implements Runnable{
 		
 		gearProcessor.draw=true;
 		boilerProcessor.draw=true;
-		CameraServer.getInstance().startAutomaticCapture(gearCam);
-		CameraServer.getInstance().startAutomaticCapture(boilerCam);
-		CameraServer.getInstance().startAutomaticCapture(intakeCam);
+	
 		
 	}
 
@@ -65,6 +63,7 @@ public class VisionManager implements Runnable{
 		  gearCam.setExposureManual(-5);
 		  boilerCam.setExposureManual(-5);
 		  intakeCam.setFPS(20);
+			CameraServer.getInstance().addServer(gearSink);
 		  while(!Thread.interrupted()) {
 			  if(enoughTimeElapsed()){
 			 
