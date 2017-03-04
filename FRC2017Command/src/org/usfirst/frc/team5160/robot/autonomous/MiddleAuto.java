@@ -22,11 +22,11 @@ public class MiddleAuto extends CommandGroup{
 		double dm = Robot.BASE.inchToEncoderTick(1);
 		//Moves forwards/strafes to align to gear, drives 12 inches, waits for lift, moves closer to boiler, tracks boiler, shoots. 
 		addSequential(new CMDTrackGearDriveAuto(dm*57,0.05)); //2s
-		addSequential(new CMDAutoTankDrive(dm*12,dm*12)); //0.5s
+		addSequential(new CMDAutoTankDrive(dm*8,dm*8)); //0.5s
 		addSequential(new CMDAutoTankDrive(dm*-4,dm*-4));
-		addSequential(new CMDWait(2),2); //2s
+		addSequential(new CMDWait(7),7); //2s
 		addSequential(new CMDAutoMecanumDrive(0.5, 0.5, 90, 0.5, true),2); //2s
-		addParallel(new CMDTrackBoiler(), 1); //1s
+		addParallel(new CMDTrackBoiler(), 2); //1s
 		addParallel(new CMDShoot(2000),1); //1
 		addSequential(new UptakeAndShoot(2000), 7); //4s 
 		

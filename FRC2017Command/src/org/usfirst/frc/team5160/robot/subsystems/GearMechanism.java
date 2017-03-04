@@ -33,11 +33,11 @@ public class GearMechanism extends Subsystem {
 	public void stopMotor(){
 		hoodMotor.set(0);
 	}
-
+	@Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new CMDPushHood(Robot.oi.getOperatorJoystickY()));
+    	setDefaultCommand(new CMDPushHood());
     }
 }
 

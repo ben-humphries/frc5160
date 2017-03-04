@@ -20,15 +20,10 @@ public class CMDIntakeIn extends Command {
         this.shoot = shoot;
         this.speed = speed;
     }
-    @Override
-    protected void initialize() {
-    	if(!shoot){
-    		this.shoot = Robot.oi.isShooting();
-    	}
-    }
+  
     @Override
     protected void execute() {
-    	if(shoot){
+    	if((!shoot)||Robot.oi.isShooting()){
     		Robot.INTAKE_MECHANISM.uptake(speed);
     	}
     	else{

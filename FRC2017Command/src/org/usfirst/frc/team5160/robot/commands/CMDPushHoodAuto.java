@@ -7,14 +7,16 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *Pushes gear forward until button is released
  */
-public class CMDPushHood extends Command {
-	
-    public CMDPushHood() {
+public class CMDPushHoodAuto extends Command {
+
+	double speed;
+    public CMDPushHoodAuto(double speed) {
+    	this.speed = speed;
         requires(Robot.GEAR_MECHANISM);
             }
     @Override
     protected void execute() {
-    	Robot.GEAR_MECHANISM.pushHood(Robot.oi.getOperatorJoystickY());
+    	Robot.GEAR_MECHANISM.pushHood(speed);
     }
     @Override
     protected boolean isFinished() {

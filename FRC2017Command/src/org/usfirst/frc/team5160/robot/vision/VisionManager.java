@@ -39,8 +39,9 @@ public class VisionManager implements Runnable{
 		gearCam = new UsbCamera("gear", gearId);
 		boilerCam = new UsbCamera("boiler", shooterId);
 		intakeCam = new UsbCamera("intake", intakeId);
-		
-		
+		gearCam.setResolution(SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
+		boilerCam.setResolution(SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
+		intakeCam.setResolution(SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
 		
 		gearProcessor = new VisionProcessorGear();
 		boilerProcessor = new VisionProcessorBoiler();
