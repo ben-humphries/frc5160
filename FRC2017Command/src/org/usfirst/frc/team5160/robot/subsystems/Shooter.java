@@ -22,25 +22,26 @@ public class Shooter extends Subsystem {
     	motor1 = new CANTalon(RobotMap.SHOOTER_775_2);
     	motor2 = new CANTalon(RobotMap.SHOOTER_775_1);
     	motor1.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-    	motor1.configEncoderCodesPerRev(1024);
     	motor1.changeControlMode(TalonControlMode.PercentVbus);
-    	motor2.changeControlMode(TalonControlMode.PercentVbus);
-    	initMotor(motor1);
-    	initMotor(motor2);
+    	motor2.changeControlMode(TalonControlMode.Follower);
+    	motor2.set(RobotMap.SHOOTER_775_2);
+    	motor1.setPID(Robot.pShoot, Robot.iShoot, Robot.dShoot, Robot.fShoot, (int) (1023.0 / Robot.pShoot),36,0);
+    	motor1.setProfile(0);
+    	motor1.setInverted(true);
+    	motor2.setInverted(true);
+    	motor1.setVoltageRampRate(36.0);
+    	motor2.setVoltageRampRate(36);
+    	motor1.enableBrakeMode(false);
+    	motor2.enableBrakeMode(false);
+    	motor1.clearStickyFaults();
+    	motor2.clearStickyFaults();
+    	
     }
 
     public void initDefaultCommand() {
         
     }
     
-    private void initMotor(CANTalon motor){
-    	motor.setVoltageRampRate(24.0);
-    	motor.configNominalOutputVoltage(-0f, 0f);
-    	motor.configPeakOutputVoltage(-12, 12);
-    	motor.setProfile(0);
-    	motor.enableBrakeMode(false);
-    	motor.setInverted(true);
-    }
     public void shootBangBang(double speed){
     	motor1.changeControlMode(TalonControlMode.PercentVbus);
     	motor2.changeControlMode(TalonControlMode.PercentVbus);
@@ -71,4 +72,15 @@ public class Shooter extends Subsystem {
     public double getSpeed(){
     	return motor1.getSpeed();
     }
+
+	public void shootPID(double targetSpeed) {
+		motor1.changeControlMode(TalonControlMode.Speed);
+		motor1.set(targetSpeed);
+	}
+
+	public void shoot(double targetSpeed) {
+		motor1.changeControlMode(TalonControlMode.PercentVbus);
+		motor1.set(targetSpeed);
+		
+	}
 }

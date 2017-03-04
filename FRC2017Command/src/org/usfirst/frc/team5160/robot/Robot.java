@@ -54,6 +54,7 @@ public class Robot extends IterativeRobot {
 	 private SendableChooser autoModeChooser;
 	 private Command autonomousCommand;
 	 private SendableChooser autoColorChooser;
+	public static double fShoot=0.014, pShoot = 0.12, iShoot = 0, dShoot = 0.5;
 	 public static AllianceColor RobotColor; 
     
 	 //Testing values for shooter
@@ -94,6 +95,10 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive()); //Put other things into dashboard
         SmartDashboard.putNumber("shootVel", shootVel);
+        SmartDashboard.putNumber("fShoot", fShoot);
+        SmartDashboard.putNumber("pShoot", pShoot);
+        SmartDashboard.putNumber("iShoot", iShoot);
+        SmartDashboard.putNumber("dShoot", dShoot);
         SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     }
 	
@@ -165,6 +170,11 @@ public class Robot extends IterativeRobot {
     	System.out.println("Updating SDB");
     	 SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     	 SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
+    	 fShoot = SmartDashboard.getNumber("fShoot",0.02);
+    	 pShoot = SmartDashboard.getNumber("pShoot",0.02);
+    	 iShoot = SmartDashboard.getNumber("iShoot",0.02);
+    	 dShoot = SmartDashboard.getNumber("dShoot",0.02);
+    	 SmartDashboard.getNumber("pShoot");
     	 shootVel=SmartDashboard.getNumber("shootVel", shootVel);
     }
     /**

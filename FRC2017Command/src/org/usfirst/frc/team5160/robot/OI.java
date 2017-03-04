@@ -9,6 +9,7 @@ import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
 import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
+import org.usfirst.frc.team5160.robot.commands.CMDShootPID;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
 
@@ -59,6 +60,7 @@ public class OI {
 	//Tank joystick
 	//--
 	Button slowDownButton = new JoystickButton(tankJoystick, 1);
+	Button fieldControlButton = new JoystickButton(tankJoystick, 2);
 	//Operator joystick
 	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
 			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
@@ -73,7 +75,7 @@ public class OI {
 	public OI(){
 		
 		shootButton.whileHeld(new CMDShoot(2000));
-		shootButtonO.whileHeld(new CMDShoot(Robot.shootVel));
+		shootButtonO.whileHeld(new CMDShootPID(Robot.shootVel));
 		intakeButtonO.whileHeld(new CMDIntakeIn(1.0));
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		cameraButton0.whenPressed(new CMDToggleCamera(0));
@@ -120,5 +122,8 @@ public class OI {
 	}
 	public boolean slowDown() {
 		return slowDownButton.get();
+	}
+	public boolean fieldControl(){
+		return fieldControlButton.get();
 	}
 }
