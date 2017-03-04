@@ -21,8 +21,6 @@ public class VisionManager implements Runnable{
 	
 	public VisionProcessorBoiler boilerProcessor;
 	public VisionProcessorGear gearProcessor;
-	public MjpegServer streamer;
-	public CvSource outputStream;
 	public UsbCamera gearCam, boilerCam, intakeCam;
 	public CvSink gearSink, boilerSink, intakeSink;
 	
@@ -30,7 +28,6 @@ public class VisionManager implements Runnable{
 	private long lastTime = 0;
 	
 	public VisionManager(){
-		streamer = new MjpegServer("cam serve", 1181);	
 		gearSink = new CvSink("gear");
 		boilerSink = new CvSink("boiler");
 		intakeSink = new CvSink("intake");
@@ -38,6 +35,7 @@ public class VisionManager implements Runnable{
 		gearCam = new UsbCamera("gear", gearId);
 		boilerCam = new UsbCamera("boiler", shooterId);
 		intakeCam = new UsbCamera("intake", intakeId);
+		
 		gearCam.setResolution(SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
 		boilerCam.setResolution(SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
 		intakeCam.setResolution(SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
@@ -47,13 +45,15 @@ public class VisionManager implements Runnable{
 		
 		gearProcessor.draw=true;
 		boilerProcessor.draw=true;
+		CameraServer.getInstance().startAutomaticCapture(gearCam);
+		CameraServer.getInstance().startAutomaticCapture(boilerCam);
+		CameraServer.getInstance().startAutomaticCapture(intakeCam);
+		
 	}
 
 	@Override
 	public void run() {
 		try{
-			outputStream = new CvSource("camera source", PixelFormat.kMJPEG, SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY, 30);
-		  streamer.setSource(outputStream);
 		  
 		  gearSink.setSource(gearCam);
 		  boilerSink.setSource(boilerCam);
@@ -62,7 +62,6 @@ public class VisionManager implements Runnable{
 		  Mat boilerImage = new Mat();
 		  Mat gearImage = new Mat();
 		  Mat intakeImage = new Mat();
-		  
 		  gearCam.setExposureManual(-5);
 		  boilerCam.setExposureManual(-5);
 		  intakeCam.setFPS(20);
@@ -77,13 +76,13 @@ public class VisionManager implements Runnable{
 			  
 			  intakeSink.grabFrame(intakeImage);
 			  if(Robot.currentCamera == 0){
-				  outputStream.putFrame(gearProcessor.drawnContours);
+
 			  }
 			  else if (Robot.currentCamera==1){
-				  outputStream.putFrame(boilerProcessor.drawnContours);
+			  
 			  }
 			  else{
-				  outputStream.putFrame(intakeImage);
+
 			  }
 			  }
           }
