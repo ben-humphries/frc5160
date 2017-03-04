@@ -167,13 +167,12 @@ public class Robot extends IterativeRobot {
 
     }
     private void updateSmartDashboard(){
-    	System.out.println("Updating SDB");
     	 SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     	 SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
-    	 fShoot = SmartDashboard.getNumber("fShoot",0.02);
-    	 pShoot = SmartDashboard.getNumber("pShoot",0.02);
-    	 iShoot = SmartDashboard.getNumber("iShoot",0.02);
-    	 dShoot = SmartDashboard.getNumber("dShoot",0.02);
+    	 fShoot = SmartDashboard.getNumber("fShoot",0.14);
+    	 pShoot = SmartDashboard.getNumber("pShoot",0.12);
+    	 iShoot = SmartDashboard.getNumber("iShoot",0.0);
+    	 dShoot = SmartDashboard.getNumber("dShoot",0.5);
     	 SmartDashboard.getNumber("pShoot");
     	 shootVel=SmartDashboard.getNumber("shootVel", shootVel);
     }

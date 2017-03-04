@@ -13,6 +13,7 @@ public class CMDToggleCamera extends Command {
 
     public CMDToggleCamera(int camera) {
     	Robot.currentCamera = camera;
+    	System.out.println("Camera is "+camera);
     }
 
     @Override
