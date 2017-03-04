@@ -9,6 +9,7 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -29,9 +30,7 @@ public class VisionManager implements Runnable{
 	private long lastTime = 0;
 	
 	public VisionManager(){
-		outputStream = CameraServer.getInstance().putVideo("OutputStream", SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY);
-		streamer = CameraServer.getInstance().addServer("Streamer");	
-		
+		streamer = new MjpegServer("cam serve", 1181);	
 		gearSink = new CvSink("gear");
 		boilerSink = new CvSink("boiler");
 		intakeSink = new CvSink("intake");
@@ -53,6 +52,7 @@ public class VisionManager implements Runnable{
 	@Override
 	public void run() {
 		try{
+			outputStream = new CvSource("camera source", PixelFormat.kMJPEG, SimpleVisionProcessor.resizeX, SimpleVisionProcessor.resizeY, 30);
 		  streamer.setSource(outputStream);
 		  
 		  gearSink.setSource(gearCam);
