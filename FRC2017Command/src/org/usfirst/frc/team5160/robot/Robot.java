@@ -16,6 +16,7 @@ import org.usfirst.frc.team5160.robot.subsystems.IntakeMechanism;
 import org.usfirst.frc.team5160.robot.subsystems.Shooter;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -94,6 +95,10 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("iShoot", iShoot);
         SmartDashboard.putNumber("dShoot", dShoot);
         SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
+        
+        
+        //Unplug all cameras except for gear cam
+        CameraServer.getInstance().startAutomaticCapture();
     }
 	
 	/**
