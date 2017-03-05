@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * This drives the robot in a straight line, but strafing to aline to the gear. 
  */
+/*
 public class CMDTrackGearDriveAuto extends Command{
 	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
 	private double distance, turnMagnitude;
@@ -33,3 +34,4 @@ public class CMDTrackGearDriveAuto extends Command{
 		return Robot.BASE.getAverageEncoder() >= distance;
 	}
 }
+*/

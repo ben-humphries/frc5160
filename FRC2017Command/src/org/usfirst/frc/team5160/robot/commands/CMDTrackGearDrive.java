@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * This will have the robot always face the gear peg
  */
-
+/*
 public class CMDTrackGearDrive extends Command{
 	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
 	public CMDTrackGearDrive(){
@@ -33,3 +33,4 @@ public class CMDTrackGearDrive extends Command{
 		return Math.abs(Robot.vision.gearProcessor.getDeltaAngle()) <= DEGREE_ERROR;
 	}
 }
+*/

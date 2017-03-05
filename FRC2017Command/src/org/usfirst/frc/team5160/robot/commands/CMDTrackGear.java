@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * This will rotate the robot to aline to the gear peg. 
  */
+/*
 public class CMDTrackGear extends Command{
 	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
 	public CMDTrackGear(){
@@ -30,4 +31,4 @@ public class CMDTrackGear extends Command{
 	private boolean finishedRotate(){
 		return Math.abs(Robot.vision.gearProcessor.getDeltaAngle()) <= DEGREE_ERROR;
 	}
-}
+}*/

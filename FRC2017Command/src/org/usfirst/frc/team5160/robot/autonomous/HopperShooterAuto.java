@@ -4,7 +4,6 @@ import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoMecanumStraightStrafe;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoTankDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
-import org.usfirst.frc.team5160.robot.commands.CMDTrackBoiler;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -21,7 +20,7 @@ public class HopperShooterAuto extends CommandGroup{
 		addSequential(new CMDAutoMecanumStraightStrafe(multiplier*1, 0),1); //1s
 		addParallel(new CMDAutoMecanumStraightStrafe(multiplier*-0.2, 0), 0.4);
 		addParallel(new CMDShoot(2000), 1.5);
-		addParallel(new CMDTrackBoiler(), 1.5); //2s
+//		addParallel(new CMDTrackBoiler(), 1.5); //2s
 		addSequential(new UptakeAndShoot(2000));
 	}
 }

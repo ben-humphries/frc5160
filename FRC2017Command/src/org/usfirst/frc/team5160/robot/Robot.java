@@ -42,7 +42,6 @@ public class Robot extends IterativeRobot {
 	public static final IntakeMechanism INTAKE_MECHANISM = new IntakeMechanism();
 	public static final Shooter SHOOTER = new Shooter();
 	public static OI oi;
-	public static VisionManager vision;
 	
 	//statics for conviniece, shared values, etc.
 	public static boolean currentTeleOpDriveMode = true;
@@ -73,11 +72,8 @@ public class Robot extends IterativeRobot {
 		
     	//Initialize auto chooser
         autoModeChooser = new SendableChooser();
-        autoModeChooser.addDefault("Vision Test", new TestAutoVision()); //Nothing damaging
-        autoModeChooser.addObject("Shooter Test", new ShooterTest());
-        autoModeChooser.addObject("Encoder Test", new TestAutoEncoders());
+        autoModeChooser.addDefault("Middle Auto", new MiddleAuto());
         autoModeChooser.addObject("Boiler Side Auto", new BoilerSideAuto());
-        autoModeChooser.addObject("Middle Auto", new MiddleAuto());
         autoModeChooser.addObject("Far Side Auto", new FarSideAuto());
         autoModeChooser.addObject("Hooper Shooting Auto", new HopperShooterAuto());
         SmartDashboard.putData("Auto mode", autoModeChooser);
@@ -89,8 +85,6 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Alliance Selector", autoColorChooser);
         
         //Start vision
-        vision = new VisionManager();
-    	new Thread(vision).start();
     	
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive()); //Put other things into dashboard
