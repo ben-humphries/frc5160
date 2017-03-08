@@ -40,8 +40,6 @@ public class Robot extends IterativeRobot {
 	public static final Base BASE = new Base();
 	public static final Climber CLIMBER = new Climber();
 	public static final GearMechanism GEAR_MECHANISM = new GearMechanism();
-	public static final IntakeMechanism INTAKE_MECHANISM = new IntakeMechanism();
-	public static final Shooter SHOOTER = new Shooter();
 	public static OI oi;
 	
 	//statics for conviniece, shared values, etc.
