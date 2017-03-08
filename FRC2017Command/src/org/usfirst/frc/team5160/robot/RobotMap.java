@@ -12,13 +12,10 @@ public class RobotMap {
 	public static int FRONT_RIGHT_CIM = 3;
 	public static int BACK_RIGHT_CIM = 4;
 	
-	//shooter wheel
-	public static int SHOOTER_775_1 = 8;
-	public static int SHOOTER_775_2 = 9;
-	
-	//intake
-	public static int INTAKE_BAG_1 = 0;
-	public static int INTAKE_BAG_2 = 1;
+	//gear mech
+	public static int GEAR_BAG_1 = 8;
+	public static int GEAR_BAG_2 = 9;
+	public static int GEAR_INTAKE = 0; //PWM
 	
 	//climber
 	public static int CLIMBER_775_1 = 5;
@@ -35,7 +32,4 @@ public class RobotMap {
 	public static int JOYSTICK = 0;
 	public static int TANK_JOYSTICK = 1;
 	public static int OPERATOR_JOYSTICK = 2;
-	
-	//gear
-	public static int HOOD_NEVEREST = 2;
 }
