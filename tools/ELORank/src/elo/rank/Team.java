@@ -5,17 +5,24 @@ public class Team implements Comparable<Team> {
 		teamID = id; 
 	}
 	public String teamID = "frc";
-	public int elo = 1000; 
+	//overall,auto,teleop,fuel,takeoff,gear;
+	public static final int ELO_COUNT = 6;
+	public double[] elos ={1000,1000,1000,1000,1000,1000};
 	public int compareTo(Team team){
-		if(team.elo > elo){
+		if(team.elos[0] > elos[0]){
 			return 1;
 		}
-		else if(team.elo < elo){
+		else if(team.elos[0] < elos[0]){
 			return -1;
 		}
 		return 0;
 	}
 	public String toString(){
-		return teamID+" Elo  " + elo;
+//		overall elo, auto elo, teleop elo, fuel elo, takeoff elo, gear elo
+		String acc = "";
+		for(double elo : elos){
+			acc+=elo+", ";
+		}
+		return teamID+" Elos:  " +acc;
 	}
 }

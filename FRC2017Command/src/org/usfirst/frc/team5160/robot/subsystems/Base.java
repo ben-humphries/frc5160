@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5160.robot.subsystems;
 
+import org.usfirst.frc.team5160.robot.RMath;
 import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.RobotMap;
 import com.ctre.CANTalon;
@@ -42,7 +43,8 @@ public class Base extends Subsystem {
 	private double targetRightPos; 
 	private double zeroLeftPos;
 	private double zeroRightPos;
-	
+	private static final double INCH_TO_TICK = 1023d/(Math.PI*6d);///1023 ticks per pi*6 inches
+	private static final double TICK_TO_INCH = 1d/INCH_TO_TICK;
 	public Base(){
 		
 		//Init motors
@@ -51,19 +53,22 @@ public class Base extends Subsystem {
 		frontRight = new CANTalon(RobotMap.FRONT_RIGHT_CIM);
 		backRight = new CANTalon(RobotMap.BACK_RIGHT_CIM);
 		
+		//Setup inversions for teleop mecanum drive
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
 		
 		//Call init on all motors
 		initMotor(backLeft);
 		initMotor(backRight);
 		initMotor(frontLeft);
 		initMotor(frontRight);
-		//Init base
+		//Init the wpi drive
 		driveBase = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 		
 		//Init gyro
-		gyro = new ADXRS450_Gyro(/*port*/);
+		gyro = new ADXRS450_Gyro();
 		
 	}
 
@@ -73,15 +78,21 @@ public class Base extends Subsystem {
     	
     }
     public void mecanumDrive(double x, double y, double rotation){
+    	//Makesure the motors are on teleop mode
     	ensureMechanumTeleOp();
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
     	frontLeft.setInverted(false);
     	backLeft.setInverted(false);
     	
-    	//Cartesian mecanum drive, with respect to the gyro angle
+    	//Cartesian mecanum drive, no value on gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, 0);
     }
     public void mecanumDriveField(double x, double y, double rotation){
+    	//Makesure the motors are on teleop mode
     	ensureMechanumTeleOp();
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
     	frontLeft.setInverted(false);
     	backLeft.setInverted(false);
     	
@@ -89,7 +100,7 @@ public class Base extends Subsystem {
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
     public void tankDrive(double leftValue, double rightValue){
-    	
+    	//Tank drive is inverted
 		frontRight.setInverted(false);
 		backRight.setInverted(false);
 		
@@ -113,56 +124,77 @@ public class Base extends Subsystem {
     	motor.setVoltageRampRate(24.0);
     	motor.configNominalOutputVoltage(-0f, 0f);
     	motor.configPeakOutputVoltage(-12, 12);
-    	ensureMotorMode(motor, TalonControlMode.PercentVbus);
+    	motor.changeControlMode( TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	motor.setAllowableClosedLoopErr(100);
     	motor.setProfile(0);
-    	motor.setPID(Robot.driveD, Robot.driveI, Robot.driveD );
-    	motor.setF(Robot.driveF);
+
     }
-    private void ensureMotorMode(CANTalon motor, TalonControlMode neededMode){
-    	if (motor.getControlMode() != neededMode) {
-			motor.changeControlMode(neededMode);
-		}
-    }
-    private void ensurePositionTank(){
+   private void ensurePositionTank(){
+	   //Ensure it is ready for position based tank drive.
     	System.out.println("Ensured position");
-    	ensureMotorMode(frontLeft, TalonControlMode.Position);
-    	ensureMotorMode(frontRight, TalonControlMode.Position);
-    	ensureMotorMode(backLeft, TalonControlMode.Follower); 
-    	ensureMotorMode(backRight, TalonControlMode.Follower);
-    	backLeft.set(RobotMap.FRONT_LEFT_CIM);
-    	backRight.set(RobotMap.FRONT_RIGHT_CIM);
+    	frontLeft.changeControlMode( TalonControlMode.PercentVbus);
+    	frontRight.changeControlMode( TalonControlMode.PercentVbus);
+    	backLeft.changeControlMode( TalonControlMode.PercentVbus); 
+    	backRight.changeControlMode( TalonControlMode.PercentVbus);
+    	setInvertAuto();
     }
     private void ensureMechanumTeleOp(){
-    	ensureMotorMode(frontLeft, TalonControlMode.PercentVbus);
-    	ensureMotorMode(frontRight, TalonControlMode.PercentVbus);
-    	ensureMotorMode(backLeft, TalonControlMode.PercentVbus);
-    	ensureMotorMode(backRight, TalonControlMode.PercentVbus);
+    	//Ensure it is ready for driver control
+    	frontLeft.changeControlMode(TalonControlMode.PercentVbus);
+    	frontRight.changeControlMode(TalonControlMode.PercentVbus);
+    	backLeft.changeControlMode( TalonControlMode.PercentVbus);
+    	backRight.changeControlMode( TalonControlMode.PercentVbus);
+    	setInvertTeleOp();
     }
     
     public void positionTankDriveSet(double dLeft, double dRight){
     	ensurePositionTank();
-    	frontLeft.setEncPosition(0);
-    	frontRight.setEncPosition(0);
-    	backRight.setEncPosition(0);
-    	backLeft.setEncPosition(0);
+    	resetEncoders();
     	targetLeftPos = dLeft;
     	targetRightPos = dRight;
     }
     public void positionTankDriveExecute(){
-    		frontLeft.set(targetLeftPos);
-    		frontRight.set(targetRightPos);
-
+    	//Sets the motors to their sides ramping power
+    	frontLeft.set(rampingVelocity(frontLeft, targetLeftPos));
+		frontRight.set(rampingVelocity(frontRight, targetRightPos));
+		backLeft.set(rampingVelocity(frontLeft, targetLeftPos));
+		backRight.set(rampingVelocity(frontRight, targetRightPos));
+    }
+    public void setInvertTeleOp(){
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
+    }
+    public void setInvertAuto(){
+    	//Auto is flipped from teleop since it is driving "backwards" (gear forwards)
+    	frontRight.setInverted(false);
+		backRight.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
+    }
+    public double rampingVelocity(CANTalon motor, double target){
+    	//Slow down the closer it is to its target.
+    	if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<2400){
+    		return RMath.sign(target)*0.4;
+    	}
+    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<4800){
+    		return RMath.sign(target)*0.5;
+    	}
+    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<7200){
+    		return RMath.sign(target)*0.6;
+    	}
+    	return 0.8;
     }
     public boolean positionTankDriveReached(){
-    	if((frontLeft.getPosition() - targetLeftPos) >= 0 && (frontRight.getPosition() - targetRightPos) >= 0 ){
+    	if((Math.abs(frontLeft.getPosition()) - Math.abs(targetLeftPos)) >= 0 && (Math.abs(frontRight.getPosition()) - Math.abs(targetRightPos)) >= 0 ){
     		return true;
     	}
     	return false;
     }
     public static double inchToEncoderTick(double inches){
-    	return 1*inches;
+    	return INCH_TO_TICK*inches;
     }
     public static double feetToEncoderTick(double feet){
     	return inchToEncoderTick(12*feet);
@@ -170,6 +202,15 @@ public class Base extends Subsystem {
 
 	public void printEncoders() {
 		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition());
+	}
+	public void resetEncoders(){
+		frontLeft.setEncPosition(0);
+    	frontRight.setEncPosition(0);
+    	backRight.setEncPosition(0);
+    	backLeft.setEncPosition(0);
+	}
+	public double getAverageEncoder(){
+		return (frontLeft.getEncPosition()+frontRight.getEncPosition())/2d;
 	}
 	
 }

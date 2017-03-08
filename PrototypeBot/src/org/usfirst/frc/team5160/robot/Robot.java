@@ -1,21 +1,30 @@
 
 package org.usfirst.frc.team5160.robot;
 
-import java.util.ArrayList;
-
-import org.usfirst.frc.team5160.robot.activities.Activity;
-import org.usfirst.frc.team5160.robot.activities.Autonomous;
-import org.usfirst.frc.team5160.robot.activities.Camera;
-import org.usfirst.frc.team5160.robot.activities.DriveForwardAuto;
-import org.usfirst.frc.team5160.robot.activities.TrackTargetAuto;
-import org.usfirst.frc.team5160.robot.subsystems.CheapDriving;
-import org.usfirst.frc.team5160.robot.subsystems.Drive;
-
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
+import org.opencv.core.Mat;
+import org.opencv.videoio.VideoCapture;
+import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
+import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
+import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
+import org.usfirst.frc.team5160.robot.commands.CMDTrackBoiler;
+import org.usfirst.frc.team5160.robot.subsystems.Base;
+import org.usfirst.frc.team5160.robot.vision.VisionManager;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,85 +33,136 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-
 public class Robot extends IterativeRobot {
-	//Automode variables
-	final String driveForward = "Drive Forward";
-    final String trackTarget = "Track Target";
+
+	
+	public static final Base BASE = new Base();
+	
+	public static OI oi;
+	
+	public static boolean currentTeleOpDriveMode = true;
+	public static int currentCamera = 0;
+	public static boolean switchCamera = false;
+	
+	public static VisionManager vision;
+
+    Command autonomousCommand;
     SendableChooser chooser;
-    Autonomous chosenAuto; 
+    public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
     
-    //Timer 
-    Timer timer;
-    //Robot subsystems
-    CheapDriving drive;
-    //Activities
-    Camera camera; 
     
-    //Input variables
-    Joystick leftStick, rightStick;
     
-    public Robot(){
-    	//Good idea to call super()
-    	super();
-    	
-    	//Initialize input
-    	leftStick = new Joystick(0);
-    	rightStick = new Joystick(1);
-    	    	
-    	//Initialize subsystems
-    	drive = new CheapDriving(leftStick, rightStick);
-    	
-    	//Initialize activities
-    	camera = new Camera();
-    	
-    }
-    @Override
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
     public void robotInit() {
-    	// Configure autonomous modes
+		oi = new OI();
         chooser = new SendableChooser();
-        chooser.addDefault(driveForward, driveForward);
-        chooser.addObject(trackTarget, trackTarget);
-        SmartDashboard.putData("Auto choices", chooser);
+        chooser.addDefault("Default Auto", new CMDTrackBoiler());
+        chooser.addObject("My Auto", new CMDTrackBoiler());
+        SmartDashboard.putData("Auto mode", chooser);
         
-        //Init timer
-        timer = new Timer(); 
-        
-        //Init subsystems
-        drive.init();
-        //Init activities
-        camera.init();
-        
+        SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
+        SmartDashboard.putNumber("driveP", driveP);
+        SmartDashboard.putNumber("driveI", driveI);
+        SmartDashboard.putNumber("driveD", driveD);
+        SmartDashboard.putNumber("driveF", driveF);
+        vision = new VisionManager();
+    	new Thread(vision).start();
         
     }
-    @Override 
+	
+	/**
+     * This function is called once each time the robot enters Disabled mode.
+     * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
+     */
+    public void disabledInit(){
+
+    }
+	
+	public void disabledPeriodic() {
+		Scheduler.getInstance().run();
+	}
+
+	/**
+	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
+	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
+	 * Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box
+	 * below the Gyro
+	 *
+	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
+	 * or additional comparisons to the switch structure below with additional strings & commands.
+	 */
     public void autonomousInit() {
-    switch((String) chooser.getSelected()) {
-    	case driveForward:
-    		chosenAuto = new DriveForwardAuto();
-    		break;
-    	case trackTarget:
-    		chosenAuto = new TrackTargetAuto();
-    		break;
-    	default:
-    		chosenAuto = new DriveForwardAuto();
-            break;
-    	}
-    chosenAuto.init();
+    	try{
+    	Robot.updatePID();
+        autonomousCommand = (Command) chooser.getSelected();
+        
+		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		switch(autoSelected) {
+		case "My Auto":
+			autonomousCommand =  new CMDTrackBoiler();
+			break;
+		case "Default Auto":
+		default:
+			autonomousCommand = new CMDTrackBoiler();
+			break;
+		}
     	
+    	// schedule the autonomous command (example)
+        if (autonomousCommand != null) autonomousCommand.start();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
-    @Override
+
+    /**
+     * This function is called periodically during autonomous
+     */
     public void autonomousPeriodic() {
-    	chosenAuto.loopAutonomous(timer.get());
-    	timer.reset();
+        Scheduler.getInstance().run();
     }
-    @Override
+
+    public void teleopInit() {
+    	
+		// This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to 
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        if (autonomousCommand != null) autonomousCommand.cancel();
+    }
+
+    /**
+     * This function is called periodically during operator control
+     */
     public void teleopPeriodic() {
-        drive.loopTele(1.0/60);
+        Scheduler.getInstance().run();
+        
+        SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
+        
+       
+        if(switchCamera){
+        	
+        	//CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
+        	
+        	switchCamera = false;
+        }
+
     }
-    @Override
+    
+    /**
+     * This function is called periodically during test mode
+     */
     public void testPeriodic() {
-    
+        LiveWindow.run();
     }
-    
+    public static void updatePID(){
+		driveP=SmartDashboard.getNumber("driveP", driveP);
+		driveI=SmartDashboard.getNumber("driveI", driveI);
+		driveD=SmartDashboard.getNumber("driveD", driveD);
+		driveF=SmartDashboard.getNumber("driveF", driveF);
+	}
 }

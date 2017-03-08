@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
 import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
-import org.usfirst.frc.team5160.robot.commands.CMDPushGear;
 import org.usfirst.frc.team5160.robot.commands.CMDShoot;
+import org.usfirst.frc.team5160.robot.commands.CMDShootPID;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
 
@@ -59,28 +59,36 @@ public class OI {
 	
 	//Tank joystick
 	//--
-	
+	Button slowDownButton = new JoystickButton(tankJoystick, 1);
+	Button fieldControlButton = new JoystickButton(tankJoystick, 2);
 	//Operator joystick
 	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
 			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
 			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
 			   climbBackwardButton = new JoystickButton(operatorJoystick, 5),
-			   shootButtonO = new JoystickButton(joystick, 1);
+			   shootButtonO = new JoystickButton(operatorJoystick, 1),
+				intakeButtonO = new JoystickButton(operatorJoystick, 2),
+				cameraButton0 = new JoystickButton(operatorJoystick, 7),
+				cameraButton1 = new JoystickButton(operatorJoystick, 8),
+				cameraButton2 = new JoystickButton(operatorJoystick, 9);
 	
 	public OI(){
 		
-		shootButton.whileHeld(new CMDShoot(1.0));
-		shootButton.whileHeld(new CMDIntakeIn(1.0));
-		shootButtonO.whileHeld(new CMDShoot(1.0));
-		shootButtonO.whileHeld(new CMDIntakeIn(1.0));
+		shootButton.whileHeld(new CMDShoot(2000));
+		shootButtonO.whileHeld(new CMDShootPID(Robot.shootVel));
+		intakeButtonO.whileHeld(new CMDIntakeIn(1.0));
 		intakeButton.whileHeld(new CMDIntakeIn(1.0));
-		
+		cameraButton0.whenPressed(new CMDToggleCamera(0));
+		cameraButton1.whenPressed(new CMDToggleCamera(1));
+		cameraButton2.whenPressed(new CMDToggleCamera(2));
 		climbUpButton.whileHeld(new CMDClimb(1.0));
 		//climbDownButton.whileHeld(new CMDClimb(-1.0));  // PLZ DON'T UNCOMMENT ME EVER :)
 		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
-		cameraButton.whenPressed(new CMDToggleCamera());
+	}
+	public boolean isShooting(){
+		return shootButton.get() || shootButtonO.get();
 	}
 	
 	//getter methods for the squared movement
@@ -108,5 +116,17 @@ public class OI {
 	}
 	public double getOperatorJoystickZ(){
 		return ((operatorJoystick.getZ() - 1.0) / 2.0);
+	}
+	public double getOperatorJoystickY(){
+		return operatorJoystick.getY();
+	}
+	public boolean slowDown() {
+		return slowDownButton.get();
+	}
+	public boolean fieldControl(){
+		return fieldControlButton.get();
+	}
+	public double getOperatorJoystickX() {
+		return operatorJoystick.getX();
 	}
 }
