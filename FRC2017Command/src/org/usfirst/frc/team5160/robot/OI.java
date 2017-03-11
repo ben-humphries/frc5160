@@ -1,17 +1,12 @@
 package org.usfirst.frc.team5160.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
-import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
-import org.usfirst.frc.team5160.robot.commands.CMDShoot;
-import org.usfirst.frc.team5160.robot.commands.CMDShootPID;
-import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -74,10 +69,6 @@ public class OI {
 	
 	public OI(){
 		
-		shootButton.whileHeld(new CMDShoot(2000));
-		shootButtonO.whileHeld(new CMDShootPID(Robot.shootVel));
-		intakeButtonO.whileHeld(new CMDIntakeIn(1.0));
-		intakeButton.whileHeld(new CMDIntakeIn(1.0));
 		cameraButton0.whenPressed(new CMDToggleCamera(0));
 		cameraButton1.whenPressed(new CMDToggleCamera(1));
 		cameraButton2.whenPressed(new CMDToggleCamera(2));

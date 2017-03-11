@@ -3,18 +3,11 @@ package org.usfirst.frc.team5160.robot;
 
 import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
 import org.usfirst.frc.team5160.robot.autonomous.FarSideAuto;
-import org.usfirst.frc.team5160.robot.autonomous.HopperShooterAuto;
 import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
-import org.usfirst.frc.team5160.robot.autonomous.ShooterTest;
-import org.usfirst.frc.team5160.robot.autonomous.TestAutoEncoders;
-import org.usfirst.frc.team5160.robot.autonomous.TestAutoVision;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
-import org.usfirst.frc.team5160.robot.subsystems.IntakeMechanism;
-import org.usfirst.frc.team5160.robot.subsystems.Shooter;
-import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -52,12 +45,8 @@ public class Robot extends IterativeRobot {
 	 private SendableChooser autoModeChooser;
 	 private Command autonomousCommand;
 	 private SendableChooser autoColorChooser;
-	public static double fShoot=0.014, pShoot = 0.12, iShoot = 0, dShoot = 0.5;
 	 public static AllianceColor RobotColor; 
     
-	 //Testing values for shooter
-    public static double shootVel = 2000;
-    public static double debugShooterVelocity = 0;
    
     
     /**
@@ -74,7 +63,6 @@ public class Robot extends IterativeRobot {
         autoModeChooser.addDefault("Middle Auto", new MiddleAuto());
         autoModeChooser.addObject("Boiler Side Auto", new BoilerSideAuto());
         autoModeChooser.addObject("Far Side Auto", new FarSideAuto());
-        autoModeChooser.addObject("Hooper Shooting Auto", new HopperShooterAuto());
         SmartDashboard.putData("Auto mode", autoModeChooser);
         
         //Initialize color chooser
@@ -87,12 +75,7 @@ public class Robot extends IterativeRobot {
     	
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive()); //Put other things into dashboard
-        SmartDashboard.putNumber("shootVel", shootVel);
-        SmartDashboard.putNumber("fShoot", fShoot);
-        SmartDashboard.putNumber("pShoot", pShoot);
-        SmartDashboard.putNumber("iShoot", iShoot);
-        SmartDashboard.putNumber("dShoot", dShoot);
-        SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
+       
         
         
         //Unplug all cameras except for gear cam
@@ -164,14 +147,8 @@ public class Robot extends IterativeRobot {
 
     }
     private void updateSmartDashboard(){
-    	 SmartDashboard.putNumber("debugShooterVelocity", debugShooterVelocity);
     	 SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
-    	 fShoot = SmartDashboard.getNumber("fShoot",0.14);
-    	 pShoot = SmartDashboard.getNumber("pShoot",0.12);
-    	 iShoot = SmartDashboard.getNumber("iShoot",0.0);
-    	 dShoot = SmartDashboard.getNumber("dShoot",0.5);
-    	 SmartDashboard.getNumber("pShoot");
-    	 shootVel=SmartDashboard.getNumber("shootVel", shootVel);
+
     }
     /**
      * This function is called periodically during test mode

@@ -2,7 +2,6 @@ package org.usfirst.frc.team5160.robot.subsystems;
 
 import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.RobotMap;
-import org.usfirst.frc.team5160.robot.commands.CMDPushHood;
 
 import com.ctre.CANTalon;
 
@@ -20,24 +19,19 @@ public class GearMechanism extends Subsystem {
 	
 	
 	public GearMechanism(){
-		hoodMotor = new Spark(RobotMap.HOOD_NEVEREST);
-		//gearMotor = new CANTalon(RobotMap.GEAR_CIM);
 	}
 	
 	public void pushHood(double speed){
-		hoodMotor.set(-speed);
 	}
+	
 	public void pullHood(double speed){
-		hoodMotor.set(1*speed);
 	}
+	
 	public void stopMotor(){
-		hoodMotor.set(0);
 	}
+	
 	@Override
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new CMDPushHood());
     }
 }
 
