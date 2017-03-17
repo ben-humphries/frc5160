@@ -14,12 +14,13 @@ public class CMDAutoRotate extends Command{
 	public CMDAutoRotate( double desiredAngle, double rotationPower, boolean absoluteAngle){
 		requires(Robot.BASE);
 		this.desiredAngle = desiredAngle;
-		this.rotationPower = rotationPower;
+		this.rotationPower = Math.abs(rotationPower);
 		this.gyro = Robot.BASE.getGyro();
 		this.absolute = absoluteAngle;
 	}
 	@Override
-	public void initialize(){
+	protected void initialize(){
+		Robot.BASE.setInvertAuto();
 		this.startAngle = gyro.getAngle();
 	}
 	@Override

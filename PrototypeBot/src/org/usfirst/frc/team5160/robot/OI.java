@@ -1,12 +1,10 @@
 package org.usfirst.frc.team5160.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
-import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
-import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -48,18 +46,34 @@ public class OI {
 	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
-	Button cameraButton = new JoystickButton(joystick, 3);
+	Button shootButton = new JoystickButton(joystick, 2),
+		   intakeButton = new JoystickButton(joystick, 1),
+		   cameraButton = new JoystickButton(joystick, 3);
 	
 	//Tank joystick
 	//--
-	
+	Button slowDownButton = new JoystickButton(tankJoystick, 1);
+	Button fieldControlButton = new JoystickButton(tankJoystick, 2);
 	//Operator joystick
+	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
+			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
+			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
+			   climbBackwardButton = new JoystickButton(operatorJoystick, 5),
+			   shootButtonO = new JoystickButton(operatorJoystick, 1),
+				intakeButtonO = new JoystickButton(operatorJoystick, 2),
+				cameraButton0 = new JoystickButton(operatorJoystick, 7),
+				cameraButton1 = new JoystickButton(operatorJoystick, 8),
+				cameraButton2 = new JoystickButton(operatorJoystick, 9);
 	
 	public OI(){
 		
+		cameraButton0.whenPressed(new CMDToggleCamera(0));
+		cameraButton1.whenPressed(new CMDToggleCamera(1));
+		cameraButton2.whenPressed(new CMDToggleCamera(2));
 		
-		
-		cameraButton.whenPressed(new CMDToggleCamera());
+	}
+	public boolean isShooting(){
+		return shootButton.get() || shootButtonO.get();
 	}
 	
 	//getter methods for the squared movement
@@ -87,5 +101,17 @@ public class OI {
 	}
 	public double getOperatorJoystickZ(){
 		return ((operatorJoystick.getZ() - 1.0) / 2.0);
+	}
+	public double getOperatorJoystickY(){
+		return operatorJoystick.getY();
+	}
+	public boolean slowDown() {
+		return slowDownButton.get();
+	}
+	public boolean fieldControl(){
+		return fieldControlButton.get();
+	}
+	public double getOperatorJoystickX() {
+		return operatorJoystick.getX();
 	}
 }

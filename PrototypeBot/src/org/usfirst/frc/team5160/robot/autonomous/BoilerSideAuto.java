@@ -1,11 +1,11 @@
 package org.usfirst.frc.team5160.robot.autonomous;
 
 import org.usfirst.frc.team5160.robot.commands.CMDAutoMecanumDrive;
+import org.usfirst.frc.team5160.robot.commands.CMDAutoMecanumStraightStrafe;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoRotate;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoTankDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDRotateBase;
 import org.usfirst.frc.team5160.robot.commands.CMDTrackBoiler;
-import org.usfirst.frc.team5160.robot.commands.CMDTrackGear;
 import org.usfirst.frc.team5160.robot.commands.CMDWait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BoilerSideAuto extends CommandGroup{
 	//Drive forward 90 in, turn 30 ish, 2ft forward, stop 2 seconds, turn, shoot. 
 	public BoilerSideAuto(){
-		addSequential(new CMDAutoTankDrive(10000,10000));
+		addSequential(new CMDAutoMecanumStraightStrafe(0,100));
 		//addSequential(new CMDAutoTankDrive(90,90)); //2s
 	/*	addSequential(new CMDAutoRotate(30, 0.5,false)); //1s
 		addSequential(new CMDTrackGear(), 1); //1s
