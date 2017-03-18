@@ -8,30 +8,24 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CMDAutoRotate extends Command{
-	private double desiredAngle, rotationPower, startAngle;
-	private boolean absolute;
+	private double desiredAngle, rotationPower;
 	private ADXRS450_Gyro gyro;
-	public CMDAutoRotate( double desiredAngle, double rotationPower, boolean absoluteAngle){
+	private static final double ROT_ERROR = 3;
+	public CMDAutoRotate( double desiredAngle, double rotationPower){
 		requires(Robot.BASE);
 		this.desiredAngle = desiredAngle;
 		this.rotationPower = Math.abs(rotationPower);
 		this.gyro = Robot.BASE.getGyro();
-		this.absolute = absoluteAngle;
 	}
 	@Override
 	protected void initialize(){
 		Robot.BASE.setInvertAuto();
-		this.startAngle = gyro.getAngle();
+		gyro.reset();
 	}
 	@Override
 	public void execute(){
-		double dir; 
-		if(absolute){
-			dir = RMath.sign(desiredAngle-startAngle);
-		}
-		else{
-			dir = RMath.sign(desiredAngle);
-		}
+		double dir;
+		dir = RMath.sign(desiredAngle-gyro.getAngle());
 		//Rotate Robot based on rotationMag
 		Robot.BASE.mecanumDrive(0, 0, dir*rotationPower);
 		Timer.delay(0.03);
@@ -39,13 +33,6 @@ public class CMDAutoRotate extends Command{
 	}
 	@Override
 	protected boolean isFinished() {
-		if(absolute){
-			double dir = RMath.sign(desiredAngle-startAngle);
-			return dir*(desiredAngle-gyro.getAngle()) > 0;
-		}
-		else{
-			double dir = RMath.sign(desiredAngle);
-			return dir*(desiredAngle-desiredAngle+startAngle)>0;
-		}
+			return(Math.abs(desiredAngle-gyro.getAngle())<ROT_ERROR);
 	}
 }

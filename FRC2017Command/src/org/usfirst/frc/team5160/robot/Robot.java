@@ -8,6 +8,7 @@ import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
+import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -40,6 +41,7 @@ public class Robot extends IterativeRobot {
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
 	
+	public static VisionManager vision;
 	
 	//Dashboard widgets
 	 private SendableChooser autoModeChooser;
@@ -72,14 +74,15 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Alliance Selector", autoColorChooser);
         
         //Start vision
-    	
+        vision = new VisionManager();
+    	new Thread(vision).start();
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive()); //Put other things into dashboard
        
         
         
         //Unplug all cameras except for gear cam
-        CameraServer.getInstance().startAutomaticCapture();
+   //     CameraServer.getInstance().startAutomaticCapture();
     }
 	
 	/**

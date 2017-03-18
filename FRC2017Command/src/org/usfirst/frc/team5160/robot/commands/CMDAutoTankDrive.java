@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 
 public class CMDAutoTankDrive extends Command{
-	public CMDAutoTankDrive(double dLeft,double dRight){
+	public CMDAutoTankDrive(double dist, double angle, double turn){
 		requires(Robot.BASE);
-		Robot.BASE.positionTankDriveSet(dLeft, dRight);
+		Robot.BASE.positionTankDriveSet(dist, angle, turn);
 	}
 	@Override
 	protected void initialize(){
@@ -28,7 +28,7 @@ public class CMDAutoTankDrive extends Command{
 	}
 	@Override
 	protected boolean isFinished() {
-		return Robot.BASE.positionTankDriveReached();
+		return Robot.BASE.positionTankDriveFinished();
 	}
 
 }

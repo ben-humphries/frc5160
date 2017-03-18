@@ -15,17 +15,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class GearMechanism extends Subsystem {
     
 
-	private Spark hoodMotor;
 	
 	
 	public GearMechanism(){
 	}
 	
-	public void pushHood(double speed){
-	}
 	
-	public void pullHood(double speed){
-	}
 	
 	public void stopMotor(){
 	}

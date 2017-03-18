@@ -39,12 +39,12 @@ public class Base extends Subsystem {
 	private ADXRS450_Gyro gyro;
 	
 	//Positions for auto drive
-	private double targetLeftPos; 
-	private double targetRightPos; 
-	private double zeroLeftPos;
-	private double zeroRightPos;
+	private double targetDistance; 
+	private double targetAngle;
+	private double turnPower;
 	private static final double INCH_TO_TICK = 1023d/(Math.PI*6d);///1023 ticks per pi*6 inches
 	private static final double TICK_TO_INCH = 1d/INCH_TO_TICK;
+	private static final double ROT_ERROR = 3;
 	public Base(){
 		
 		//Init motors
@@ -121,9 +121,10 @@ public class Base extends Subsystem {
     }
     //Code for initializing the motors at init
     private void initMotor(CANTalon motor){
-    	motor.setVoltageRampRate(24.0);
+    	motor.setVoltageRampRate(36.0);
     	motor.configNominalOutputVoltage(-0f, 0f);
     	motor.configPeakOutputVoltage(-12, 12);
+    	motor.enableBrakeMode(true);
     	motor.changeControlMode( TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	motor.setAllowableClosedLoopErr(100);
@@ -148,18 +149,19 @@ public class Base extends Subsystem {
     	setInvertTeleOp();
     }
     
-    public void positionTankDriveSet(double dLeft, double dRight){
+    public void positionTankDriveSet(double dist, double angle, double rotationPower){
     	ensurePositionTank();
     	resetEncoders();
-    	targetLeftPos = dLeft;
-    	targetRightPos = dRight;
+    	gyro.reset();
+    	targetDistance = dist;
+    	targetAngle = angle;
+    	turnPower = rotationPower;
     }
     public void positionTankDriveExecute(){
-    	//Sets the motors to their sides ramping power
-    	frontLeft.set(rampingVelocity(frontLeft, targetLeftPos));
-		frontRight.set(rampingVelocity(frontRight, targetRightPos));
-		backLeft.set(rampingVelocity(frontLeft, targetLeftPos));
-		backRight.set(rampingVelocity(frontRight, targetRightPos));
+    	driveBase.arcadeDrive(rampingVelocity(getAverageEncoder(), targetDistance), turnPower*RMath.sign(targetAngle-gyro.getAngle()));
+    }
+    public boolean positionTankDriveFinished(){
+    	return (finishedMoving()&&finishedRotation());
     }
     public void setInvertTeleOp(){
     	frontRight.setInverted(true);
@@ -174,24 +176,24 @@ public class Base extends Subsystem {
     	frontLeft.setInverted(true);
     	backLeft.setInverted(true);
     }
-    public double rampingVelocity(CANTalon motor, double target){
+    public double rampingVelocity(double position, double target){
     	//Slow down the closer it is to its target.
-    	if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<2400){
-    		return RMath.sign(target)*0.4;
+    	if(Math.abs(Math.abs(position)-Math.abs(target))<400){
+    		return 0;
     	}
-    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<4800){
-    		return RMath.sign(target)*0.5;
+    	else if(Math.abs(Math.abs(position)-Math.abs(target))<2400){
+    		return RMath.sign(target)*0.3;
     	}
-    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<7200){
+    	else if(Math.abs(Math.abs(position)-Math.abs(target))<4800){
+    		return RMath.sign(target)*0.45;
+    	}
+    	else if(Math.abs(Math.abs(position)-Math.abs(target))<7200){
     		return RMath.sign(target)*0.6;
     	}
     	return 0.8;
     }
-    public boolean positionTankDriveReached(){
-    	if((Math.abs(frontLeft.getPosition()) - Math.abs(targetLeftPos)) >= 0 && (Math.abs(frontRight.getPosition()) - Math.abs(targetRightPos)) >= 0 ){
-    		return true;
-    	}
-    	return false;
+    private boolean finishedMoving(){
+    	return (Math.abs(Math.abs(getAverageEncoder())-Math.abs(targetDistance))<400);
     }
     public static double inchToEncoderTick(double inches){
     	return INCH_TO_TICK*inches;
@@ -210,7 +212,10 @@ public class Base extends Subsystem {
     	backLeft.setEncPosition(0);
 	}
 	public double getAverageEncoder(){
-		return (frontLeft.getEncPosition()+frontRight.getEncPosition())/2d;
+		return (backLeft.getEncPosition()+backRight.getEncPosition()+frontLeft.getEncPosition()+frontRight.getEncPosition())/4d;
 	}
+	private boolean finishedRotation() {
+		return(Math.abs(targetAngle-gyro.getAngle())<ROT_ERROR);
+}
 	
 }
