@@ -40,84 +40,73 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	//current drive mode: true is mecanum, false is tank
-	boolean currentTeleOpDriveMode = true;
-	
-	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
+	Joystick leftJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK_LEFT);
+	Joystick rightJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK_RIGHT);
 	Joystick operatorJoystick = new Joystick(RobotMap.OPERATOR_JOYSTICK);
-	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
-	Button shootButton = new JoystickButton(joystick, 2),
-		   intakeButton = new JoystickButton(joystick, 1),
-		   cameraButton = new JoystickButton(joystick, 3);
+	Button slowButton = new JoystickButton(leftJoystick, 1),
+				reverseButton = new JoystickButton(rightJoystick, 1),
 	
-	//Tank joystick
-	//--
-	Button slowDownButton = new JoystickButton(tankJoystick, 1);
-	Button fieldControlButton = new JoystickButton(tankJoystick, 2);
 	//Operator joystick
 	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
-			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
-			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
-			   climbBackwardButton = new JoystickButton(operatorJoystick, 5),
-			   shootButtonO = new JoystickButton(operatorJoystick, 1),
-				intakeButtonO = new JoystickButton(operatorJoystick, 2),
-				cameraButton0 = new JoystickButton(operatorJoystick, 7),
-				cameraButton1 = new JoystickButton(operatorJoystick, 8),
-				cameraButton2 = new JoystickButton(operatorJoystick, 9);
+				climbForwardButton = new JoystickButton(operatorJoystick, 4),
+				climbBackwardButton = new JoystickButton(operatorJoystick, 5),
+				gearIntake = new JoystickButton(operatorJoystick, 1),
+				gearOuttake = new JoystickButton(operatorJoystick, 2); //maybe use different button?
 	
 	public OI(){
 		
-		cameraButton0.whenPressed(new CMDToggleCamera(0));
-		cameraButton1.whenPressed(new CMDToggleCamera(1));
-		cameraButton2.whenPressed(new CMDToggleCamera(2));
 		climbUpButton.whileHeld(new CMDClimb(1.0));
-		//climbDownButton.whileHeld(new CMDClimb(-1.0));  // PLZ DON'T UNCOMMENT ME EVER :)
 		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
+		gearIntake.whileHeld();
+		gearOuttake.whileHeld();
+		
 	}
-	public boolean isShooting(){
-		return shootButton.get() || shootButtonO.get();
+	
+	public boolean isSlowed(){
+		return slowButton.get();
+	}
+	public boolean isReversed(){
+		return reverseButton.get();
 	}
 	
 	//getter methods for the squared movement
-	public double getJoystickX(){
+	/*public double getLeftJoystickX(){
 		if(Math.abs(joystick.getX()) > 0.05){
 			return joystick.getX()*joystick.getX() * Math.signum(joystick.getX());
 		}
 		return 0;
-	}
-	public double getJoystickY(){
-		if(Math.abs(joystick.getY()) > 0.05){
-			return joystick.getY()*joystick.getY() * Math.signum(joystick.getY());
+	}*/
+	public double getLeftJoystickY(){
+		if(Math.abs(leftJoystick.getY()) > 0.05){
+			return leftJoystick.getY()*leftJoystick.getY() * Math.signum(leftJoystick.getY());
 		}
 		return 0;
 	}
-	public double getJoystickRotation(){
+	/*public double getJoystickRotation(){
 		if(Math.abs(joystick.getTwist()) > 0.05){
 			return joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist()) / 2;
 		}
 		return 0;
+	}*/
+	public double getRightJoystickY(){
+		if(Math.abs(rightJoystick.getY()) > 0.05){
+			return rightJoystick.getY()*rightJoystick.getY() * Math.signum(rightJoystick.getY());
+		}
+		return 0;
 	}
 	
-	public double getTankJoystickY(){
-		return tankJoystick.getY()*tankJoystick.getY() * Math.signum(tankJoystick.getY());
-	}
+	
 	public double getOperatorJoystickZ(){
 		return ((operatorJoystick.getZ() - 1.0) / 2.0);
 	}
 	public double getOperatorJoystickY(){
-		return operatorJoystick.getY();
-	}
-	public boolean slowDown() {
-		return slowDownButton.get();
-	}
-	public boolean fieldControl(){
-		return fieldControlButton.get();
-	}
-	public double getOperatorJoystickX() {
-		return operatorJoystick.getX();
+		if(Math.abs(operatorJoystick.getY()) > 0.05){
+			return operatorJoystick.getY()*operatorJoystick.getY() * Math.signum(operatorJoystick.getY());
+		}
+		return 0;
 	}
 }
