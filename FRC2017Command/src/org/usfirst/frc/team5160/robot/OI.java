@@ -73,32 +73,18 @@ public class OI {
 		return reverseButton.get();
 	}
 	
-	//getter methods for the squared movement
-	/*public double getLeftJoystickX(){
-		if(Math.abs(joystick.getX()) > 0.05){
-			return joystick.getX()*joystick.getX() * Math.signum(joystick.getX());
-		}
-		return 0;
-	}*/
 	public double getLeftJoystickY(){
 		if(Math.abs(leftJoystick.getY()) > 0.05){
 			return leftJoystick.getY()*leftJoystick.getY() * Math.signum(leftJoystick.getY());
 		}
 		return 0;
 	}
-	/*public double getJoystickRotation(){
-		if(Math.abs(joystick.getTwist()) > 0.05){
-			return joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist()) / 2;
-		}
-		return 0;
-	}*/
 	public double getRightJoystickY(){
 		if(Math.abs(rightJoystick.getY()) > 0.05){
 			return rightJoystick.getY()*rightJoystick.getY() * Math.signum(rightJoystick.getY());
 		}
 		return 0;
 	}
-	
 	
 	public double getOperatorJoystickZ(){
 		return ((operatorJoystick.getZ() - 1.0) / 2.0);
