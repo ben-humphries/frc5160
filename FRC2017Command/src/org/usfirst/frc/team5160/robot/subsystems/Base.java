@@ -45,6 +45,7 @@ public class Base extends Subsystem {
 	private static final double INCH_TO_TICK = 1023d/(Math.PI*6d);///1023 ticks per pi*6 inches
 	private static final double TICK_TO_INCH = 1d/INCH_TO_TICK;
 	private static final double ROT_ERROR = 3;
+	
 	public Base(){
 		
 		//Init motors
