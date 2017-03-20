@@ -23,7 +23,7 @@ public class RobotMap {
 	public static int CLIMBER_SWITCH = 13; //not in use
 	
 	//cameras
-	public static int CAMERA_CLIMB = 1; //front camera
+	public static int CAMERA_GEAR = 1; //front camera
 	
 	//joysticks
 	public static int DRIVE_JOYSTICK_LEFT = 0;
