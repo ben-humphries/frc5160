@@ -17,7 +17,8 @@ public class CMDTeleOpMecanumDrive extends Command {
     }
     @Override
     protected void execute() {
-    	double mul = 1;
+    	Robot.BASE.cheesyDrive(Robot.oi.getJoystickY(), Robot.oi.getJoystickRotation(), Robot.oi.slowDown());
+    	/*double mul = 1;
     	if(Robot.oi.slowDown()){
     		mul = 0.5;
     	}
@@ -27,7 +28,7 @@ public class CMDTeleOpMecanumDrive extends Command {
     	else{
     		Robot.BASE.mecanumDrive(Robot.oi.getJoystickX()*mul, Robot.oi.getJoystickY()*mul, Robot.oi.getJoystickRotation()*mul);
     	}
-    		
+    		*/
     }
     @Override
     protected boolean isFinished() {
