@@ -18,14 +18,14 @@ public class CMDTeleOpMecanumDrive extends Command {
     @Override
     protected void execute() {
     	double mul = 1;
-    	if(Robot.oi.slowDown()){
+    	if(Robot.oi.isSlowed()){
     		mul = 0.5;
     	}
-    	if(Robot.oi.fieldControl()){
-    		Robot.BASE.mecanumDriveField(Robot.oi.getJoystickX()*mul, Robot.oi.getJoystickY()*mul, Robot.oi.getJoystickRotation()*mul);
+    	if(Robot.oi.isReversed()){
+    		Robot.BASE.mecanumDriveField(Robot.oi.getRightJoystickX()*mul, Robot.oi.getRightJoystickY()*mul, Robot.oi.getJoystickRotation()*mul);
     	}
     	else{
-    		Robot.BASE.mecanumDrive(Robot.oi.getJoystickX()*mul, Robot.oi.getJoystickY()*mul, Robot.oi.getJoystickRotation()*mul);
+    		Robot.BASE.mecanumDrive(Robot.oi.getRightJoystickX()*mul, Robot.oi.getRightJoystickY()*mul, Robot.oi.getJoystickRotation()*mul);
     	}
     		
     }

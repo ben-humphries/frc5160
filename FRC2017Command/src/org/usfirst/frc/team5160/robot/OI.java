@@ -2,7 +2,6 @@ package org.usfirst.frc.team5160.robot;
 
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
-import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -46,7 +45,7 @@ public class OI {
 	
 	//Drive joystick
 	Button slowButton = new JoystickButton(leftJoystick, 1),
-				reverseButton = new JoystickButton(rightJoystick, 1),
+				reverseButton = new JoystickButton(rightJoystick, 1);
 	
 	//Operator joystick
 	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
@@ -61,8 +60,8 @@ public class OI {
 		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
-		gearIntake.whileHeld();
-		gearOuttake.whileHeld();
+	//	gearIntake.whileHeld();
+	//	gearOuttake.whileHeld();
 		
 	}
 	
@@ -72,7 +71,12 @@ public class OI {
 	public boolean isReversed(){
 		return reverseButton.get();
 	}
-	
+	public double getJoystickRotation(){		
+			if(Math.abs(rightJoystick.getTwist()) > 0.05){		
+				return rightJoystick.getTwist()*rightJoystick.getTwist() * Math.signum(rightJoystick.getTwist());		
+			}		
+			return 0;		
+	}
 	public double getLeftJoystickY(){
 		if(Math.abs(leftJoystick.getY()) > 0.05){
 			return leftJoystick.getY()*leftJoystick.getY() * Math.signum(leftJoystick.getY());
@@ -85,7 +89,12 @@ public class OI {
 		}
 		return 0;
 	}
-	
+	public double getRightJoystickX(){
+		if(Math.abs(rightJoystick.getX()) > 0.05){
+			return rightJoystick.getX()*rightJoystick.getX() * Math.signum(rightJoystick.getX());
+		}
+		return 0;
+	}
 	public double getOperatorJoystickZ(){
 		return ((operatorJoystick.getZ() - 1.0) / 2.0);
 	}

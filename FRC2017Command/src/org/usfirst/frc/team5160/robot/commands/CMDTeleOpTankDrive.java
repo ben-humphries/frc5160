@@ -14,7 +14,7 @@ public class CMDTeleOpTankDrive extends Command {
     }
     @Override
     protected void execute() {
-    	Robot.BASE.tankDrive(Robot.oi.getTankJoystickY(), Robot.oi.getJoystickY());
+    	Robot.BASE.tankDrive(Robot.oi.getLeftJoystickY(), Robot.oi.getRightJoystickY());
     }
     @Override
     protected boolean isFinished() {
