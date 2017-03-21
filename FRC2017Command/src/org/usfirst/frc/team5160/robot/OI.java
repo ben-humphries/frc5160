@@ -2,6 +2,7 @@ package org.usfirst.frc.team5160.robot;
 
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
+import org.usfirst.frc.team5160.robot.commands.CMDIntakeGear;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -60,8 +61,8 @@ public class OI {
 		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
-	//	gearIntake.whileHeld();
-	//	gearOuttake.whileHeld();
+		gearIntake.whileHeld(new CMDIntakeGear(1.0));
+		gearOuttake.whileHeld(new CMDIntakeGear(-1.0));
 		
 	}
 	

@@ -8,6 +8,7 @@ import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
+import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Preferences;
@@ -75,7 +76,7 @@ public class Base extends Subsystem {
 
     public void initDefaultCommand() {
     	//set default command as TeleOp Drive
-    	setDefaultCommand(new CMDTeleOpMecanumDrive());
+    	setDefaultCommand(new CMDTeleOpTankDrive());
     	
     }
     public void mecanumDrive(double x, double y, double rotation){
@@ -101,12 +102,6 @@ public class Base extends Subsystem {
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
     public void tankDrive(double leftValue, double rightValue){
-    	//Tank drive is inverted
-		frontRight.setInverted(false);
-		backRight.setInverted(false);
-		
-		frontLeft.setInverted(true);
-		backLeft.setInverted(true);
     	
     	//Tank drive
     	driveBase.tankDrive(leftValue, rightValue);
