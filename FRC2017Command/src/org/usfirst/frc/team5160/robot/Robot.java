@@ -48,8 +48,8 @@ public class Robot extends IterativeRobot {
 	 private Command autonomousCommand;
 	 private SendableChooser autoColorChooser;
 	 public static AllianceColor RobotColor; 
-    
-   
+	 public static int Gear_Down_Value = 124;
+	 public static double Turn_Sensitivity = 1;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -72,12 +72,12 @@ public class Robot extends IterativeRobot {
         autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED); //Red is what the autos are default programmed to
         autoColorChooser.addObject("Auto Color Blue", AllianceColor.BLUE);
         SmartDashboard.putData("Alliance Selector", autoColorChooser);
-        
+        SmartDashboard.putNumber("gear down value", Gear_Down_Value);
+        SmartDashboard.putNumber("turnSensitivity", Turn_Sensitivity);
         //Start vision
         vision = new VisionManager();
     	new Thread(vision).start();
         
-        SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive()); //Put other things into dashboard
        
         
         
@@ -150,8 +150,8 @@ public class Robot extends IterativeRobot {
 
     }
     private void updateSmartDashboard(){
-    	 SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
-
+    	Gear_Down_Value = (int) SmartDashboard.getNumber("gear down value", Gear_Down_Value);
+    	Turn_Sensitivity = SmartDashboard.getNumber("turnSensitivity", Turn_Sensitivity);
     }
     /**
      * This function is called periodically during test mode

@@ -62,10 +62,18 @@ public class OI {
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
 		gearIntake.whileHeld(new CMDIntakeGear(1.0));
-		gearOuttake.whileHeld(new CMDIntakeGear(-1.0));
+		gearOuttake.whileHeld(new CMDIntakeGear(-0.5));
 		
 	}
-	
+	public double gearIntakePower(){
+		if(gearIntake.get()){
+			return 1;
+		}
+		else if(gearOuttake.get()){
+			return -0.5;
+		}
+		return 0;
+	}
 	public boolean isSlowed(){
 		return slowButton.get();
 	}

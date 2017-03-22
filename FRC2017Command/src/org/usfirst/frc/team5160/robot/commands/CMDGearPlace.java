@@ -1,31 +1,34 @@
 package org.usfirst.frc.team5160.robot.commands;
 
 import org.usfirst.frc.team5160.robot.Robot;
+import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class CMDIntakeGear extends Command {
-
-	double speed;
+public class CMDGearPlace extends Command {
 	
-    public CMDIntakeGear(double speed) {
-    	requires(Robot.GEAR_MECHANISM);
-    	this.speed = speed;
+
+    public CMDGearPlace() {
+        requires(Robot.GEAR_MECHANISM);
+        
     }
 
-   
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.GEAR_MECHANISM.intake(speed);
+    	Robot.GEAR_MECHANISM.moveDown();
+    	Robot.GEAR_MECHANISM.intake(-0.3);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Robot.GEAR_MECHANISM.moveDown();
     }
 
     // Called once after isFinished returns true

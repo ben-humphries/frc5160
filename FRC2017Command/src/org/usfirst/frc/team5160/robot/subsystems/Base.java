@@ -102,7 +102,6 @@ public class Base extends Subsystem {
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
     public void tankDrive(double leftValue, double rightValue){
-    	
     	//Tank drive
     	driveBase.tankDrive(leftValue, rightValue);
     }
@@ -123,7 +122,6 @@ public class Base extends Subsystem {
     	motor.enableBrakeMode(true);
     	motor.changeControlMode( TalonControlMode.PercentVbus);
     	motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-    	motor.setAllowableClosedLoopErr(100);
     	motor.setProfile(0);
 
     }
@@ -167,23 +165,23 @@ public class Base extends Subsystem {
     }
     public void setInvertAuto(){
     	//Auto is flipped from teleop since it is driving "backwards" (gear forwards)
-    	frontRight.setInverted(false);
-		backRight.setInverted(false);
-    	frontLeft.setInverted(true);
-    	backLeft.setInverted(true);
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
     }
     public double rampingVelocity(double position, double target){
     	//Slow down the closer it is to its target.
     	if(Math.abs(Math.abs(position)-Math.abs(target))<400){
     		return 0;
     	}
+    	else if(Math.abs(Math.abs(position)-Math.abs(target))<1000){
+    		return RMath.sign(target)*0.4;
+    	}
     	else if(Math.abs(Math.abs(position)-Math.abs(target))<2400){
-    		return RMath.sign(target)*0.3;
+    		return RMath.sign(target)*0.5;
     	}
-    	else if(Math.abs(Math.abs(position)-Math.abs(target))<4800){
-    		return RMath.sign(target)*0.45;
-    	}
-    	else if(Math.abs(Math.abs(position)-Math.abs(target))<7200){
+    	else if(Math.abs(Math.abs(position)-Math.abs(target))<4200){
     		return RMath.sign(target)*0.6;
     	}
     	return 0.8;
@@ -208,10 +206,55 @@ public class Base extends Subsystem {
     	backLeft.setEncPosition(0);
 	}
 	public double getAverageEncoder(){
-		return (backLeft.getEncPosition()+backRight.getEncPosition()+frontLeft.getEncPosition()+frontRight.getEncPosition())/4d;
+		return (Math.abs(backLeft.getEncPosition())+Math.abs(backRight.getEncPosition())+Math.abs(frontLeft.getEncPosition())+Math.abs(frontRight.getEncPosition()))/4d;
 	}
 	private boolean finishedRotation() {
 		return(Math.abs(targetAngle-gyro.getAngle())<ROT_ERROR);
 }
-	
+	double mQuickStopAccumulator;
+	public void cheesyDrive(double throttle, double wheel, boolean isQuickTurn) {
+
+        wheel = handleDeadband(wheel, 0.02);
+        throttle = handleDeadband(throttle, 0.02);
+
+        double overPower;
+
+        double angularPower;
+
+        if (isQuickTurn) {
+            driveBase.arcadeDrive(throttle, wheel);
+        } else {
+            overPower = 0.0;
+            angularPower = Math.abs(throttle) * wheel * Robot.Turn_Sensitivity - mQuickStopAccumulator;
+            if (mQuickStopAccumulator > 1) {
+                mQuickStopAccumulator -= 1;
+            } else if (mQuickStopAccumulator < -1) {
+                mQuickStopAccumulator += 1;
+            } else {
+                mQuickStopAccumulator = 0.0;
+            }
+            
+            double rightPwm = throttle - angularPower;
+            double leftPwm = throttle + angularPower;
+            if (leftPwm > 1.0) {
+                rightPwm -= overPower * (leftPwm - 1.0);
+                leftPwm = 1.0;
+            } else if (rightPwm > 1.0) {
+                leftPwm -= overPower * (rightPwm - 1.0);
+                rightPwm = 1.0;
+            } else if (leftPwm < -1.0) {
+                rightPwm += overPower * (-1.0 - leftPwm);
+                leftPwm = -1.0;
+            } else if (rightPwm < -1.0) {
+                leftPwm += overPower * (-1.0 - rightPwm);
+                rightPwm = -1.0;
+            }
+            driveBase.tankDrive(leftPwm, rightPwm);
+        }
+
+        
+    }
+	 public double handleDeadband(double val, double deadband) {
+	        return (Math.abs(val) > Math.abs(deadband)) ? val : 0.0;
+	    }
 }

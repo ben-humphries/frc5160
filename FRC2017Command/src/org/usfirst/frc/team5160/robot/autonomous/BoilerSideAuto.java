@@ -14,6 +14,6 @@ public class BoilerSideAuto extends CommandGroup{
 	public BoilerSideAuto(){
 		double dm = Robot.BASE.inchToEncoderTick(1);
 		int multiplier = Robot.autoColorMultiplier(); //Multiplier for rotation
-		
+		addSequential(new CMDAutoTankDrive(dm*100,0,0.03),2.5);
 	}
 }

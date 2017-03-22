@@ -8,14 +8,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CMDRotateGearMech extends Command {
+public class CMDGearMech extends Command {
 	
-	private double speed;
 
-    public CMDRotateGearMech() {
+    public CMDGearMech() {
         requires(Robot.GEAR_MECHANISM);
         
-        this.speed = Robot.oi.getOperatorJoystickY();
     }
 
     // Called just before this Command runs the first time
@@ -24,7 +22,11 @@ public class CMDRotateGearMech extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.GEAR_MECHANISM.rotate(speed);
+    	Robot.GEAR_MECHANISM.rotate(Robot.oi.getOperatorJoystickY());
+    	Robot.GEAR_MECHANISM.intake(Robot.oi.gearIntakePower());
+    	if(Robot.GEAR_MECHANISM.isTooFarDown()){
+    		Robot.GEAR_MECHANISM.hold(Robot.Gear_Down_Value);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

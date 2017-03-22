@@ -2,6 +2,7 @@ package org.usfirst.frc.team5160.robot.autonomous;
 
 import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoTankDrive;
+import org.usfirst.frc.team5160.robot.commands.CMDGearPlace;
 import org.usfirst.frc.team5160.robot.commands.CMDWait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -14,8 +15,8 @@ public class MiddleAuto extends CommandGroup{
 	 */
 	public MiddleAuto(){
 		double dm = Robot.BASE.inchToEncoderTick(1);
-		addSequential(new CMDAutoTankDrive(dm*64,0,0.03),1); //0.5s
-		addSequential(new CMDAutoTankDrive(dm*-4,0,0.03),1);   
-		
+		addSequential(new CMDAutoTankDrive(dm*64,0,0.03),2.5); //0.5s
+		addSequential(new CMDAutoTankDrive(dm*-4,0,0.03),1.5);   
+		addSequential(new CMDGearPlace(), 1.5);
 	}
 }
