@@ -59,8 +59,8 @@ public class Base extends Subsystem {
 		//Setup inversions for teleop mecanum drive
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(false);
-    	backLeft.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
 		
 		//Call init on all motors
 		initMotor(backLeft);
@@ -85,24 +85,27 @@ public class Base extends Subsystem {
     	ensureMechanumTeleOp();
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(false);
-    	backLeft.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
     	
     	//Cartesian mecanum drive, no value on gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, 0);
     }
     public void mecanumDriveField(double x, double y, double rotation){
     	//Makesure the motors are on teleop mode
-    	ensureMechanumTeleOp();
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(false);
-    	backLeft.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
     	
     	//Cartesian mecanum drive, with respect to the gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
     public void tankDrive(double leftValue, double rightValue){
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
     	//Tank drive
     	driveBase.tankDrive(leftValue, rightValue);
     }
@@ -161,15 +164,14 @@ public class Base extends Subsystem {
     public void setInvertTeleOp(){
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(false);
-    	backLeft.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
     }
     public void setInvertAuto(){
-    	//Auto is flipped from teleop since it is driving "backwards" (gear forwards)
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(false);
-    	backLeft.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
     }
     public double rampingVelocity(double position, double target){
     	//Slow down the closer it is to its target.
@@ -214,7 +216,10 @@ public class Base extends Subsystem {
 }
 	double mQuickStopAccumulator;
 	public void cheesyDrive(double throttle, double wheel, boolean isQuickTurn) {
-
+		frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
         wheel = handleDeadband(wheel, 0.02);
         throttle = handleDeadband(throttle, 0.02);
 

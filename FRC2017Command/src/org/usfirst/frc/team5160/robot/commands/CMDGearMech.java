@@ -24,9 +24,9 @@ public class CMDGearMech extends Command {
     protected void execute() {
     	Robot.GEAR_MECHANISM.rotate(Robot.oi.getOperatorJoystickY());
     	Robot.GEAR_MECHANISM.intake(Robot.oi.gearIntakePower());
-    	if(Robot.GEAR_MECHANISM.isTooFarDown()){
+    	/*if(Robot.GEAR_MECHANISM.isTooFarDown()){
     		Robot.GEAR_MECHANISM.hold(Robot.Gear_Down_Value);
-    	}
+    	}*/
     }
 
     // Make this return true when this Command no longer needs to run execute()
