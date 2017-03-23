@@ -13,8 +13,8 @@ public class RobotMap {
 	public static int BACK_RIGHT_CIM = 4;
 	
 	//gear mech
-	public static int GEAR_ROTATE = 8;
-	public static int GEAR_INTAKE = 9;
+	public static int GEAR_ROTATE = 9;
+	public static int GEAR_INTAKE = 8;
 	
 	//climber
 	public static int CLIMBER_775_1 = 5;

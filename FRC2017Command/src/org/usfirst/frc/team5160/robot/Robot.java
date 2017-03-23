@@ -82,7 +82,7 @@ public class Robot extends IterativeRobot {
         
         
         //Unplug all cameras except for gear cam
-   //     CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.getInstance().startAutomaticCapture();
     }
 	
 	/**

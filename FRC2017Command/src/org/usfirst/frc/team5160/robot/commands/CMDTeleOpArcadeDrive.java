@@ -15,6 +15,7 @@ public class CMDTeleOpArcadeDrive extends Command{
 	    		Robot.BASE.cheesyDrive(Robot.oi.getRightJoystickY(), Robot.oi.getJoystickRotation(), true);
 	    	}
 	    	else{
+	    		
 	    		Robot.BASE.cheesyDrive(Robot.oi.getRightJoystickY(), Robot.oi.getJoystickRotation(), false);
 	    	}
 	    	

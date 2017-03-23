@@ -7,6 +7,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
+import org.usfirst.frc.team5160.robot.commands.CMDTeleOpArcadeDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 
@@ -76,7 +77,7 @@ public class Base extends Subsystem {
 
     public void initDefaultCommand() {
     	//set default command as TeleOp Drive
-    	setDefaultCommand(new CMDTeleOpTankDrive());
+    	setDefaultCommand(new CMDTeleOpArcadeDrive());
     	
     }
     public void mecanumDrive(double x, double y, double rotation){
