@@ -227,11 +227,12 @@ public class Base extends Subsystem {
 
         double angularPower;
 
-        if (isQuickTurn) {
-            driveBase.arcadeDrive(throttle, wheel * Robot.Turn_Sensitivity);
+        if(Robot.oi.isReversed()){
+        	wheel = wheel/2;
+        	throttle = throttle/2;
         }
-        else if(Robot.oi.isReversed()){
-        	driveBase.tankDrive(Robot.oi.getLeftJoystickY(), Robot.oi.getRightJoystickY());
+        if (isQuickTurn) {
+            driveBase.arcadeDrive(throttle, -wheel * Robot.Turn_Sensitivity);
         }
         else {
             overPower = 0.0;
