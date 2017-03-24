@@ -34,7 +34,7 @@ public class GearMechanism extends Subsystem {
 	
 	public void rotate(double speed){
 		motor1.set(speed);
-		if(motor1.isFwdLimitSwitchClosed()){
+		if(motor1.isFwdLimitSwitchClosed()&&speed>0){
 			motor1.set(0);
 		}
 	}

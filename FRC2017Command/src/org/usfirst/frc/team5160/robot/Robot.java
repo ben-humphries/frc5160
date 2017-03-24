@@ -75,8 +75,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("gear down value", Gear_Down_Value);
         SmartDashboard.putNumber("turnSensitivity", Turn_Sensitivity);
         //Start vision
-        vision = new VisionManager();
-    	new Thread(vision).start();
+        //vision = new VisionManager();
+    	//new Thread(vision).start();
         
        
         
