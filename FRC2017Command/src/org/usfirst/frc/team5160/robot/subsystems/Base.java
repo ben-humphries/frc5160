@@ -220,7 +220,7 @@ public class Base extends Subsystem {
 		backRight.setInverted(true);
     	frontLeft.setInverted(true);
     	backLeft.setInverted(true);
-        wheel = handleDeadband(wheel, 0.02);
+        wheel = -handleDeadband(wheel, 0.02);
         throttle = handleDeadband(throttle, 0.02);
 
         double overPower;
@@ -228,7 +228,7 @@ public class Base extends Subsystem {
         double angularPower;
 
         if (isQuickTurn) {
-            driveBase.arcadeDrive(throttle, wheel);
+            driveBase.arcadeDrive(throttle, wheel * Robot.Turn_Sensitivity);
         } else {
             overPower = 0.0;
             angularPower = Math.abs(throttle) * wheel * Robot.Turn_Sensitivity - mQuickStopAccumulator;

@@ -27,6 +27,7 @@ public class GearMechanism extends Subsystem {
 		
 		motor1 = new CANTalon(RobotMap.GEAR_ROTATE);
 		motor1.enableBrakeMode(true);
+		motor1.setInverted(true);
 		motor1.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		motor2 = new CANTalon(RobotMap.GEAR_INTAKE);
 	}
