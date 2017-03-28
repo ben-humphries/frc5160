@@ -6,7 +6,7 @@ public class Team implements Comparable<Team> {
 	}
 	public String teamID = "frc";
 	//overall,auto,teleop,fuel,takeoff,gear;
-	public static final int ELO_COUNT = 1;
+	public static final int ELO_COUNT = 6;
 	public double[] elos ={1000,1000,1000,1000,1000,1000};
 	public int compareTo(Team team){
 		if(team.elos[0] > elos[0]){

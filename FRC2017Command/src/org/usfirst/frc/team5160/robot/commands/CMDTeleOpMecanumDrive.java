@@ -22,10 +22,10 @@ public class CMDTeleOpMecanumDrive extends Command {
     		mul = 0.5;
     	}
     	if(Robot.oi.isReversed()){
-    		Robot.BASE.mecanumDriveField(Robot.oi.getRightJoystickX()*mul, Robot.oi.getRightJoystickY()*mul, Robot.oi.getJoystickRotation()*mul);
+    		Robot.BASE.mecanumDriveField(Robot.oi.getRightJoystickX()*mul, Robot.oi.getRightJoystickY()*mul, Robot.oi.getJoystickRotation()*mul*Robot.Turn_Sensitivity);
     	}
     	else{
-    		Robot.BASE.mecanumDrive(Robot.oi.getRightJoystickX()*mul, Robot.oi.getRightJoystickY()*mul, Robot.oi.getJoystickRotation()*mul);
+    		Robot.BASE.mecanumDrive(Robot.oi.getRightJoystickX()*mul, Robot.oi.getRightJoystickY()*mul, Robot.oi.getJoystickRotation()*mul*Robot.Turn_Sensitivity);
     	}
     		
     }

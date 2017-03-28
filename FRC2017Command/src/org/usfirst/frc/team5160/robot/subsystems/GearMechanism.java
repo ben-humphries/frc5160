@@ -33,7 +33,7 @@ public class GearMechanism extends Subsystem {
 	}
 	
 	public void rotate(double speed){
-		motor1.set(speed/2);
+		motor1.set(speed);
 		if(motor1.isFwdLimitSwitchClosed()&&speed<0){
 			motor1.set(0);
 		}
@@ -48,7 +48,7 @@ public class GearMechanism extends Subsystem {
 	}
 	public boolean moveDown(){
 		int error = Math.abs(motor1.getEncPosition())-Robot.Gear_Down_Value;
-		motor1.set(RMath.clamp(-1, 1, 0.02*error));
+		motor1.set(RMath.clamp(-0.3, 0.3, 0.02*error));
 		return error < 4;
 		
 	}

@@ -27,7 +27,7 @@ public class EloRank {
 		FileWriter fileWrite = new FileWriter("ranking.csv");
 		CSVPrinter csvPrinter = new CSVPrinter(fileWrite, CSVFormat.EXCEL);
 		csvPrinter.printRecord(fileHeader);
-		ArrayList<JSONMatch> matches = getAllMatchesInYear(2016, gson);
+		ArrayList<JSONMatch> matches = getAllMatchesInYear(2017, gson);
 		for(JSONMatch m : matches){
 			db.Update(m);
 		}
@@ -40,11 +40,11 @@ public class EloRank {
 		for(int i = 0; i < sort.size(); i++){
 			String teamId = sort.get(i).teamID;
 			JSONTeam jteam = getJSONTeam(teamId,gson);
-			//if(jteam.isNC()){
+			if(jteam.isNC()){
 			Team team = sort.get(i);
 			csvPrinter.printRecord(new Object[]{teamId,jteam.nickname, team.elos[0], team.elos[1], team.elos[2], team.elos[3], team.elos[4], team.elos[5]});
 			System.out.println("Rank "+(i+1)+"  " +team+ "    " + jteam.nickname);
-			//}
+			}
 		}
 		fileWrite.flush();
         fileWrite.close();

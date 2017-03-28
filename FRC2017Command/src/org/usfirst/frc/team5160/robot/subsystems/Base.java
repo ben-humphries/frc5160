@@ -77,7 +77,7 @@ public class Base extends Subsystem {
 
     public void initDefaultCommand() {
     	//set default command as TeleOp Drive
-    	setDefaultCommand(new CMDTeleOpArcadeDrive());
+    	setDefaultCommand(new CMDTeleOpMecanumDrive());
     	
     }
     public void mecanumDrive(double x, double y, double rotation){
@@ -85,8 +85,8 @@ public class Base extends Subsystem {
     	ensureMechanumTeleOp();
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(true);
-    	backLeft.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
     	
     	//Cartesian mecanum drive, no value on gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, 0);
@@ -95,8 +95,8 @@ public class Base extends Subsystem {
     	//Makesure the motors are on teleop mode
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(true);
-    	backLeft.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
     	
     	//Cartesian mecanum drive, with respect to the gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
@@ -156,10 +156,10 @@ public class Base extends Subsystem {
     	turnPower = rotationPower;
     }
     public void positionTankDriveExecute(){
-    	driveBase.arcadeDrive(rampingVelocity(getAverageEncoder(), targetDistance), turnPower*RMath.sign(targetAngle-gyro.getAngle()));
+    	driveBase.arcadeDrive(-rampingVelocity(getAverageEncoder(), targetDistance), turnPower*RMath.sign(targetAngle-gyro.getAngle()));
     }
     public boolean positionTankDriveFinished(){
-    	return (finishedMoving()&&finishedRotation());
+    	return false;//(finishedMoving()&&finishedRotation());
     }
     public void setInvertTeleOp(){
     	frontRight.setInverted(true);
@@ -175,22 +175,13 @@ public class Base extends Subsystem {
     }
     public double rampingVelocity(double position, double target){
     	//Slow down the closer it is to its target.
-    	if(Math.abs(Math.abs(position)-Math.abs(target))<400){
-    		return 0;
-    	}
-    	else if(Math.abs(Math.abs(position)-Math.abs(target))<1000){
-    		return RMath.sign(target)*0.4;
-    	}
-    	else if(Math.abs(Math.abs(position)-Math.abs(target))<2400){
-    		return RMath.sign(target)*0.5;
-    	}
-    	else if(Math.abs(Math.abs(position)-Math.abs(target))<4200){
-    		return RMath.sign(target)*0.6;
-    	}
-    	return 0.8;
+    //	if(Math.abs(-Math.abs(position)+Math.abs(target))<400){
+    	//	return 0;
+   // 	}
+    	return 0.7;
     }
     private boolean finishedMoving(){
-    	return (Math.abs(Math.abs(getAverageEncoder())-Math.abs(targetDistance))<400);
+    	return false;//(-Math.abs(getAverageEncoder())+Math.abs(targetDistance)<400);
     }
     public static double inchToEncoderTick(double inches){
     	return INCH_TO_TICK*inches;
@@ -200,7 +191,7 @@ public class Base extends Subsystem {
     }
 
 	public void printEncoders() {
-		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition());
+		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition()+"+"+targetDistance);
 	}
 	public void resetEncoders(){
 		frontLeft.setEncPosition(0);
@@ -229,14 +220,14 @@ public class Base extends Subsystem {
 
         if(Robot.oi.isReversed()){
         	wheel = wheel/2;
-        	throttle = throttle/2;
+        	throttle = throttle/1.5;
         }
         if (isQuickTurn) {
             driveBase.arcadeDrive(throttle, -wheel * Robot.Turn_Sensitivity);
         }
         else {
             overPower = 0.0;
-            angularPower = Math.abs(throttle) * wheel * Robot.Turn_Sensitivity - mQuickStopAccumulator;
+            angularPower = Math.abs(throttle) * wheel * Robot.Turn_Sensitivity/2 - mQuickStopAccumulator;
             if (mQuickStopAccumulator > 1) {
                 mQuickStopAccumulator -= 1;
             } else if (mQuickStopAccumulator < -1) {

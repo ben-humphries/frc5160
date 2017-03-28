@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	 private SendableChooser autoColorChooser;
 	 public static AllianceColor RobotColor; 
 	 public static int Gear_Down_Value = 124;
-	 public static double Turn_Sensitivity = 1;
+	 public static double Turn_Sensitivity = 0.65;
     
     /**
      * This function is run when the robot is first started up and should be
