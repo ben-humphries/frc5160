@@ -10,6 +10,7 @@ import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -50,7 +51,7 @@ public class Robot extends IterativeRobot {
 	 public static AllianceColor RobotColor; 
 	 public static int Gear_Down_Value = 124;
 	 public static double Turn_Sensitivity = 0.65;
-    
+    public static UsbCamera camera;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -75,14 +76,15 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("gear down value", Gear_Down_Value);
         SmartDashboard.putNumber("turnSensitivity", Turn_Sensitivity);
         //Start vision
-        //vision = new VisionManager();
+        
     	//new Thread(vision).start();
         
        
         
         
         //Unplug all cameras except for gear cam
-        CameraServer.getInstance().startAutomaticCapture();
+        camera = CameraServer.getInstance().startAutomaticCapture();
+        vision = new VisionManager();
     }
 	
 	/**
@@ -127,6 +129,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	vision.run();
     	updateSmartDashboard(); //Update dashboard
         Scheduler.getInstance().run(); //Continue running
     }

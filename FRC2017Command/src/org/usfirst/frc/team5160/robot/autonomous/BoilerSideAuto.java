@@ -3,6 +3,7 @@ package org.usfirst.frc.team5160.robot.autonomous;
 import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoRotate;
 import org.usfirst.frc.team5160.robot.commands.CMDAutoTankDrive;
+import org.usfirst.frc.team5160.robot.commands.CMDTrackGear;
 import org.usfirst.frc.team5160.robot.commands.CMDWait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -14,6 +15,6 @@ public class BoilerSideAuto extends CommandGroup{
 	public BoilerSideAuto(){
 		double dm = Robot.BASE.inchToEncoderTick(1);
 		int multiplier = Robot.autoColorMultiplier(); //Multiplier for rotation
-		addSequential(new CMDAutoTankDrive(dm*100,0,0.03),2.5);
+		addSequential(new CMDTrackGear(),25);
 	}
 }

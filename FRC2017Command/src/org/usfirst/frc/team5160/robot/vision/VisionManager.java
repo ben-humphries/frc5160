@@ -3,6 +3,7 @@ package org.usfirst.frc.team5160.robot.vision;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
+import org.usfirst.frc.team5160.robot.Robot;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -12,7 +13,7 @@ import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
-public class VisionManager implements Runnable{
+public class VisionManager{
 	
 	
 	public static final int shooterId = 0; 
@@ -27,41 +28,25 @@ public class VisionManager implements Runnable{
 	private long lastTime = 0;
 	
 	public VisionManager(){
-		outputStream = CameraServer.getInstance().putVideo("OutputStream", 240, 160);
-		streamer = CameraServer.getInstance().addServer("Streamer");	
-
-		gearSink = new CvSink("gear");
-		
-		gearCam = new UsbCamera("gear", shooterId);
-		
-		
 		
 		gearProcessor = new VisionProcessorGear();
 		
 		gearProcessor.draw=true;
+		gearSink = new CvSink("gear");
+		gearSink.setSource(Robot.camera);
 	}
 
-	@Override
 	public void run() {
 		try{
-		  streamer.setSource(outputStream);
-		  
-		  gearSink.setSource(gearCam);
-		  
 		  Mat gearImage = new Mat();
 		  
-		  gearCam.setExposureManual(-5);
-		  while(!Thread.interrupted()) {
-			  if(true){
-			 
+		  Robot.camera.setExposureManual(-1);
+			gearSink.grabFrame(gearImage);
 			  
-			  gearSink.grabFrame(gearImage);
 			  gearProcessor.process(gearImage);
 			  
 			  
-              outputStream.putFrame(gearProcessor.drawnContours);
-			  }
-          }
+			gearImage.release();
 		}
 		catch(Exception e){
 			e.printStackTrace();
