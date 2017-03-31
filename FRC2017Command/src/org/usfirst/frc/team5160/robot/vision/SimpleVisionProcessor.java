@@ -18,7 +18,7 @@ public class SimpleVisionProcessor {
 			cameraFOVAngleHorizontal = 60,
 			cameraFOVAngleVertical=40,
 			cameraPitchAngle = 0;
-	protected final double pxToDegHorizontal = (double)cameraFOVAngleHorizontal/(double)resizeX;
+	public static final double pxToDegHorizontal = (double)cameraFOVAngleHorizontal/(double)resizeX;
 	protected final double pxToDegVertical = (double)cameraFOVAngleVertical/(double)resizeY;
 	private final long MinElapsedMilli = 15;
 	private long lastTime = 0;

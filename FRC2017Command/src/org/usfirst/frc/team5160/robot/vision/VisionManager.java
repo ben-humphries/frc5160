@@ -22,15 +22,16 @@ public class VisionManager{
 	public MjpegServer streamer;
 	public CvSource outputStream;
 	public UsbCamera gearCam;
+	public GearTracker ground; 
 	public CvSink  gearSink;
-	
+	public static double deltaAngle = 0; 
 	private static final long MinElapsedMilli = 20;
 	private long lastTime = 0;
-	
+	boolean dark = true; 
 	public VisionManager(){
 		
 		gearProcessor = new VisionProcessorGear();
-		
+		ground = new GearTracker();
 		gearProcessor.draw=true;
 		gearSink = new CvSink("gear");
 		gearSink.setSource(Robot.camera);
@@ -40,11 +41,13 @@ public class VisionManager{
 		try{
 		  Mat gearImage = new Mat();
 		  
-		  Robot.camera.setExposureManual(-1);
 			gearSink.grabFrame(gearImage);
-			  
+			  if(dark){
 			  gearProcessor.process(gearImage);
-			  
+			  }
+			  else{
+				  deltaAngle = ground.process(gearImage);
+			  }
 			  
 			gearImage.release();
 		}
@@ -61,6 +64,15 @@ public class VisionManager{
 		else{
 			return false;
 		}
+	}
+	
+	public void setNormal(){
+		dark = false;
+		Robot.camera.setExposureAuto();
+	}
+	public void setDark(){
+		dark = true;
+		Robot.camera.setExposureManual(-1);
 	}
 	
 }
