@@ -19,6 +19,7 @@ public class CMDAutoRotate extends Command{
 	}
 	@Override
 	protected void initialize(){
+		Robot.BASE.setInvertAuto();
 		gyro.reset();
 	}
 	@Override

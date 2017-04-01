@@ -16,7 +16,7 @@ public class CMDTrackGear extends Command{
 	}
 	@Override
 	protected void initialize(){
-		Robot.vision.setDark();
+		Robot.BASE.setInvertAuto();
 	}
 	@Override
 	protected void execute() {

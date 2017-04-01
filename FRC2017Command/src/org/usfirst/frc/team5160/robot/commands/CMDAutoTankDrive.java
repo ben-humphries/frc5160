@@ -14,19 +14,18 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CMDAutoTankDrive extends Command{
 	public CMDAutoTankDrive(double dist, double angle, double turn){
 		requires(Robot.BASE);
-		Robot.BASE.getGyro().reset();
 		Robot.BASE.positionTankDriveSet(dist, angle, turn);
 	}
 	@Override
 	protected void initialize(){
-		Robot.BASE.getGyro().reset();
+		Robot.BASE.setInvertAuto();
 		Robot.BASE.resetEncoders();
 	}
 	@Override 
 	protected void execute(){
 
 		Robot.BASE.positionTankDriveExecute();
-		System.out.println(Robot.BASE.getGyro().getAngle());
+		Robot.BASE.printEncoders();
 	}
 	@Override
 	protected boolean isFinished() {
