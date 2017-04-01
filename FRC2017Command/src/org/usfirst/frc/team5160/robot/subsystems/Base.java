@@ -59,8 +59,8 @@ public class Base extends Subsystem {
 		//Setup inversions for teleop mecanum drive
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
-    	frontLeft.setInverted(false);
-    	backLeft.setInverted(false);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
 		
 		//Call init on all motors
 		initMotor(backLeft);
@@ -83,20 +83,29 @@ public class Base extends Subsystem {
     public void mecanumDrive(double x, double y, double rotation){
     	//Makesure the motors are on teleop mode
     	ensureMechanumTeleOp();
-    	
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
     	
     	//Cartesian mecanum drive, no value on gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, 0);
     }
     public void mecanumDriveField(double x, double y, double rotation){
     	//Makesure the motors are on teleop mode
-    	
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(false);
+    	backLeft.setInverted(false);
     	
     	//Cartesian mecanum drive, with respect to the gyro angle
     	driveBase.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
     }
     public void tankDrive(double leftValue, double rightValue){
-    	
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
     	//Tank drive
     	driveBase.tankDrive(leftValue, rightValue);
     }
@@ -127,6 +136,7 @@ public class Base extends Subsystem {
     	frontRight.changeControlMode( TalonControlMode.PercentVbus);
     	backLeft.changeControlMode( TalonControlMode.PercentVbus); 
     	backRight.changeControlMode( TalonControlMode.PercentVbus);
+    	setInvertAuto();
     }
     private void ensureMechanumTeleOp(){
     	//Ensure it is ready for driver control
@@ -134,6 +144,7 @@ public class Base extends Subsystem {
     	frontRight.changeControlMode(TalonControlMode.PercentVbus);
     	backLeft.changeControlMode( TalonControlMode.PercentVbus);
     	backRight.changeControlMode( TalonControlMode.PercentVbus);
+    	setInvertTeleOp();
     }
     
     public void positionTankDriveSet(double dist, double angle, double rotationPower){
@@ -145,12 +156,30 @@ public class Base extends Subsystem {
     	turnPower = rotationPower;
     }
     public void positionTankDriveExecute(){
-    	driveBase.mecanumDrive_Cartesian(0, RMath.sign(targetDistance)*0.7, turnPower*RMath.sign(targetAngle-gyro.getAngle()), 0);
+    	driveBase.arcadeDrive(-rampingVelocity(getAverageEncoder(), targetDistance), turnPower*RMath.sign(targetAngle-gyro.getAngle()));
     }
     public boolean positionTankDriveFinished(){
     	return false;//(finishedMoving()&&finishedRotation());
     }
-    
+    public void setInvertTeleOp(){
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
+    }
+    public void setInvertAuto(){
+    	frontRight.setInverted(true);
+		backRight.setInverted(true);
+    	frontLeft.setInverted(true);
+    	backLeft.setInverted(true);
+    }
+    public double rampingVelocity(double position, double target){
+    	//Slow down the closer it is to its target.
+    //	if(Math.abs(-Math.abs(position)+Math.abs(target))<400){
+    	//	return 0;
+   // 	}
+    	return 0.7;
+    }
     private boolean finishedMoving(){
     	return false;//(-Math.abs(getAverageEncoder())+Math.abs(targetDistance)<400);
     }
