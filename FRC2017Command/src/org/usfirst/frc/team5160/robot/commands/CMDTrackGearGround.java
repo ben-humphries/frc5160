@@ -16,7 +16,6 @@ public class CMDTrackGearGround extends Command{
 	}
 	@Override
 	protected void initialize(){
-		Robot.BASE.setInvertAuto();
 		Robot.vision.setNormal();
 	}
 	@Override

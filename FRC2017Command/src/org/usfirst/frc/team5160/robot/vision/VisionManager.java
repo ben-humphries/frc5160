@@ -35,9 +35,11 @@ public class VisionManager{
 		gearProcessor.draw=true;
 		gearSink = new CvSink("gear");
 		gearSink.setSource(Robot.camera);
+		Robot.camera.setExposureManual(1);
 	}
 
 	public void run() {
+		if(enoughTimeElapsed())
 		try{
 		  Mat gearImage = new Mat();
 		  
@@ -68,11 +70,10 @@ public class VisionManager{
 	
 	public void setNormal(){
 		dark = false;
-		Robot.camera.setExposureAuto();
 	}
 	public void setDark(){
 		dark = true;
-		Robot.camera.setExposureManual(-1);
+		
 	}
 	
 }

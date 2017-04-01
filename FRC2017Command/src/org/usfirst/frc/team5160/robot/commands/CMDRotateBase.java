@@ -33,8 +33,8 @@ public class CMDRotateBase extends Command {
     }
     @Override
 	protected void initialize(){
-		Robot.BASE.setInvertAuto();
-	}
+
+    }
     @Override
     protected void execute() {
     		

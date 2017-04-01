@@ -18,7 +18,6 @@ public class CMDAutoTankDrive extends Command{
 	}
 	@Override
 	protected void initialize(){
-		Robot.BASE.setInvertAuto();
 		Robot.BASE.resetEncoders();
 	}
 	@Override 
