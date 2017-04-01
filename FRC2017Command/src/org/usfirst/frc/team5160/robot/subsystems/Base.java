@@ -178,7 +178,7 @@ public class Base extends Subsystem {
     //	if(Math.abs(-Math.abs(position)+Math.abs(target))<400){
     	//	return 0;
    // 	}
-    	return 0.7;
+    	return RMath.sign(target)*0.7;
     }
     private boolean finishedMoving(){
     	return false;//(-Math.abs(getAverageEncoder())+Math.abs(targetDistance)<400);

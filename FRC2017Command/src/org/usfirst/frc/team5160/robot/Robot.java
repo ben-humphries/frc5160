@@ -4,6 +4,7 @@ package org.usfirst.frc.team5160.robot;
 import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
 import org.usfirst.frc.team5160.robot.autonomous.FarSideAuto;
 import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
+import org.usfirst.frc.team5160.robot.autonomous.TwoGearAuto;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
@@ -64,6 +65,7 @@ public class Robot extends IterativeRobot {
     	//Initialize auto chooser
         autoModeChooser = new SendableChooser();
         autoModeChooser.addDefault("Middle Auto", new MiddleAuto());
+        autoModeChooser.addObject("Two Gear Auto", new TwoGearAuto());
         autoModeChooser.addObject("Boiler Side Auto", new BoilerSideAuto());
         autoModeChooser.addObject("Far Side Auto", new FarSideAuto());
         SmartDashboard.putData("Auto mode", autoModeChooser);
@@ -142,7 +144,6 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-        vision.setNormal();
     }
 
     /**
