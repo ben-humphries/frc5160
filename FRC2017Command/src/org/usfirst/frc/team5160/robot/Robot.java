@@ -1,29 +1,21 @@
 
 package org.usfirst.frc.team5160.robot;
 
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.MjpegServer;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSource;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
-import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
 import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
+import org.usfirst.frc.team5160.robot.autonomous.FarSideAuto;
 import org.usfirst.frc.team5160.robot.autonomous.MiddleAuto;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
-import org.usfirst.frc.team5160.robot.subsystems.IntakeMechanism;
-import org.usfirst.frc.team5160.robot.subsystems.Shooter;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -34,47 +26,63 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+enum AllianceColor{RED,BLUE};
+
 public class Robot extends IterativeRobot {
 
-	
+	//Create subsystems
 	public static final Base BASE = new Base();
 	public static final Climber CLIMBER = new Climber();
 	public static final GearMechanism GEAR_MECHANISM = new GearMechanism();
-	public static final IntakeMechanism INTAKE_MECHANISM = new IntakeMechanism();
-	public static final Shooter SHOOTER = new Shooter();
-	
 	public static OI oi;
 	
+	//statics for conviniece, shared values, etc.
 	public static boolean currentTeleOpDriveMode = true;
 	public static int currentCamera = 0;
 	public static boolean switchCamera = false;
 	
 	public static VisionManager vision;
-
-    Command autonomousCommand;
-    SendableChooser chooser;
-    public static double driveP = 0.2, driveI = 0.01, driveD=0.1, driveF = 0.15;
-    
-    
+	
+	//Dashboard widgets
+	 private SendableChooser autoModeChooser;
+	 private Command autonomousCommand;
+	 private SendableChooser autoColorChooser;
+	 public static AllianceColor RobotColor; 
+	 public static int Gear_Down_Value = 124;
+	 public static double Turn_Sensitivity = 0.65;
     
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
+    @Override
     public void robotInit() {
-		oi = new OI();
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new BoilerSideAuto());
-        chooser.addObject("My Auto", new BoilerSideAuto());
-        SmartDashboard.putData("Auto mode", chooser);
+		
+    	oi = new OI();
+		
+    	//Initialize auto chooser
+        autoModeChooser = new SendableChooser();
+        autoModeChooser.addDefault("Middle Auto", new MiddleAuto());
+        autoModeChooser.addObject("Boiler Side Auto", new BoilerSideAuto());
+        autoModeChooser.addObject("Far Side Auto", new FarSideAuto());
+        SmartDashboard.putData("Auto mode", autoModeChooser);
         
-        SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
-        SmartDashboard.putNumber("driveP", driveP);
-        SmartDashboard.putNumber("driveI", driveI);
-        SmartDashboard.putNumber("driveD", driveD);
-        SmartDashboard.putNumber("driveF", driveF);
+        //Initialize color chooser
+        autoColorChooser = new SendableChooser();
+        autoColorChooser.addDefault("Auto Color Red", AllianceColor.RED); //Red is what the autos are default programmed to
+        autoColorChooser.addObject("Auto Color Blue", AllianceColor.BLUE);
+        SmartDashboard.putData("Alliance Selector", autoColorChooser);
+        SmartDashboard.putNumber("gear down value", Gear_Down_Value);
+        SmartDashboard.putNumber("turnSensitivity", Turn_Sensitivity);
+        //Start vision
+        //vision = new VisionManager();
+    	//new Thread(vision).start();
+        
        
         
+        
+        //Unplug all cameras except for gear cam
+        CameraServer.getInstance().startAutomaticCapture();
     }
 	
 	/**
@@ -82,10 +90,11 @@ public class Robot extends IterativeRobot {
      * You can use it to reset any subsystem information you want to clear when
 	 * the robot is disabled.
      */
+    @Override
     public void disabledInit(){
 
     }
-	
+	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
@@ -100,34 +109,31 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	Robot.updatePID();
-        autonomousCommand = (Command) chooser.getSelected();
-        
-		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new BoilerSideAuto();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new BoilerSideAuto();
-			break;
-		}
-    	
-    	// schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
+    	//Check dashboard values.
+    	updateSmartDashboard();
+    	RobotColor = (AllianceColor) autoColorChooser.getSelected();
+        autonomousCommand = (CommandGroup) autoModeChooser.getSelected();
+        System.out.println("autoCommand"+autonomousCommand);
+    	try{
+    		//Run autonomous
+        if (autonomousCommand != null && RobotColor != null) autonomousCommand.start();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
+    	updateSmartDashboard(); //Update dashboard
+        Scheduler.getInstance().run(); //Continue running
     }
 
     public void teleopInit() {
-    	vision = new VisionManager();
-    	new Thread(vision).start();
+    	updateSmartDashboard(); //Update dashboard
+    	
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
@@ -139,30 +145,26 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-        
-        SmartDashboard.putString("Current Drive Mode: ", currentTeleOpDriveMode ? "Mecanum" : "Tank");
-        
-       
-        if(switchCamera){
-        	
-        	//CameraServer.getInstance().startAutomaticCapture(cameras[currentCamera]);
-        	
-        	switchCamera = false;
-        }
+    	updateSmartDashboard();     //Continue running
+        Scheduler.getInstance().run(); 
 
     }
-    
+    private void updateSmartDashboard(){
+    	Gear_Down_Value = (int) SmartDashboard.getNumber("gear down value", Gear_Down_Value);
+    	Turn_Sensitivity = SmartDashboard.getNumber("turnSensitivity", Turn_Sensitivity);
+    }
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
         LiveWindow.run();
     }
-    public static void updatePID(){
-		driveP=SmartDashboard.getNumber("driveP", driveP);
-		driveI=SmartDashboard.getNumber("driveI", driveI);
-		driveD=SmartDashboard.getNumber("driveD", driveD);
-		driveF=SmartDashboard.getNumber("driveF", driveF);
-	}
+    //Default is red/1
+    public static int autoColorMultiplier(){
+    	if(RobotColor == AllianceColor.BLUE){
+    		return -1;
+    	}
+    	return 1;
+    }
+
 }

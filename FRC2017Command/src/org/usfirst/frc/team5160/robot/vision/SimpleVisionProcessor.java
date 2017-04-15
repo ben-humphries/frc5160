@@ -13,23 +13,20 @@ import org.opencv.videoio.Videoio;
 public class SimpleVisionProcessor {
 	
 	
-	protected final int	resizeX = 160, 
-			resizeY = 120,
-			cameraFOVAngle = 40,
+	public static final int	resizeX = 240, 
+			resizeY = 160,
+			cameraFOVAngleHorizontal = 60,
+			cameraFOVAngleVertical=40,
 			cameraPitchAngle = 0;
-	protected final double pxToDeg = (double)cameraFOVAngle/(double)resizeX;
-	protected VideoCapture camera;
-	
-	protected Mat image = new Mat(), resized = new Mat(), 
+	protected final double pxToDegHorizontal = (double)cameraFOVAngleHorizontal/(double)resizeX;
+	protected final double pxToDegVertical = (double)cameraFOVAngleVertical/(double)resizeY;
+	private final long MinElapsedMilli = 15;
+	private long lastTime = 0;
+	protected Mat resized = new Mat(), 
 			greenOnly = new Mat(), redOnly = new Mat(), blueOnly = new Mat(),	
-			greenChannelThreshold = new Mat(),  sum = new Mat(); 
+			greenChannelThreshold = new Mat(),  sum = new Mat();
 	
-	public SimpleVisionProcessor(int cameraId){
-		camera = new VideoCapture(cameraId);
-		camera.set(Videoio.CAP_PROP_EXPOSURE, -10);		
-	}
-	
-	public void resize(){
+	public void resize(Mat image){
 		Imgproc.resize(image, resized, new Size(resizeX,resizeY));
 	}
 	public void extractChannels(){
@@ -75,4 +72,5 @@ public class SimpleVisionProcessor {
 		}
 		return tmp;
 	}
+	
 }

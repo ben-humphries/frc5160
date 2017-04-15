@@ -1,17 +1,12 @@
 package org.usfirst.frc.team5160.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
 import org.usfirst.frc.team5160.robot.commands.CMDClimb;
 import org.usfirst.frc.team5160.robot.commands.CMDClimbTilt;
-import org.usfirst.frc.team5160.robot.commands.CMDIntakeIn;
-import org.usfirst.frc.team5160.robot.commands.CMDPushGear;
-import org.usfirst.frc.team5160.robot.commands.CMDShoot;
-import org.usfirst.frc.team5160.robot.commands.CMDTeleOpMecanumDrive;
-import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
+import org.usfirst.frc.team5160.robot.commands.CMDIntakeGear;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -45,68 +40,77 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	//current drive mode: true is mecanum, false is tank
-	boolean currentTeleOpDriveMode = true;
-	
-	Joystick joystick = new Joystick(RobotMap.JOYSTICK);
+	Joystick leftJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK_LEFT);
+	Joystick rightJoystick = new Joystick(RobotMap.DRIVE_JOYSTICK_RIGHT);
 	Joystick operatorJoystick = new Joystick(RobotMap.OPERATOR_JOYSTICK);
-	Joystick tankJoystick = new Joystick(RobotMap.TANK_JOYSTICK);
 	
 	//Drive joystick
-	Button shootButton = new JoystickButton(joystick, 2),
-		   intakeButton = new JoystickButton(joystick, 1),
-		   cameraButton = new JoystickButton(joystick, 3);
-	
-	//Tank joystick
-	//--
+	Button slowButton = new JoystickButton(leftJoystick, 1),
+				reverseButton = new JoystickButton(rightJoystick, 1);
 	
 	//Operator joystick
 	Button climbUpButton = new JoystickButton(operatorJoystick, 3),
-			   //climbDownButton = new JoystickButton(operatorJoystick, 2),
-			   climbForwardButton = new JoystickButton(operatorJoystick, 4),
-			   climbBackwardButton = new JoystickButton(operatorJoystick, 5),
-			   shootButtonO = new JoystickButton(joystick, 1);
+				climbForwardButton = new JoystickButton(operatorJoystick, 4),
+				climbBackwardButton = new JoystickButton(operatorJoystick, 5),
+				gearIntake = new JoystickButton(operatorJoystick, 1),
+				gearOuttake = new JoystickButton(operatorJoystick, 2); //maybe use different button?
 	
 	public OI(){
 		
-		shootButton.whileHeld(new CMDShoot(1.0));
-		shootButton.whileHeld(new CMDIntakeIn(1.0));
-		shootButtonO.whileHeld(new CMDShoot(1.0));
-		shootButtonO.whileHeld(new CMDIntakeIn(1.0));
-		intakeButton.whileHeld(new CMDIntakeIn(1.0));
-		
 		climbUpButton.whileHeld(new CMDClimb(1.0));
-		//climbDownButton.whileHeld(new CMDClimb(-1.0));  // PLZ DON'T UNCOMMENT ME EVER :)
 		climbForwardButton.whileHeld(new CMDClimbTilt(0.5));
 		climbBackwardButton.whileHeld(new CMDClimbTilt(-0.5));
 		
-		cameraButton.whenPressed(new CMDToggleCamera());
+		gearIntake.whileHeld(new CMDIntakeGear(1.0));
+		gearOuttake.whileHeld(new CMDIntakeGear(-0.5));
+		
 	}
-	
-	//getter methods for the squared movement
-	public double getJoystickX(){
-		if(Math.abs(joystick.getX()) > 0.05){
-			return joystick.getX()*joystick.getX() * Math.signum(joystick.getX());
+	public double gearIntakePower(){
+		if(gearIntake.get()){
+			return 1;
+		}
+		else if(gearOuttake.get()){
+			return -0.5;
 		}
 		return 0;
 	}
-	public double getJoystickY(){
-		if(Math.abs(joystick.getY()) > 0.05){
-			return joystick.getY()*joystick.getY() * Math.signum(joystick.getY());
+	public boolean isSlowed(){
+		return slowButton.get();
+	}
+	public boolean isReversed(){
+		return reverseButton.get();
+	}
+	public double getJoystickRotation(){		
+			if(Math.abs(rightJoystick.getTwist()) > 0.05){		
+				return rightJoystick.getTwist()*rightJoystick.getTwist() * Math.signum(rightJoystick.getTwist());		
+			}		
+			return 0;		
+	}
+	public double getLeftJoystickY(){
+		if(Math.abs(leftJoystick.getY()) > 0.05){
+			return leftJoystick.getY()*leftJoystick.getY() * Math.signum(leftJoystick.getY());
 		}
 		return 0;
 	}
-	public double getJoystickRotation(){
-		if(Math.abs(joystick.getTwist()) > 0.05){
-			return joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist()) / 2;
+	public double getRightJoystickY(){
+		if(Math.abs(rightJoystick.getY()) > 0.05){
+			return rightJoystick.getY()*rightJoystick.getY() * Math.signum(rightJoystick.getY());
 		}
 		return 0;
 	}
-	
-	public double getTankJoystickY(){
-		return tankJoystick.getY()*tankJoystick.getY() * Math.signum(tankJoystick.getY());
+	public double getRightJoystickX(){
+		if(Math.abs(rightJoystick.getX()) > 0.05){
+			return rightJoystick.getX()*rightJoystick.getX() * Math.signum(rightJoystick.getX());
+		}
+		return 0;
 	}
 	public double getOperatorJoystickZ(){
 		return ((operatorJoystick.getZ() - 1.0) / 2.0);
+	}
+	public double getOperatorJoystickY(){
+		if(Math.abs(operatorJoystick.getY()) > 0.05){
+			return operatorJoystick.getY()*operatorJoystick.getY() * Math.signum(operatorJoystick.getY());
+		}
+		return 0;
 	}
 }

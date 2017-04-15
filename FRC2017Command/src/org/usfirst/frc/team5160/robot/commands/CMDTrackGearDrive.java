@@ -5,13 +5,14 @@ import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.command.Command;
-/**
- * This will rotate the robot to aline to the gear peg. 
- */
 
-public class CMDTrackGear extends Command{
-	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
-	public CMDTrackGear(){
+/**
+ * This will have the robot always face the gear peg
+ */
+/*
+public class CMDTrackGearDrive extends Command{
+	private static final double DEGREE_ERROR = 1; // Acceptable error in degrees +/-
+	public CMDTrackGearDrive(){
 		requires(Robot.BASE);
 	}
 	@Override
@@ -22,7 +23,7 @@ public class CMDTrackGear extends Command{
 	protected void execute() {
 		double delta = Robot.vision.gearProcessor.getDeltaAngle();
 		double dir = RMath.sign(delta);
-		Robot.BASE.mecanumDrive(0, 0, dir*0.2);
+		Robot.BASE.mecanumDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY(), dir*0.2);
 	}
 	@Override
 	protected boolean isFinished() {
@@ -32,3 +33,4 @@ public class CMDTrackGear extends Command{
 		return Math.abs(Robot.vision.gearProcessor.getDeltaAngle()) <= DEGREE_ERROR;
 	}
 }
+*/
