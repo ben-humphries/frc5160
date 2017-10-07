@@ -60,6 +60,7 @@ public class VisionProcessorBoiler extends SimpleVisionProcessor{
 		contours.clear();
 		
 	}
+	
 	public double computeDeltaAngle(MatOfPoint topContour, MatOfPoint bottomContour){
 		Rect bottomBound = Imgproc.boundingRect(bottomContour);
 		Rect topBound = Imgproc.boundingRect(topContour);

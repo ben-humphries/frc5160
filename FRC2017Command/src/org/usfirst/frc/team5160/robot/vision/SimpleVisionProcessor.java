@@ -18,6 +18,7 @@ public class SimpleVisionProcessor {
 			cameraFOVAngleHorizontal = 60,
 			cameraFOVAngleVertical=40,
 			cameraPitchAngle = 0;
+	
 	protected final double pxToDegHorizontal = (double)cameraFOVAngleHorizontal/(double)resizeX;
 	protected final double pxToDegVertical = (double)cameraFOVAngleVertical/(double)resizeY;
 	private final long MinElapsedMilli = 15;
@@ -29,11 +30,13 @@ public class SimpleVisionProcessor {
 	public void resize(Mat image){
 		Imgproc.resize(image, resized, new Size(resizeX,resizeY));
 	}
+	
 	public void extractChannels(){
 		Core.extractChannel(resized, redOnly, 2);
 		Core.extractChannel(resized, greenOnly, 1);
 		Core.extractChannel(resized, blueOnly, 0);
 	}
+	
 	public void sumChannels(){
 		sum.release();
 		sum = new Mat();
@@ -42,6 +45,7 @@ public class SimpleVisionProcessor {
 		Core.addWeighted(sum, 1, redOnly, -0.5, 1, sum);
 		Imgproc.threshold(sum, greenChannelThreshold, 0, 255, Imgproc.THRESH_OTSU);
 	}
+	
 	public ArrayList<MatOfPoint> findContours(){
 		Mat contouredGreen = greenChannelThreshold.clone();
 		ArrayList<MatOfPoint> contours = new ArrayList<>();
@@ -49,6 +53,7 @@ public class SimpleVisionProcessor {
 		contouredGreen.release();
 		return contours;
 	}
+	
 	public MatOfPoint[] findTwoLargestContours(ArrayList<MatOfPoint> contours){
 		MatOfPoint[] tmp = new MatOfPoint[2];
 		

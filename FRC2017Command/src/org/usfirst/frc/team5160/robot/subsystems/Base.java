@@ -3,6 +3,8 @@ package org.usfirst.frc.team5160.robot.subsystems;
 import org.usfirst.frc.team5160.robot.RMath;
 import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.RobotMap;
+import org.usfirst.frc.team5160.robot.commands.CMDTeleOpArcadeDrive;
+
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
@@ -72,14 +74,12 @@ public class Base extends Subsystem {
 
     public void initDefaultCommand() {
     	//set default command as TeleOp Drive
-    	setDefaultCommand(new CMDTeleOpMecanumDrive());
+    	setDefaultCommand(new CMDTeleOpArcadeDrive());
     	
     }
  
-    public void tankDrive(double leftValue, double rightValue){
-    	
-    	//Tank drive
-    	driveBase.tankDrive(leftValue, rightValue);
+    public void arcadeDrive(double moveValue, double rotateValue){
+    	driveBase.arcadeDrive(moveValue, rotateValue);
     }
     public void stopMotors(){
     	frontLeft.set(0);

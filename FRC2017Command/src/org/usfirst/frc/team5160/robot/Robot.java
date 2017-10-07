@@ -1,6 +1,10 @@
 
 package org.usfirst.frc.team5160.robot;
 
+import org.usfirst.frc.team5160.robot.subsystems.Base;
+import org.usfirst.frc.team5160.robot.subsystems.Climber;
+import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -23,6 +27,10 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
+	public static final Base BASE = new Base();
+	public static final Climber CLIMBER = new Climber();
+	public static final GearMechanism GEAR_MECHANISM = new GearMechanism();
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -30,7 +38,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		chooser.addDefault("Default Auto", new ExampleCommand());
+		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}

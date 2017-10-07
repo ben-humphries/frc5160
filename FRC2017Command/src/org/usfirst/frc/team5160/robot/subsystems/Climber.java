@@ -18,7 +18,6 @@ public class Climber extends Subsystem {
     private CANTalon motor1;
     private CANTalon motor2;
     
-    private CANTalon tiltMotor;
     
     
     
@@ -29,7 +28,6 @@ public class Climber extends Subsystem {
     	motor1 = new CANTalon(RobotMap.CLIMBER_775_1);
     	motor2 = new CANTalon(RobotMap.CLIMBER_775_2);
     	
-    	tiltMotor = new CANTalon(RobotMap.CLIMBER_LEVEL);
     	
     }
     
@@ -40,10 +38,6 @@ public class Climber extends Subsystem {
     public void stopMotors(){
     	motor1.set(0);
     	motor2.set(0);
-    	tiltMotor.set(0);
-    }
-    public void tilt(double speed){
-    	tiltMotor.set(speed);
     }
     
     public boolean getSwitch(){

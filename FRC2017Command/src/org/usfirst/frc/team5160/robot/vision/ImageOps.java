@@ -18,6 +18,7 @@ public class ImageOps {
 		return new Mat(input.size(), input.type());
 	}
 	
+	
 	public static MatOfPoint ConvexHull(MatOfPoint cont){
 		MatOfInt hullInt = new MatOfInt();
 		ArrayList<Point> points = new ArrayList<Point>();
@@ -29,5 +30,6 @@ public class ImageOps {
         hullInt.release();
         return hull; 
 	}
+	
 	
 }
