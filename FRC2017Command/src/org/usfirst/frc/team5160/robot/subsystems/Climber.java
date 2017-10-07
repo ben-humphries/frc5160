@@ -29,9 +29,8 @@ public class Climber extends Subsystem {
     	motor1 = new CANTalon(RobotMap.CLIMBER_775_1);
     	motor2 = new CANTalon(RobotMap.CLIMBER_775_2);
     	
-    	tiltMotor = new CANTalon(RobotMap.CLIMBER_CIM);
+    	tiltMotor = new CANTalon(RobotMap.CLIMBER_LEVEL);
     	
-    	limitSwitch = new DigitalInput(RobotMap.CLIMBER_SWITCH);
     }
     
     public void climb(double speed){
