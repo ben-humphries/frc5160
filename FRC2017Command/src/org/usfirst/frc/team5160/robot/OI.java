@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
  
 	
-	Joystick leftJoystick = new Joystick(RobotMap.LEFT_JOYSTICK);
-	Joystick rightJoystick = new Joystick(RobotMap.RIGHT_JOYSTICK);
+	public Joystick leftJoystick = new Joystick(RobotMap.LEFT_JOYSTICK);
+	public Joystick rightJoystick = new Joystick(RobotMap.RIGHT_JOYSTICK);
 	
-	Joystick operatorJoystick = new Joystick(RobotMap.OPERATOR_JOYSTICK);
+	public Joystick operatorJoystick = new Joystick(RobotMap.OPERATOR_JOYSTICK);
 	
 	//Drive joystick
 	Button slowButton = new JoystickButton(leftJoystick, 1),
@@ -54,43 +54,34 @@ public class OI {
 	public boolean isReversed(){
 		return reverseButton.get();
 	}
+
 	
-	public double getJoystickRotation(){		
-			if(Math.abs(rightJoystick.getTwist()) > 0.05){		
-				return rightJoystick.getTwist()*rightJoystick.getTwist() * Math.signum(rightJoystick.getTwist());		
-			}		
-			return 0;		
-	}
-	
-	public double getLeftJoystickY(){
-		if(Math.abs(leftJoystick.getY()) > 0.05){
-			return leftJoystick.getY()*leftJoystick.getY() * Math.signum(leftJoystick.getY());
+	public double getJoystickX(Joystick j){
+		
+		if(Math.abs(j.getX()) > 0.05){
+			return j.getX()*j.getX() * Math.signum(j.getX());
 		}
+		
 		return 0;
 	}
-	
-	public double getRightJoystickY(){
-		if(Math.abs(rightJoystick.getY()) > 0.05){
-			return rightJoystick.getY()*rightJoystick.getY() * Math.signum(rightJoystick.getY());
+	public double getJoystickY(Joystick j){
+		
+		if(Math.abs(j.getY()) > 0.05){
+			return j.getY()*j.getY() * Math.signum(j.getY());
 		}
+		
 		return 0;
 	}
-	
-	public double getRightJoystickX(){
-		if(Math.abs(rightJoystick.getX()) > 0.05){
-			return rightJoystick.getX()*rightJoystick.getX() * Math.signum(rightJoystick.getX());
-		}
-		return 0;
+	public double getJoystickZ(Joystick j){
+		
+		return j.getZ();
 	}
-	
-	public double getOperatorJoystickZ(){
-		return ((operatorJoystick.getZ() - 1.0) / 2.0);
-	}
-	
-	public double getOperatorJoystickY(){
-		if(Math.abs(operatorJoystick.getY()) > 0.05){
-			return operatorJoystick.getY()*operatorJoystick.getY() * Math.signum(operatorJoystick.getY());
+	public double getJoystickTwist(Joystick j){
+		
+		if(Math.abs(j.getTwist()) > 0.05){		
+			return j.getTwist()*j.getTwist() * Math.signum(j.getTwist());		
 		}
+		
 		return 0;
 	}
 }

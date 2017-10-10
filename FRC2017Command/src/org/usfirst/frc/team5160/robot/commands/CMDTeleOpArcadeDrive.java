@@ -11,7 +11,7 @@ public class CMDTeleOpArcadeDrive extends Command{
 	    }
 	    @Override
 	    protected void execute() {
-	    		Robot.BASE.arcadeDrive(Robot.oi.getRightJoystickY(), Robot.oi.getJoystickRotation());
+	    		Robot.BASE.arcadeDrive(Robot.oi.getJoystickY(Robot.oi.rightJoystick), Robot.oi.getJoystickTwist(Robot.oi.rightJoystick));
 	    }
 	    @Override
 	    protected boolean isFinished() {
