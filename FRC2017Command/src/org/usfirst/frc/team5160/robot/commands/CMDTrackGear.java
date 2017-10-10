@@ -16,13 +16,13 @@ public class CMDTrackGear extends Command{
 	}
 	@Override
 	protected void initialize(){
-		Robot.BASE.setInvertAuto();
+
 	}
 	@Override
 	protected void execute() {
 		double delta = Robot.vision.gearProcessor.getDeltaAngle();
 		double dir = RMath.sign(delta);
-		Robot.BASE.mecanumDrive(0, 0, dir*0.2);
+		Robot.BASE.arcadeDrive(0, dir*0.2);
 	}
 	@Override
 	protected boolean isFinished() {
