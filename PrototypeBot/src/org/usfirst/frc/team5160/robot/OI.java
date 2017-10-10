@@ -1,8 +1,8 @@
 package org.usfirst.frc.team5160.robot;
 
-import org.usfirst.frc.team5160.robot.commands.CMDToggleCamera;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -64,12 +64,8 @@ public class OI {
 				cameraButton0 = new JoystickButton(operatorJoystick, 7),
 				cameraButton1 = new JoystickButton(operatorJoystick, 8),
 				cameraButton2 = new JoystickButton(operatorJoystick, 9);
-	
+	private int secondAxis;
 	public OI(){
-		
-		cameraButton0.whenPressed(new CMDToggleCamera(0));
-		cameraButton1.whenPressed(new CMDToggleCamera(1));
-		cameraButton2.whenPressed(new CMDToggleCamera(2));
 		
 	}
 	public boolean isShooting(){
@@ -78,10 +74,7 @@ public class OI {
 	
 	//getter methods for the squared movement
 	public double getJoystickX(){
-		if(Math.abs(joystick.getX()) > 0.05){
-			return joystick.getX()*joystick.getX() * Math.signum(joystick.getX());
-		}
-		return 0;
+		return joystick.getX();
 	}
 	public double getJoystickY(){
 		if(Math.abs(joystick.getY()) > 0.05){
@@ -96,6 +89,11 @@ public class OI {
 		return 0;
 	}
 	
+	public double getJoystickSecondX(){
+		System.out.println(joystick.getRawAxis(4));
+		return Math.pow(joystick.getRawAxis(4),1);
+		
+	}
 	public double getTankJoystickY(){
 		return tankJoystick.getY()*tankJoystick.getY() * Math.signum(tankJoystick.getY());
 	}

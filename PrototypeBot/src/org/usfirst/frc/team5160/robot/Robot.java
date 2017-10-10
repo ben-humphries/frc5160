@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
-import org.usfirst.frc.team5160.robot.autonomous.BoilerSideAuto;
 import org.usfirst.frc.team5160.robot.commands.CMDTeleOpTankDrive;
-import org.usfirst.frc.team5160.robot.commands.CMDTrackBoiler;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
@@ -58,8 +56,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new BoilerSideAuto());
-        chooser.addObject("My Auto", new BoilerSideAuto());
+//        chooser.addObject("My Auto", new BoilerSideAuto());
         SmartDashboard.putData("Auto mode", chooser);
         
         SmartDashboard.putData("Enable Tank Drive", new CMDTeleOpTankDrive());
@@ -102,11 +99,11 @@ public class Robot extends IterativeRobot {
 		String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
-			autonomousCommand =  new CMDTrackBoiler();
+			//autonomousCommand =  new CMDTrackBoiler();
 			break;
 		case "Default Auto":
 		default:
-			autonomousCommand = new CMDTrackBoiler();
+			//autonomousCommand = new CMDTrackBoiler();
 			break;
 		}
     	

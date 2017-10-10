@@ -66,6 +66,13 @@ public class Base extends Subsystem {
 		//Init gyro
 		gyro = new ADXRS450_Gyro();
 		
+		
+		frontRight.setInverted(false);
+		backRight.setInverted(false);
+		
+		frontLeft.setInverted(true);
+		backLeft.setInverted(true);
+		
 	}
 
     public void initDefaultCommand() {
@@ -75,7 +82,6 @@ public class Base extends Subsystem {
     }
     public void mecanumDrive(double x, double y, double rotation){
     	//Makesure the motors are on teleop mode
-    	ensureMechanumTeleOp();
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
     	frontLeft.setInverted(false);
@@ -86,7 +92,6 @@ public class Base extends Subsystem {
     }
     public void mecanumDriveField(double x, double y, double rotation){
     	//Makesure the motors are on teleop mode
-    	ensureMechanumTeleOp();
     	frontRight.setInverted(true);
 		backRight.setInverted(true);
     	frontLeft.setInverted(false);
@@ -99,12 +104,21 @@ public class Base extends Subsystem {
     	//Tank drive is inverted
 		frontRight.setInverted(false);
 		backRight.setInverted(false);
-		
 		frontLeft.setInverted(true);
 		backLeft.setInverted(true);
     	
     	//Tank drive
     	driveBase.tankDrive(leftValue, rightValue);
+    }
+    public void arcadeDrive(double power, double rotation){
+    	//Tank drive is inverted
+    	frontRight.setInverted(false);
+		backRight.setInverted(false);
+		frontLeft.setInverted(true);
+		backLeft.setInverted(true);
+    	
+    	//Tank drive
+    	driveBase.arcadeDrive(power, rotation);
     }
     public void stopMotors(){
     	frontLeft.set(0);
@@ -120,77 +134,6 @@ public class Base extends Subsystem {
     	
 
     }
-   private void ensurePositionTank(){
-	   //Ensure it is ready for position based tank drive.
-    	System.out.println("Ensured position");
-    	
-    	setInvertAuto();
-    }
-    private void ensureMechanumTeleOp(){
-    	//Ensure it is ready for driver control
-    	
-    	setInvertTeleOp();
-    }
-    
-    public void positionTankDriveSet(double dLeft, double dRight){
-    	ensurePositionTank();
-    	resetEncoders();
-    	targetLeftPos = dLeft;
-    	targetRightPos = dRight;
-    }
-    public void positionTankDriveExecute(){
-    	//Sets the motors to their sides ramping power
-    	frontLeft.set(rampingVelocity(frontLeft, targetLeftPos));
-		frontRight.set(rampingVelocity(frontRight, targetRightPos));
-		backLeft.set(rampingVelocity(frontLeft, targetLeftPos));
-		backRight.set(rampingVelocity(frontRight, targetRightPos));
-    }
-    public void setInvertTeleOp(){
-    	frontRight.setInverted(true);
-		backRight.setInverted(true);
-    	frontLeft.setInverted(false);
-    	backLeft.setInverted(false);
-    }
-    public void setInvertAuto(){
-    	//Auto is flipped from teleop since it is driving "backwards" (gear forwards)
-    	frontRight.setInverted(false);
-		backRight.setInverted(false);
-    	frontLeft.setInverted(true);
-    	backLeft.setInverted(true);
-    }
-    public double rampingVelocity(Talon motor, double target){
-    	//Slow down the closer it is to its target.
-    	if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<2400){
-    		return RMath.sign(target)*0.4;
-    	}
-    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<4800){
-    		return RMath.sign(target)*0.5;
-    	}
-    	else if(Math.abs(Math.abs(frontLeft.getPosition())-Math.abs(target))<7200){
-    		return RMath.sign(target)*0.6;
-    	}
-    	return 0.8;
-    }
-    public boolean positionTankDriveReached(){
-    	if((Math.abs(frontLeft.getPosition()) - Math.abs(targetLeftPos)) >= 0 && (Math.abs(frontRight.getPosition()) - Math.abs(targetRightPos)) >= 0 ){
-    		return true;
-    	}
-    	return false;
-    }
-    public static double inchToEncoderTick(double inches){
-    	return INCH_TO_TICK*inches;
-    }
-    public static double feetToEncoderTick(double feet){
-    	return inchToEncoderTick(12*feet);
-    }
-
-	public void printEncoders() {
-	}
-	public void resetEncoders(){
-	}
-	public double getAverageEncoder(){
-		return 0;
-	}
 	
 	double mQuickStopAccumulator;
     public static final double kThrottleDeadband = 0.02;
