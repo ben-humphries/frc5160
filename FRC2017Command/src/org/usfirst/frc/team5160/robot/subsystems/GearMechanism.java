@@ -47,9 +47,9 @@ public class GearMechanism extends Subsystem {
 		motor2.set(0);
 	}
 	public boolean moveDown(){
-		int error = Math.abs(motor1.getEncPosition())-Robot.Gear_Down_Value;
-		motor1.set(RMath.clamp(-0.3, 0.3, 0.02*error));
-		return error < 4;
+	//	int error = Math.abs(motor1.getEncPosition())-Robot.Gear_Down_Value;
+	//	motor1.set(RMath.clamp(-0.3, 0.3, 0.02*error));
+		return true;//error < 4;
 		
 	}
 	public boolean moveUp(){
@@ -78,6 +78,6 @@ public class GearMechanism extends Subsystem {
 		setDefaultCommand(new CMDGearMech());
     }
 	public boolean isTooFarDown(){
-		return Math.abs(motor1.getEncPosition()) > Robot.Gear_Down_Value;
+		return false;//.abs(motor1.getEncPosition()) > Robot.Gear_Down_Value;
 	}
 }

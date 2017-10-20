@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team5160.robot;
 
+import org.usfirst.frc.team5160.robot.commands.CMDDrivePID;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
@@ -38,7 +39,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		//chooser.addDefault("Default Auto", new ExampleCommand());
+		chooser.addDefault("Default Auto", new CMDDrivePID(60));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}

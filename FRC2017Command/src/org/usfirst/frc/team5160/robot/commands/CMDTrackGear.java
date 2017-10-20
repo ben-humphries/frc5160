@@ -1,5 +1,5 @@
 package org.usfirst.frc.team5160.robot.commands;
-
+/*
 import org.usfirst.frc.team5160.robot.RMath;
 import org.usfirst.frc.team5160.robot.Robot;
 import org.usfirst.frc.team5160.robot.vision.VisionManager;
@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * This will rotate the robot to aline to the gear peg. 
  */
-
+/*
 public class CMDTrackGear extends Command{
 	private static final double DEGREE_ERROR = 3; // Acceptable error in degrees +/-
 	public CMDTrackGear(){
@@ -32,3 +32,4 @@ public class CMDTrackGear extends Command{
 		return Math.abs(Robot.vision.gearProcessor.getDeltaAngle()) <= DEGREE_ERROR;
 	}
 }
+*/

@@ -22,9 +22,9 @@ public class CMDClimb extends Command {
     }
 
     protected boolean isFinished() {
-    	if(Robot.CLIMBER.getSwitch()){
-    		return false;
-    	}
+    	//if(Robot.CLIMBER.getSwitch()){
+    		//return false;
+    	//}
         return false; //change to true if limit switch is added
     }
 

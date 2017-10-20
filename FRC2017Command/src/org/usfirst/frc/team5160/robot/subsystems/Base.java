@@ -42,10 +42,9 @@ public class Base extends Subsystem {
 	//Positions for auto drive
 	private double targetLeftPos; 
 	private double targetRightPos; 
-	private static final double INCH_TO_TICK = 1023d/(Math.PI*6d);///1023 ticks per pi*6 inches
+	private static final double INCH_TO_TICK = 4096d/(Math.PI*6d);///1023 ticks per pi*6 inches
 	private static final double TICK_TO_INCH = 1d/INCH_TO_TICK;
 	public Base(){
-		
 		//Init motors
 		frontLeft = new CANTalon(RobotMap.FRONT_LEFT_CIM);
 		backLeft = new CANTalon(RobotMap.BACK_LEFT_CIM);
@@ -55,8 +54,8 @@ public class Base extends Subsystem {
 		frontRight.setInverted(false);
 		backRight.setInverted(false);
 				
-		frontLeft.setInverted(true);
-		backLeft.setInverted(true);
+		frontLeft.setInverted(false);
+		backLeft.setInverted(false);
 		    	
 		
 		//Call init on all motors
@@ -69,7 +68,7 @@ public class Base extends Subsystem {
 		
 		//Init gyro
 		gyro = new ADXRS450_Gyro();
-		
+		resetEncoders();
 	}
 
     public void initDefaultCommand() {
@@ -113,7 +112,10 @@ public class Base extends Subsystem {
     }
 
 	public void printEncoders() {
-		System.out.println(frontLeft.getEncPosition()+" , "+ frontRight.getEncPosition());
+		System.out.println(frontLeft.getEncPosition()*TICK_TO_INCH+" , "+ frontRight.getEncPosition()*TICK_TO_INCH);
+	}
+	public void resetGyro(){
+		this.gyro.reset();
 	}
 	public void resetEncoders(){
 		frontLeft.setEncPosition(0);
@@ -121,8 +123,13 @@ public class Base extends Subsystem {
     	backRight.setEncPosition(0);
     	backLeft.setEncPosition(0);
 	}
-	public double getAverageEncoder(){
-		return (frontLeft.getEncPosition()+frontRight.getEncPosition())/2d;
+	private double getAverageEncoder(){
+		return (Math.abs(frontLeft.getEncPosition())+Math.abs(frontRight.getEncPosition()))/2d;
 	}
-	
+	public double getGyroAngle(){
+		return this.gyro.getAngle();
+	}
+	public double getAverageEncoderDistance(){
+		return getAverageEncoder()*TICK_TO_INCH;
+	}
 }
