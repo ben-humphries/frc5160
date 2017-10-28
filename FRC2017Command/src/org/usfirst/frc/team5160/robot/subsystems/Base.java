@@ -91,7 +91,7 @@ public class Base extends Subsystem {
     }
     //Code for initializing the motors at init
     private void initMotor(CANTalon motor){
-    	motor.setVoltageRampRate(24.0);
+    	motor.setVoltageRampRate(48.0);
     	motor.configNominalOutputVoltage(-0f, 0f);
     	motor.configPeakOutputVoltage(-12, 12);
     	motor.enableBrakeMode(true);

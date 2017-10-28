@@ -22,7 +22,7 @@ public class CMDGearMech extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.GEAR_MECHANISM.rotate(-Robot.oi.getJoystickY(Robot.oi.operatorJoystick));
+    	Robot.GEAR_MECHANISM.rotate(Robot.oi.getJoystickY(Robot.oi.operatorJoystick));
     	Robot.GEAR_MECHANISM.intake(Robot.oi.gearIntakePower());
     	/*if(Robot.GEAR_MECHANISM.isTooFarDown()){
     		Robot.GEAR_MECHANISM.hold(Robot.Gear_Down_Value);

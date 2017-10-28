@@ -59,7 +59,7 @@ public class OI {
 	public double getJoystickX(Joystick j){
 		
 		if(Math.abs(j.getX()) > 0.05){
-			return j.getX()*j.getX() * Math.signum(j.getX());
+			return -j.getX()*j.getX() * Math.signum(j.getX());
 		}
 		
 		return 0;
@@ -67,7 +67,7 @@ public class OI {
 	public double getJoystickY(Joystick j){
 		
 		if(Math.abs(j.getY()) > 0.05){
-			return j.getY()*j.getY() * Math.signum(j.getY());
+			return -j.getY()*j.getY() * Math.signum(j.getY());
 		}
 		
 		return 0;
@@ -78,10 +78,10 @@ public class OI {
 	}
 	public double getJoystickTwist(Joystick j){
 		
-		if(Math.abs(j.getTwist()) > 0.05){		
-			return j.getTwist()*j.getTwist() * Math.signum(j.getTwist());		
-		}
-		
-		return 0;
+		//if(Math.abs(j.getTwist()) > 0.05){		
+		//	return j.getTwist()*j.getTwist() * Math.signum(j.getTwist());		
+		//}
+		return j.getRawAxis(2) -  j.getRawAxis(3) - j.getRawAxis(4);
+		//return 0;
 	}
 }

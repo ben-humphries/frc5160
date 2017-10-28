@@ -10,10 +10,11 @@ public class CMDTurnPID extends Command {
 	
 	private double target; 
 	private BasicPID pid; 
-	private double error = 2.5;
+	private double error = 1;
 	public CMDTurnPID(double target){
+		requires(Robot.BASE);
 		this.target = target;
-		this.pid = new BasicPID(0.1, 0, 0.015);
+		this.pid = new BasicPID(0.06, 0.0005, 0.013);
 	}
 	@Override
 	protected void initialize() {
@@ -24,8 +25,8 @@ public class CMDTurnPID extends Command {
 	@Override 
 	protected void execute() {
 		super.execute();
-		double turnValue = pid.runPID(-Robot.BASE.getGyroAngle(), 0);
-		turnValue = RMath.clamp(-0.8, 0.8, turnValue);
+		double turnValue = pid.runPID(-Robot.BASE.getGyroAngle(), target);
+		turnValue = RMath.clamp(-0.7, 0.7, turnValue);
 		System.out.println(turnValue);
 		Robot.BASE.arcadeDrive(0, turnValue);
 	}

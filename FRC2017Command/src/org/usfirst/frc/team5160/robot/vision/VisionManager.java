@@ -8,6 +8,7 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -18,7 +19,7 @@ public class VisionManager implements Runnable{
 	public static final int shooterId = 0; 
 	
 	public VisionProcessorGear gearProcessor;
-	public MjpegServer streamer;
+	public VideoSink server;
 	public CvSource outputStream;
 	public UsbCamera gearCam;
 	public CvSink  gearSink;
@@ -27,15 +28,12 @@ public class VisionManager implements Runnable{
 	private long lastTime = 0;
 	
 	public VisionManager(){
-		outputStream = CameraServer.getInstance().putVideo("OutputStream", 240, 160);
-		streamer = CameraServer.getInstance().addServer("Streamer");	
-
+		gearCam = CameraServer.getInstance().startAutomaticCapture(shooterId);
+		gearCam.setExposureManual(1);
+		server = CameraServer.getInstance().getServer();
 		gearSink = new CvSink("gear");
-		
-		gearCam = new UsbCamera("gear", shooterId);
-		
-		
-		
+		gearSink.setSource(gearCam);
+		gearSink.setEnabled(true);
 		gearProcessor = new VisionProcessorGear();
 		
 		gearProcessor.draw=true;
@@ -43,21 +41,14 @@ public class VisionManager implements Runnable{
 
 	@Override
 	public void run() {
-		try{
-		  streamer.setSource(outputStream);
-		  
-		  gearSink.setSource(gearCam);
-		  
+		try{		  
 		  Mat gearImage = new Mat();
 		  
-		  gearCam.setExposureManual(-5);
 		  while(!Thread.interrupted()) {
 			  if(true){
-			 
 			  
 			  gearSink.grabFrame(gearImage);
 			  gearProcessor.process(gearImage);
-			  
 			  
               outputStream.putFrame(gearProcessor.drawnContours);
 			  }

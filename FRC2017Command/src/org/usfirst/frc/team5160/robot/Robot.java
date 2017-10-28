@@ -1,10 +1,14 @@
-
 package org.usfirst.frc.team5160.robot;
 
+import org.usfirst.frc.team5160.autonomous.LeftSideAuto;
+import org.usfirst.frc.team5160.autonomous.MiddleAuto;
+import org.usfirst.frc.team5160.autonomous.RightSideAuto;
 import org.usfirst.frc.team5160.robot.commands.CMDDrivePID;
+import org.usfirst.frc.team5160.robot.commands.CMDTurnPID;
 import org.usfirst.frc.team5160.robot.subsystems.Base;
 import org.usfirst.frc.team5160.robot.subsystems.Climber;
 import org.usfirst.frc.team5160.robot.subsystems.GearMechanism;
+import org.usfirst.frc.team5160.robot.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,7 +35,7 @@ public class Robot extends IterativeRobot {
 	public static final Base BASE = new Base();
 	public static final Climber CLIMBER = new Climber();
 	public static final GearMechanism GEAR_MECHANISM = new GearMechanism();
-	
+	public static VisionManager vision = new VisionManager();
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -39,9 +43,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		chooser.addDefault("Default Auto", new CMDDrivePID(60));
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addDefault("Middle Auto", new MiddleAuto());
+		chooser.addObject("Right Auto", new RightSideAuto());
+		chooser.addObject("Left Auto", new LeftSideAuto());
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		vision = new VisionManager();
+    	new Thread(vision).start();
 	}
 
 	/**

@@ -76,10 +76,10 @@ public class OI {
 		return 0;
 	}
 	public double getJoystickRotation(){
-		if(Math.abs(joystick.getTwist()) > 0.05){
-			return joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist()) / 2;
-		}
-		return 0;
+		//if(Math.abs(joystick.getTwist()) > 0.05){
+		//	return //joystick.getTwist()*joystick.getTwist() * Math.signum(joystick.getTwist()) / 2;
+		//}
+		return -joystick.getRawAxis(2) +  joystick.getRawAxis(3) + joystick.getRawAxis(4);
 	}
 	
 	public double getTankJoystickY(){
